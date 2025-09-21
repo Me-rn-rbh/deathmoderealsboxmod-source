@@ -22,7 +22,7 @@ export function prettyNumber(value: number): string {
 }
 
 export class EditorConfig {
-	public static readonly version: string = "V48";
+	public static readonly version: string = "V50";
 	
 	public static readonly versionDisplayName: string = "D's Quick Box Mod";
 	public static readonly releaseNotesURL: string = "https://github.com/johnnesky/beepbox/releases/tag/v" + EditorConfig.version;
