@@ -11,7 +11,7 @@ BeepBox is a passion project that this boxmod was built off of, which will alway
 [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=QZJTX9GRYEV9N&currency_code=USD)
 please
 
-BeepBox is developed by [John Nesky](https://johnnesky.com/)
+BeepBox is developed by [John Nesky](https://johnnesky.com/).
 D's Quick Box Mod is developed by deathmodereal.
 This source code is available under the [MIT license](LICENSE.md).
 
