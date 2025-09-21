@@ -1,6 +1,6 @@
-# BeepBox
+# [D's Quick Box Mod](https://me-rn-rbh.github.io/Deathmodereals-Quick-Box-Mod)
 
-BeepBox is an online tool for sketching and sharing instrumental melodies.
+A mod of [Beepbox](https://www.beepbox.co/) that adds... anything I can! lmao
 Try it out [here](https://www.beepbox.co)!
 
 All song data is packaged into the URL at the top of your browser. When you make
