@@ -199,7 +199,7 @@ export class SongEditor {
 		option({value: "export"}, "↓ Export Song... (" + EditorConfig.ctrlSymbol + "S)"),
 		option({value: "copyUrl"}, "⎘ Copy Song URL"),
 		option({value: "shareUrl"}, "⤳ Share Song URL"),
-		option({value: "shortenUrl"}, "… Shorten Song URL"),
+		option({value: "shortenUrl"}, "… Open Tinyurl (Shorten Link There)"),
 		option({value: "viewPlayer"}, "▶ View in Song Player"),
 		option({value: "copyEmbed"}, "⎘ Copy HTML Embed Code"),
 		option({value: "songRecovery"}, "⚠ Recover Recent Song..."),
@@ -1945,7 +1945,8 @@ export class SongEditor {
 				(<any>navigator).share({ url: new URL("#" + this.doc.song.toBase64String(), location.href).href });
 				break;
 			case "shortenUrl":
-				window.open("https://tinyurl.com/api-create.php?url=" + encodeURIComponent(new URL("#" + this.doc.song.toBase64String(), location.href).href));
+				this._copyTextToClipboard(new URL("#" + this.doc.song.toBase64String(), location.href).href);
+				window.open("https://tinyurl.com");
 				break;
 			case "viewPlayer":
 				location.href = "player/#song=" + this.doc.song.toBase64String();

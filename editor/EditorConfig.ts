@@ -22,7 +22,7 @@ export function prettyNumber(value: number): string {
 }
 
 export class EditorConfig {
-	public static readonly version: string = "V66.25";
+	public static readonly version: string = "V66.251";
 	
 	public static readonly versionDisplayName: string = "D's Quick Box Mod";
 	public static readonly releaseNotesURL: string = "https://github.com/Me-rn-rbh/deathmoderealsboxmod-source/releases"
