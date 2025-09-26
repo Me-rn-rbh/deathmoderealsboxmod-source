@@ -1,56 +1,42 @@
-// Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
+// Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import {ColorConfig} from "./ColorConfig.js";
-import {HTML} from "imperative-html/dist/esm/elements-strict.js";
+import { getLocalStorageItem } from "../synth/SynthConfig";
+import {ColorConfig} from "./ColorConfig";
+import {HTML} from "imperative-html/dist/esm/elements-strict";
 
 
-function scrollBarTestFunc(): void {
-	// Determine if the user's browser/OS adds scrollbars that occupy space by default.
-	// See: https://www.filamentgroup.com/lab/scrollbars/
-	// Or: https://web.archive.org/web/20240109124348/https://www.filamentgroup.com/lab/scrollbars/
-	const scrollBarTest: HTMLDivElement = document.body.appendChild(HTML.div({style: "width:30px; height:30px; overflow: auto;"},
-		HTML.div({style: "width:100%; height:40px"}),
-	));
-	if ((<any>scrollBarTest).firstChild.clientWidth < 30) {
-		document.documentElement.classList.add("has-classic-scrollbars");
-	}
-	document.body.removeChild(scrollBarTest);
+// Determine if the user's browser/OS adds scrollbars that occupy space.
+// See: https://www.filamentgroup.com/lab/scrollbars/
+const scrollBarTest: HTMLDivElement = document.body.appendChild(HTML.div({ style: "width:30px; height:30px; overflow: auto;" },
+	HTML.div({ style: "width:100%;height:40px" }),
+));
+if ((<any>scrollBarTest).firstChild.clientWidth < 30) {
+	document.documentElement.classList.add("obtrusive-scrollbars");
 }
-if (document.body) {
-	scrollBarTestFunc();
-} else {
-	// Wait until the document body is present to perform the scrollBarTestFunc.
-	const observer: MutationObserver = new MutationObserver(function(): void {
-		if (document.body) {
-			scrollBarTestFunc();
-			observer.disconnect();
-		}
-	});
-	observer.observe(document.documentElement, {childList: true});
-}
+document.body.removeChild(scrollBarTest);
 
 
-document.head.appendChild(HTML.style({type: "text/css"}, `
+document.head.appendChild(HTML.style({ type: "text/css" }, `
 
 /* Note: "#" symbols need to be encoded as "%23" in SVG data urls, otherwise they are interpreted as fragment identifiers! */
 :root {
 	--button-size: 26px;
 	--settings-area-width: 192px;
-	--play-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path d="M -5 -8 L -5 8 L 8 0 z" fill="gray"/></svg>');
-	--pause-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><rect x="-5" y="-7" width="4" height="14" fill="gray"/><rect x="3" y="-7" width="4" height="14" fill="gray"/></svg>');
-	--record-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><circle cx="0" cy="0" r="6" fill="gray"/></svg>');
-	--stop-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><rect x="-6" y="-6" width="12" height="12" fill="gray"/></svg>');
-	--prev-bar-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><rect x="-6" y="-6" width="2" height="12" fill="gray"/><path d="M 6 -6 L 6 6 L -3 0 z" fill="gray"/></svg>');
-	--next-bar-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><rect x="4" y="-6" width="2" height="12" fill="gray"/><path d="M -6 -6 L -6 6 L 3 0 z" fill="gray"/></svg>');
-	--volume-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26"><path d="M 4 16 L 4 10 L 8 10 L 13 5 L 13 21 L 8 16 z M 15 11 L 16 10 A 7.2 7.2 0 0 1 16 16 L 15 15 A 5.8 5.8 0 0 0 15 12 z M 18 8 L 19 7 A 11.5 11.5 0 0 1 19 19 L 18 18 A 10.1 10.1 0 0 0 18 8 z" fill="gray"/></svg>');
-	--unmuted-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="3 3 20 20"><path d="M 4 16 L 4 10 L 8 10 L 13 5 L 13 21 L 8 16 z M 15 11 L 16 10 A 7.2 7.2 0 0 1 16 16 L 15 15 A 5.8 5.8 0 0 0 15 12 z M 18 8 L 19 7 A 11.5 11.5 0 0 1 19 19 L 18 18 A 10.1 10.1 0 0 0 18 8 z" fill="gray"/></svg>');
-	--muted-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="3 3 20 20"><path d="M 4 16 L 4 10 L 8 10 L 13 5 L 13 21 L 8 16 z" fill="gray"/></svg>');
-	--menu-down-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path d="M -4 -2 L 4 -2 L 0 3 z" fill="gray"/></svg>');
-	--select-arrows-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path d="M -4 -3 L 4 -3 L 0 -8 z M -4 3 L 4 3 L 0 8 z" fill="gray"/></svg>');
-	--file-page-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-5 -21 26 26"><path d="M 2 0 L 2 -16 L 10 -16 L 14 -12 L 14 0 z M 3 -1 L 13 -1 L 13 -11 L 9 -11 L 9 -15 L 3 -15 z" fill="gray"/></svg>');
-	--edit-pencil-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-5 -21 26 26"><path d="M 0 0 L 1 -4 L 4 -1 z M 2 -5 L 10 -13 L 13 -10 L 5 -2 zM 11 -14 L 13 -16 L 14 -16 L 16 -14 L 16 -13 L 14 -11 z" fill="gray"/></svg>');
-	--preferences-gear-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path d="M 5.78 -1.6 L 7.93 -0.94 L 7.93 0.94 L 5.78 1.6 L 4.85 3.53 L 5.68 5.61 L 4.21 6.78 L 2.36 5.52 L 0.27 5.99 L -0.85 7.94 L -2.68 7.52 L -2.84 5.28 L -4.52 3.95 L -6.73 4.28 L -7.55 2.59 L -5.9 1.07 L -5.9 -1.07 L -7.55 -2.59 L -6.73 -4.28 L -4.52 -3.95 L -2.84 -5.28 L -2.68 -7.52 L -0.85 -7.94 L 0.27 -5.99 L 2.36 -5.52 L 4.21 -6.78 L 5.68 -5.61 L 4.85 -3.53 M 2.92 0.67 L 2.92 -0.67 L 2.35 -1.87 L 1.3 -2.7 L 0 -3 L -1.3 -2.7 L -2.35 -1.87 L -2.92 -0.67 L -2.92 0.67 L -2.35 1.87 L -1.3 2.7 L -0 3 L 1.3 2.7 L 2.35 1.87 z" fill="gray"/></svg>');
-	--customize-dial-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"> \
+	--internal-play-symbol: var(--play-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path d="M -5 -8 L -5 8 L 8 0 z" fill="gray"/></svg>'));
+	--internal-pause-symbol: var(--pause-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><rect x="-5" y="-7" width="4" height="14" fill="gray"/><rect x="3" y="-7" width="4" height="14" fill="gray"/></svg>'));
+	--internal-record-symbol: var(--record-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><circle cx="0" cy="0" r="6" fill="gray"/></svg>'));
+	--internal-stop-symbol: var(--stop-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><rect x="-6" y="-6" width="12" height="12" fill="gray"/></svg>'));
+	--internal-prev-bar-symbol: var(--prev-bar-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><rect x="-6" y="-6" width="2" height="12" fill="gray"/><path d="M 6 -6 L 6 6 L -3 0 z" fill="gray"/></svg>'));
+	--internal-next-bar-symbol: var(--next-bar-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><rect x="4" y="-6" width="2" height="12" fill="gray"/><path d="M -6 -6 L -6 6 L 3 0 z" fill="gray"/></svg>'));
+	--internal-volume-symbol: var(--volume-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26"><path d="M 4 16 L 4 10 L 8 10 L 13 5 L 13 21 L 8 16 z M 15 11 L 16 10 A 7.2 7.2 0 0 1 16 16 L 15 15 A 5.8 5.8 0 0 0 15 12 z M 18 8 L 19 7 A 11.5 11.5 0 0 1 19 19 L 18 18 A 10.1 10.1 0 0 0 18 8 z" fill="gray"/></svg>'));
+	--internal-unmuted-symbol: var(--unmuted-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="3 3 20 20"><path d="M 4 16 L 4 10 L 8 10 L 13 5 L 13 21 L 8 16 z M 15 11 L 16 10 A 7.2 7.2 0 0 1 16 16 L 15 15 A 5.8 5.8 0 0 0 15 12 z M 18 8 L 19 7 A 11.5 11.5 0 0 1 19 19 L 18 18 A 10.1 10.1 0 0 0 18 8 z" fill="gray"/></svg>'));
+	--internal-muted-symbol: var(--muted-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="3 3 20 20"><path d="M 4 16 L 4 10 L 8 10 L 13 5 L 13 21 L 8 16 z" fill="gray"/></svg>'));
+	--internal-menu-down-symbol: var(--menu-down-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path d="M -4 -2 L 4 -2 L 0 3 z" fill="gray"/></svg>'));
+	--internal-select-arrows-symbol: var(--select-arrows-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path d="M -4 -3 L 4 -3 L 0 -8 z M -4 3 L 4 3 L 0 8 z" fill="gray"/></svg>'));
+	--internal-file-page-symbol: var(--file-page-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-5 -21 26 26"><path d="M 2 0 L 2 -16 L 10 -16 L 14 -12 L 14 0 z M 3 -1 L 13 -1 L 13 -11 L 9 -11 L 9 -15 L 3 -15 z" fill="gray"/></svg>'));
+	--internal-edit-pencil-symbol: var(--edit-pencil-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-5 -21 26 26"><path d="M 0 0 L 1 -4 L 4 -1 z M 2 -5 L 10 -13 L 13 -10 L 5 -2 zM 11 -14 L 13 -16 L 14 -16 L 16 -14 L 16 -13 L 14 -11 z" fill="gray"/></svg>'));
+	--internal-preferences-gear-symbol: var(--preferences-gear-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path d="M 5.78 -1.6 L 7.93 -0.94 L 7.93 0.94 L 5.78 1.6 L 4.85 3.53 L 5.68 5.61 L 4.21 6.78 L 2.36 5.52 L 0.27 5.99 L -0.85 7.94 L -2.68 7.52 L -2.84 5.28 L -4.52 3.95 L -6.73 4.28 L -7.55 2.59 L -5.9 1.07 L -5.9 -1.07 L -7.55 -2.59 L -6.73 -4.28 L -4.52 -3.95 L -2.84 -5.28 L -2.68 -7.52 L -0.85 -7.94 L 0.27 -5.99 L 2.36 -5.52 L 4.21 -6.78 L 5.68 -5.61 L 4.85 -3.53 M 2.92 0.67 L 2.92 -0.67 L 2.35 -1.87 L 1.3 -2.7 L 0 -3 L -1.3 -2.7 L -2.35 -1.87 L -2.92 -0.67 L -2.92 0.67 L -2.35 1.87 L -1.3 2.7 L -0 3 L 1.3 2.7 L 2.35 1.87 z" fill="gray"/></svg>'));
+	--internal-customize-dial-symbol: var(--customize-dial-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"> \
 			<g transform="translate(0,1)" fill="gray"> \
 				<circle cx="0" cy="0" r="6.5" stroke="gray" stroke-width="1" fill="none"/> \
 				<rect x="-1" y="-5" width="2" height="4" transform="rotate(30)"/> \
@@ -64,16 +50,16 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 				<circle cx="9" cy="0" r="0.75"/> \
 				<circle cx="7.79" cy="4.5" r="0.75"/> \
 			</g> \
-		</svg>');
-	--instrument-copy-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-5 -21 26 26"><path d="M 0 -15 L 1 -15 L 1 0 L 13 0 L 13 1 L 0 1 L 0 -15 z M 2 -1 L 2 -17 L 10 -17 L 14 -13 L 14 -1 z M 3 -2 L 13 -2 L 13 -12 L 9 -12 L 9 -16 L 3 -16 z" fill="currentColor"></path></svg>');
-	--instrument-paste-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26"><path d="M 8 18 L 6 18 L 6 5 L 17 5 L 17 7 M 9 8 L 16 8 L 20 12 L 20 22 L 9 22 z" stroke="currentColor" fill="none"></path><path d="M 9 3 L 14 3 L 14 6 L 9 6 L 9 3 z M 16 8 L 20 12 L 16 12 L 16 8 z" fill="currentColor"></path></svg>');
-	--export-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path fill="gray" d="M -8 3 L -8 8 L 8 8 L 8 3 L 6 3 L 6 6 L -6 6 L -6 3 z M 0 2 L -4 -2 L -1 -2 L -1 -8 L 1 -8 L 1 -2 L 4 -2 z"/></svg>');
-	--close-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path fill="gray" d="M -7.07 -5.66 L -5.66 -7.07 L 0 -1.4 L 5.66 -7.07 L 7.07 -5.66 L 1.4 0 L 7.07 5.66 L 5.66 7.07 L 0 1.4 L -5.66 7.07 L -7.07 5.66 L -1.4 0 z"/></svg>');
-	--add-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path fill="gray" d="M -8 -1 L -1 -1 L -1 -8  L 1 -8 L 1 -1 L 8 -1 L 8 1 L 1 1 L 1 8 L -1 8 L -1 1 L -8 1 z"/></svg>');
-	--zoom-in-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="-10 -10 20 20"><circle cx="-1" cy="-1" r="6" stroke-width="2" stroke="gray" fill="none"></circle><path stroke="gray" stroke-width="2" d="M 3 3 L 7 7 M -1 -4 L -1 2 M -4 -1 L 2 -1" fill="none"></path></svg>');
-	--zoom-out-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="-10 -10 20 20"><circle cx="-1" cy="-1" r="6" stroke-width="2" stroke="gray" fill="none"></circle><path stroke="gray" stroke-width="2" d="M 3 3 L 7 7 M -4 -1 L 2 -1" fill="none"></path></svg>');
-	--checkmark-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path fill="gray" d="M -9 -2 L -8 -3 L -3 2 L 9 -8 L 10 -7 L -3 8 z"/></svg>');
-	--drum-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40"> \
+		</svg>'));
+	--internal-instrument-copy-symbol: var(--instrument-copy-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-5 -21 26 26"><path d="M 0 -15 L 1 -15 L 1 0 L 13 0 L 13 1 L 0 1 L 0 -15 z M 2 -1 L 2 -17 L 10 -17 L 14 -13 L 14 -1 z M 3 -2 L 13 -2 L 13 -12 L 9 -12 L 9 -16 L 3 -16 z" fill="currentColor"></path></svg>'));
+	--internal-instrument-paste-symbol: var(--instrument-paste-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26"><path d="M 8 18 L 6 18 L 6 5 L 17 5 L 17 7 M 9 8 L 16 8 L 20 12 L 20 22 L 9 22 z" stroke="currentColor" fill="none"></path><path d="M 9 3 L 14 3 L 14 6 L 9 6 L 9 3 z M 16 8 L 20 12 L 16 12 L 16 8 z" fill="currentColor"></path></svg>'));
+	--internal-export-symbol: var(--export-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path fill="gray" d="M -8 3 L -8 8 L 8 8 L 8 3 L 6 3 L 6 6 L -6 6 L -6 3 z M 0 2 L -4 -2 L -1 -2 L -1 -8 L 1 -8 L 1 -2 L 4 -2 z"/></svg>'));
+	--internal-close-symbol: var(--close-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path fill="gray" d="M -7.07 -5.66 L -5.66 -7.07 L 0 -1.4 L 5.66 -7.07 L 7.07 -5.66 L 1.4 0 L 7.07 5.66 L 5.66 7.07 L 0 1.4 L -5.66 7.07 L -7.07 5.66 L -1.4 0 z"/></svg>'));
+	--internal-add-symbol: var(--add-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path fill="gray" d="M -8 -1 L -1 -1 L -1 -8  L 1 -8 L 1 -1 L 8 -1 L 8 1 L 1 1 L 1 8 L -1 8 L -1 1 L -8 1 z"/></svg>'));
+	--internal-zoom-in-symbol: var(--zoom-in-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="-10 -10 20 20"><circle cx="-1" cy="-1" r="6" stroke-width="2" stroke="gray" fill="none"></circle><path stroke="gray" stroke-width="2" d="M 3 3 L 7 7 M -1 -4 L -1 2 M -4 -1 L 2 -1" fill="none"></path></svg>'));
+	--internal-zoom-out-symbol: var(--zoom-out-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="-10 -10 20 20"><circle cx="-1" cy="-1" r="6" stroke-width="2" stroke="gray" fill="none"></circle><path stroke="gray" stroke-width="2" d="M 3 3 L 7 7 M -4 -1 L 2 -1" fill="none"></path></svg>'));
+	--internal-checkmark-symbol: var(--checkmark-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="-13 -13 26 26"><path fill="gray" d="M -9 -2 L -8 -3 L -3 2 L 9 -8 L 10 -7 L -3 8 z"/></svg>'));
+	--internal-drum-symbol: var(--drum-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40"> \
 			<defs> \
 				<linearGradient id="gold1" x1="0%" y1="0%" x2="100%" y2="0%"> \
 					<stop offset="0%" stop-color="%237e3302"/> \
@@ -120,8 +106,8 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 			<rect x="0" y="14" width="32" height="2" fill="url(%23gold1)"/> \
 			<ellipse cx="16" cy="14" rx="16" ry="14" fill="url(%23gold2)"/> \
 			<ellipse cx="16" cy="14" rx="15" ry="13" fill="url(%23membrane)"/> \
-		</svg>');
-	--piano-key-symbol: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="15" preserveAspectRatio="none" viewBox="0 -1 32 15"> \
+		</svg>'));
+	--internal-piano-key-symbol: var(--piano-key-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="15" preserveAspectRatio="none" viewBox="0 -1 32 15"> \
 			<defs> \
 				<linearGradient id="shadow" x1="0%" y1="0%" x2="100%" y2="0%"> \
 					<stop offset="0%" stop-color="rgba(0,0,0,0.5)"/> \
@@ -131,38 +117,38 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 			<rect x="-1" y="1" width="31" height="1" rx="0.6" fill="rgba(255,255,255,0.4)"/> \
 			<path d="M -1 11 L 30 11 L 30 2 L 33 -1 L 33 14 L -1 14 z" fill="rgba(0,0,0,0.7)"/> \
 			<rect x="-1" y="-1" width="19" height="15" fill="url(%23shadow)"/> \
-		</svg>');
+		</svg>'));
+  --internal-mod-key-symbol: var(--mod-key-symbol, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="80" preserveAspectRatio="none" viewBox="0 -1 32 80"> \
+			<defs> \
+				<linearGradient id="shadow" x1="0%" y1="0%" x2="100%" y2="0%"> \
+					<stop offset="0%" stop-color="rgba(0,0,0,0.4)"/> \
+					<stop offset="100%" stop-color="transparent"/> \
+				</linearGradient> \
+			</defs> \
+			<rect x="-1" y="1" width="31" height="1" rx="0.6" fill="rgba(255,255,255,0.2)"/> \
+			<path d="M -1 76 L 30 76 L 30 1 L 33 -1 L 33 80 L -1 80 z" fill="rgba(0,0,0,0.7)"/> \
+			<rect x="-1" y="-1" width="19" height="80" fill="url(%23shadow)"/> \
+		</svg>'));
 }
 
 
-.has-classic-scrollbars, .has-classic-scrollbars *, .prefers-classic-scrollbars {
+html {
+	scrollbar-color: var(--scrollbar-color, ${ColorConfig.uiWidgetBackground}) var(--scrollbar-background, ${ColorConfig.editorBackground});
+}
+
+.obtrusive-scrollbars, .obtrusive-scrollbars * {
 	scrollbar-width: thin;
-	scrollbar-color: ${ColorConfig.uiWidgetBackground} ${ColorConfig.editorBackground};
 }
-.prefers-big-scrollbars {
-	scrollbar-width: auto;
-	scrollbar-color: ${ColorConfig.uiWidgetBackground} ${ColorConfig.editorBackground};
-}
-.has-classic-scrollbars::-webkit-scrollbar, .has-classic-scrollbars *::-webkit-scrollbar, .prefers-classic-scrollbars::-webkit-scrollbar {
+.obtrusive-scrollbars::-webkit-scrollbar, .obtrusive-scrollbars *::-webkit-scrollbar {
 	width: 12px;
-	height: 12px;
 }
-.prefers-big-scrollbars::-webkit-scrollbar {
-	width: 20px;
-	height: 20px;
-}
-.has-classic-scrollbars::-webkit-scrollbar-track, .has-classic-scrollbars *::-webkit-scrollbar-track, .prefers-classic-scrollbars::-webkit-scrollbar-track, .prefers-big-scrollbars::-webkit-scrollbar-track {
+.obtrusive-scrollbars::-webkit-scrollbar-track, .obtrusive-scrollbars *::-webkit-scrollbar-track {
 	background: ${ColorConfig.editorBackground};
 }
-.has-classic-scrollbars::-webkit-scrollbar-thumb, .has-classic-scrollbars *::-webkit-scrollbar-thumb, .prefers-classic-scrollbars::-webkit-scrollbar-thumb, .prefers-big-scrollbars::-webkit-scrollbar-thumb {
+.obtrusive-scrollbars::-webkit-scrollbar-thumb, .obtrusive-scrollbars *::-webkit-scrollbar-thumb {
 	background-color: ${ColorConfig.uiWidgetBackground};
 	border: 3px solid ${ColorConfig.editorBackground};
 }
-.has-classic-scrollbars::-webkit-scrollbar-corner, .has-classic-scrollbars *::-webkit-scrollbar-corner, .prefers-classic-scrollbars::-webkit-scrollbar-corner, .prefers-big-scrollbars::-webkit-scrollbar-corner {
-	background-color: ${ColorConfig.editorBackground};
-}
-
-
 
 .beepboxEditor {
 	display: grid;
@@ -178,6 +164,92 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	overflow: hidden;
 	color: ${ColorConfig.primaryText};
 	background: ${ColorConfig.editorBackground};
+    opacity: 0;
+    -webkit-transition: opacity 0.2s ease-in;
+    -moz-transition: opacity 0.2s ease-in;
+    -o-transition: opacity 0.2s ease-in;
+    -ms-transition: opacity 0.2s ease-in;
+    transition: opacity 0.2s ease-in;
+    transition-delay: 0s;
+}
+
+.beepboxEditor .operatorRow {
+	margin: 2px 0;
+	height: 2em;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.beepboxEditor .operatorRow > * {
+	flex-grow: 1;
+	flex-shrink: 1;
+}
+
+.pattern-area {
+     opacity: 0;
+    -webkit-transition: opacity 0.5s ease-in;
+    -moz-transition: opacity 0.5s ease-in;
+    -o-transition: opacity 0.5s ease-in;
+    -ms-transition: opacity 0.5s ease-in;
+    transition: opacity 0.5s ease-in;
+    transition-delay: 0s;
+}
+
+.settings-area {
+    opacity: 0;
+    -webkit-transition: opacity 0.5s ease-in;
+    -moz-transition: opacity 0.5s ease-in;
+    -o-transition: opacity 0.5s ease-in;
+    -ms-transition: opacity 0.5s ease-in;
+    transition: opacity 0.5s ease-in;
+    transition-delay: 0.15s;
+}
+
+.editor-song-settings {
+    opacity: 0;
+    -webkit-transition: opacity 0.5s ease-in;
+    -moz-transition: opacity 0.5s ease-in;
+    -o-transition: opacity 0.5s ease-in;
+    -ms-transition: opacity 0.5s ease-in;
+    transition: opacity 0.5s ease-in;
+    transition-delay: 0.35s;
+}
+
+.instrument-settings-area {
+    opacity: 0;
+    -webkit-transition: opacity 0.5s ease-in;
+    -moz-transition: opacity 0.5s ease-in;
+    -o-transition: opacity 0.5s ease-in;
+    -ms-transition: opacity 0.5s ease-in;
+    transition: opacity 0.5s ease-in;
+    transition-delay: 0.45s;
+}
+
+.trackAndMuteContainer {
+    opacity: 0;
+    -webkit-transition: opacity 0.5s ease-in;
+    -moz-transition: opacity 0.5s ease-in;
+    -o-transition: opacity 0.5s ease-in;
+    -ms-transition: opacity 0.5s ease-in;
+    transition: opacity 0.5s ease-in;
+    transition-delay: 0.4s;
+}
+
+.barScrollBar {
+    opacity: 0;
+    -webkit-transition: opacity 0.5s ease-in;
+    -moz-transition: opacity 0.5s ease-in;
+    -o-transition: opacity 0.5s ease-in;
+    -ms-transition: opacity 0.5s ease-in;
+    transition: opacity 0.5s ease-in;
+    transition-delay: 0.5s;
+}
+
+
+
+.load {
+    opacity: 1;
 }
 
 .beepboxEditor .noSelection {
@@ -203,6 +275,7 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 
 .beepboxEditor .track-area {
 	grid-area: track-area;
+	background-image: url(${getLocalStorageItem("customTheme2", "")});
 }
 
 .beepboxEditor .loopEditor {
@@ -247,31 +320,40 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: ${ColorConfig.secondaryText};
-	-webkit-mask-image: var(--volume-symbol);
+	-webkit-mask-image: var(--internal-volume-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--volume-symbol);
+	mask-image: var(--internal-volume-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
-}
-
-.beepboxEditor .playback-volume-controls {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-
-.beepboxEditor .playback-volume-controls > :last-child {
-	width: 5em;
-	flex-grow: 1;
 }
 
 .beepboxEditor .drum-button {
 	flex: 1;
 	background-color: transparent;
-	background-image: var(--drum-symbol);
+	background-image: var(--internal-drum-symbol);
 	background-repeat: no-repeat;
 	background-position: center;
+}
+
+.beepboxEditor .modulator-button {
+	flex: 1;
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+.beepboxEditor .modulator-button::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	background-image: var(--internal-mod-key-symbol);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 100% 102%;
 }
 
 .beepboxEditor .piano-button {
@@ -288,7 +370,7 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: 100%;
 	height: 100%;
 	pointer-events: none;
-	background-image: var(--piano-key-symbol);
+	background-image: var(--internal-piano-key-symbol);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 100% 115.38%;
@@ -328,10 +410,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--customize-dial-symbol);
+	-webkit-mask-image: var(--internal-customize-dial-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--customize-dial-symbol);
+	mask-image: var(--internal-customize-dial-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -355,10 +437,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--instrument-copy-symbol);
+	-webkit-mask-image: var(--internal-instrument-copy-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--instrument-copy-symbol);
+	mask-image: var(--internal-instrument-copy-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -378,10 +460,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--instrument-paste-symbol);
+	-webkit-mask-image: var(--internal-instrument-paste-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--instrument-paste-symbol);
+	mask-image: var(--internal-instrument-paste-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -409,10 +491,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	top: 0;
 	pointer-events: none;
 	background: currentColor;
-	mask-image: var(--add-symbol);
+	mask-image: var(--internal-add-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
-	-webkit-mask-image: var(--add-symbol);
+	-webkit-mask-image: var(--internal-add-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
 }
@@ -433,10 +515,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	top: 0;
 	pointer-events: none;
 	background: currentColor;
-	mask-image: var(--menu-down-symbol);
+	mask-image: var(--internal-menu-down-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
-	-webkit-mask-image: var(--menu-down-symbol);
+	-webkit-mask-image: var(--internal-menu-down-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
 }
@@ -461,10 +543,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	top: 0;
 	pointer-events: none;
 	background: currentColor;
-	mask-image: var(--zoom-in-symbol);
+	mask-image: var(--internal-zoom-in-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
-	-webkit-mask-image: var(--zoom-in-symbol);
+	-webkit-mask-image: var(--internal-zoom-in-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
 }
@@ -477,10 +559,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	top: 0;
 	pointer-events: none;
 	background: currentColor;
-	mask-image: var(--zoom-out-symbol);
+	mask-image: var(--internal-zoom-out-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
-	-webkit-mask-image: var(--zoom-out-symbol);
+	-webkit-mask-image: var(--internal-zoom-out-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
 }
@@ -499,10 +581,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	top: 0;
 	pointer-events: none;
 	background: currentColor;
-	mask-image: var(--close-symbol);
+	mask-image: var(--internal-close-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
-	-webkit-mask-image: var(--close-symbol);
+	-webkit-mask-image: var(--internal-close-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
 }
@@ -521,10 +603,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--file-page-symbol);
+	-webkit-mask-image: var(--internal-file-page-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--file-page-symbol);
+	mask-image: var(--internal-file-page-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -540,10 +622,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--edit-pencil-symbol);
+	-webkit-mask-image: var(--internal-edit-pencil-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--edit-pencil-symbol);
+	mask-image: var(--internal-edit-pencil-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -559,12 +641,25 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--preferences-gear-symbol);
+	-webkit-mask-image: var(--internal-preferences-gear-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--preferences-gear-symbol);
+	mask-image: var(--internal-preferences-gear-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
+}
+
+.beepboxEditor .mute-button {
+	background: transparent;
+	border: none;
+  padding-right: 0px;
+  padding-left: 0px;
+  box-shadow: none;
+}
+
+.beepboxEditor .mute-button:focus {
+  background: transparent;
+	border: none;
 }
 
 .beepboxEditor .mute-button::before {
@@ -572,23 +667,34 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	pointer-events: none;
 	width: 100%;
 	height: 100%;
-	background: ${ColorConfig.primaryText};
 	display: inline-block;
-	-webkit-mask-image: var(--unmuted-symbol);
+  background: var(--mute-button-normal);
+	-webkit-mask-image: var(--internal-unmuted-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	-webkit-mask-size: contain;
-	mask-image: var(--unmuted-symbol);
-	mask-repeat: no-repeat;
+	-webkit-mask-size: cover;
+  mask-repeat: no-repeat;
 	mask-position: center;
-	mask-size: contain;
+	mask-size: cover;
+  mask-image: var(--internal-unmuted-symbol);
 }
 
 .beepboxEditor .mute-button.muted::before {
-	background: ${ColorConfig.editorBackground};
-	-webkit-mask-image: var(--muted-symbol);
-	mask-image: var(--muted-symbol);
+  background: var(--ui-widget-background);
+	-webkit-mask-image: var(--internal-muted-symbol);
+  mask-image: var(--internal-muted-symbol);
 }
+
+.beepboxEditor .mute-button.modMute.muted::before {
+  background: var(--ui-widget-background);
+	-webkit-mask-image: var(--internal-muted-symbol);
+  mask-image: var(--internal-muted-symbol);
+}
+
+.beepboxEditor .mute-button.modMute::before {
+  background: var(--mute-button-mod);
+}
+
 
 .beepboxEditor .promptContainer {
 	position: absolute;
@@ -600,18 +706,6 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	justify-content: center;
 	align-items: center;
 	z-index: 100;
-}
-
-.beepboxEditor .promptContainer::before {
-	content: "";
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: ${ColorConfig.editorBackground};
-	opacity: 0.5;
-	display: flex;
 }
 
 .beepboxEditor .prompt {
@@ -659,9 +753,9 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 .beepboxEditor .layout-option {
 	display: flex;
 	flex-direction: column;
-	flex: 1;
 	cursor: pointer;
 	color: ${ColorConfig.secondaryText};
+	width: 25%;
 }
 
 .beepboxEditor .layout-option input {
@@ -671,7 +765,9 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 .beepboxEditor .layout-option input:checked ~ * {
 	color: ${ColorConfig.primaryText};
 }
-
+.beepboxEditor select.invalidSetting {
+	border: solid 1px red;
+}
 .beepboxEditor .selectContainer {
 	position: relative;
 }
@@ -686,10 +782,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: 14px;
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--select-arrows-symbol);
+	-webkit-mask-image: var(--internal-select-arrows-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--select-arrows-symbol);
+	mask-image: var(--internal-select-arrows-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -704,10 +800,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--menu-down-symbol);
+	-webkit-mask-image: var(--internal-menu-down-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--menu-down-symbol);
+	mask-image: var(--internal-menu-down-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -729,6 +825,120 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	-moz-appearance: none;
 	appearance: none;
 }
+.beepboxEditor select option:disabled {
+	color: ${ColorConfig.linkAccent};
+	font-weight: bold;
+}
+
+.select2-container .select2-selection--single {
+  height: auto;
+}
+
+.select2-container {
+  width: -moz-available !important;
+  width: -webkit-fill-available !important;
+}
+@media (min-width: 711px) {
+	.select2 {
+	  width: calc(var(--settings-area-width) * 0.625) !important;
+	}
+}
+
+.select2-container--default .select2-selection--single{
+  border-radius: 0px;
+  border: 0px;
+  background-color: transparent;
+  outline: none;
+}
+
+.select2-selection__rendered:not(.menu)::before {
+	content: "";
+	position: absolute;
+	right: 0.3em;
+	top: 0.4em;
+	border-bottom: 0.4em solid currentColor;
+	border-left: 0.3em solid transparent;
+	border-right: 0.3em solid transparent;
+	pointer-events: none;
+}
+.select2-selection__rendered:not(.menu)::after {
+	content: "";
+	position: absolute;
+	right: 0.3em;
+	bottom: 0.4em;
+	border-top: 0.4em solid currentColor;
+	border-left: 0.3em solid transparent;
+	border-right: 0.3em solid transparent;
+	pointer-events: none;
+}
+.select2-selection__rendered {
+	margin: 0;
+	padding: 0 0.3em;
+	display: block;
+	height: 2em;
+	border: none;
+	border-radius: 0.4em;
+	background: ${ColorConfig.uiWidgetBackground};
+	color: inherit !important;
+	font-size: inherit;
+	cursor: pointer;
+	font-family: inherit;
+	-webkit-appearance:none;
+	-moz-appearance: none;
+	appearance: none;
+}
+.select2-selection__arrow b{
+    display:none !important;
+}
+
+.select2-selection__rendered--focus {
+	background: ${ColorConfig.uiWidgetFocus};
+	outline: none;
+}
+.select2-search__field {
+    background: ${ColorConfig.uiWidgetBackground};
+    color: inherit !important;
+    font-size: small;
+    font-family: inherit;
+    border: 0px !important;
+    padding: 1px !important;
+}
+.select2-dropdown {
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0;
+    font-size: small;
+    position: relative;
+    vertical-align: middle;
+    background-color: ${ColorConfig.uiWidgetFocus};
+}
+
+.select2-container--default .select2-results>.select2-results__options {
+    max-height: 430px;
+    overflow-x: hidden;
+}
+.select2-container--default .select2-results__group {
+    cursor: default;
+    display: block;
+    padding: 1px;
+    background: ${ColorConfig.select2OptGroup};
+}
+.select2-results__option {
+    padding: 2px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.select2-container--default .select2-results__option .select2-results__option {
+    padding-left: 0.1em;
+}
+.select2-container--default .select2-results__option[aria-selected=true] {
+  background-color: transparent !important;
+}
+
+.select2-results__option--highlighted[aria-selected] {
+	color: white !important;
+}
+
 .beepboxEditor .menu select {
 	padding: 0 var(--button-size);
 }
@@ -793,10 +1003,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--play-symbol);
+	-webkit-mask-image: var(--internal-play-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--play-symbol);
+	mask-image: var(--internal-play-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -811,10 +1021,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--pause-symbol);
+	-webkit-mask-image: var(--internal-pause-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--pause-symbol);
+	mask-image: var(--internal-pause-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -829,10 +1039,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--record-symbol);
+	-webkit-mask-image: var(--internal-record-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--record-symbol);
+	mask-image: var(--internal-record-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -847,10 +1057,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--stop-symbol);
+	-webkit-mask-image: var(--internal-stop-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--stop-symbol);
+	mask-image: var(--internal-stop-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -866,10 +1076,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--prev-bar-symbol);
+	-webkit-mask-image: var(--internal-prev-bar-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--prev-bar-symbol);
+	mask-image: var(--internal-prev-bar-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -885,10 +1095,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	width: var(--button-size);
 	height: var(--button-size);
 	background: currentColor;
-	-webkit-mask-image: var(--next-bar-symbol);
+	-webkit-mask-image: var(--internal-next-bar-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--next-bar-symbol);
+	mask-image: var(--internal-next-bar-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -942,10 +1152,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	top: 0;
 	pointer-events: none;
 	background: currentColor;
-	mask-image: var(--close-symbol);
+	mask-image: var(--internal-close-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
-	-webkit-mask-image: var(--close-symbol);
+	-webkit-mask-image: var(--internal-close-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
 }
@@ -959,10 +1169,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	top: 0;
 	pointer-events: none;
 	background: currentColor;
-	-webkit-mask-image: var(--checkmark-symbol);
+	-webkit-mask-image: var(--internal-checkmark-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
-	mask-image: var(--checkmark-symbol);
+	mask-image: var(--internal-checkmark-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
 }
@@ -976,10 +1186,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	top: 0;
 	pointer-events: none;
 	background: currentColor;
-	mask-image: var(--export-symbol);
+	mask-image: var(--internal-export-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
-	-webkit-mask-image: var(--export-symbol);
+	-webkit-mask-image: var(--internal-export-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
 }
@@ -1012,6 +1222,8 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 .beepboxEditor .instrument-bar > :not(.last-button) {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
+	border-bottom: inset;
+	border-color: var(--background-color-dim);
 }
 
 .beepboxEditor .instrument-bar .selected-instrument {
@@ -1022,11 +1234,16 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 .beepboxEditor .instrument-bar .deactivated {
 	background: ${ColorConfig.editorBackground};
 	color: var(--text-color-dim);
+	border-bottom: unset;
 }
 
 .beepboxEditor .instrument-bar .deactivated.selected-instrument {
 	background: var(--background-color-dim);
 	color: ${ColorConfig.invertedText};
+}
+
+.beepboxEditor .instrument-bar .remove-instrument {
+	border-bottom: unset;
 }
 
 .beepboxEditor .instrument-bar .remove-instrument::before {
@@ -1038,12 +1255,20 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	top: 0;
 	pointer-events: none;
 	background: currentColor;
-	mask-image: var(--close-symbol);
+	mask-image: var(--internal-close-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
-	-webkit-mask-image: var(--close-symbol);
+	-webkit-mask-image: var(--internal-close-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
+}
+
+.beepboxEditor .instrument-bar .add-instrument {
+	border-bottom: unset;
+}
+
+.beepboxEditor .instrument-bar .no-underline {
+	border-bottom: unset;
 }
 
 .beepboxEditor .instrument-bar .add-instrument::before {
@@ -1055,10 +1280,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	top: 0;
 	pointer-events: none;
 	background: currentColor;
-	mask-image: var(--add-symbol);
+	mask-image: var(--internal-add-symbol);
 	mask-repeat: no-repeat;
 	mask-position: center;
-	-webkit-mask-image: var(--add-symbol);
+	-webkit-mask-image: var(--internal-add-symbol);
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-position: center;
 }
@@ -1067,6 +1292,17 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	overflow: hidden;
 	position: absolute;
 	display: block;
+  cursor: crosshair;
+}
+
+@keyframes dash-animation {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+.beepboxEditor .dash-move {
+  animation: dash-animation 20s infinite linear;
 }
 
 .beepboxEditor .trackContainer {
@@ -1086,7 +1322,6 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 .beepboxEditor .channelRow {
 	display: flex;
 }
-
 .beepboxEditor .channelBox {
 	display: flex;
 	text-align: center;
@@ -1095,11 +1330,18 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	box-sizing: border-box;
 	padding-top: 1px;
 }
-
 .beepboxEditor .channelBoxLabel {
 	font-size: 20px;
 	font-family: sans-serif;
 	font-weight: bold;
+}
+.beepboxEditor .dropFader {
+	opacity: 0;
+	-webkit-transition:opacity 0.17s linear;
+    -moz-transition:opacity 0.17s linear;
+    -o-transition:opacity 0.17s linear;
+    -ms-transition:opacity 0.17s linear; 
+    transition:opacity 0.17s linear;
 }
 
 .beepboxEditor .muteEditor {
@@ -1192,7 +1434,8 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	font-weight: inherit;
 	font-family: inherit;
 	background: transparent;
-	border: 1px solid ${ColorConfig.uiWidgetFocus};
+	text-align: center;
+	border: 1px solid ${ColorConfig.inputBoxOutline};
 	color: ${ColorConfig.primaryText};
 }
 
@@ -1215,6 +1458,7 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	cursor: pointer;
 	background: none;
 	touch-action: pan-y;
+  position: relative;
 }
 .beepboxEditor input[type=range]:focus {
 	outline: none;
@@ -1224,6 +1468,43 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	height: 6px;
 	cursor: pointer;
 	background: ${ColorConfig.uiWidgetBackground};
+}
+
+.modTarget:hover {
+	fill: ${ColorConfig.hoverPreview} !important;
+}
+
+.beepboxEditor span.midTick:after {
+    content: "";
+    display:inline-block;
+    position: absolute;
+    background: currentColor;
+    width: 2%;
+    left: 49%;
+    height: 0.5em;
+    top: 32%;
+    z-index: 1;
+		pointer-events: none;
+}
+.beepboxEditor span.modSlider {
+	--mod-position: 20%;
+	--mod-color: ${ColorConfig.overwritingModSlider};
+  --mod-border-radius: 0%;
+}
+.beepboxEditor span.modSlider:before {
+	content: "";
+    display:inline-block;
+    position: absolute;
+    background: var(--mod-color);
+    width: 4%;
+    left: var(--mod-position);
+    height: 0.8em;
+    top: 28%;
+    z-index: 2;
+		transform: translate(-50%, 0%);
+		pointer-events: none;
+		border: 40%;
+		border-radius: var(--mod-border-radius);
 }
 .beepboxEditor input[type=range]::-webkit-slider-thumb {
 	height: var(--button-size);
@@ -1272,9 +1553,14 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	cursor: pointer;
 }
 
+li.select2-results__option[role=group] > strong:hover {
+  background-color: #516fbb;
+}
+
 /* wide screen */
 @media (min-width: 711px) {
 	#beepboxEditorContainer {
+		background-image: url(${getLocalStorageItem("customTheme2", "")});
 		display: table;
 	}
 	.beepboxEditor {
@@ -1286,6 +1572,12 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 	.beepboxEditor .trackAndMuteContainer {
 		width: 512px;
 	}
+	.beepboxEditor .trackSelectBox {
+		display: none;
+	}
+    .beepboxEditor .muteButtonSelectBox {
+		display: none;
+	}
 	.beepboxEditor .play-pause-area {
 		display: flex;
 		flex-direction: column;
@@ -1294,7 +1586,10 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 		margin: 2px 0;
 	}
 	.beepboxEditor .playback-volume-controls {
+		display: flex;
+		flex-direction: row;
 		margin: 2px 0;
+		align-items: center;
 	}
 	.beepboxEditor .settings-area {
 		width: var(--settings-area-width);
@@ -1342,7 +1637,31 @@ document.head.appendChild(HTML.style({type: "text/css"}, `
 		flex-grow: 1;
 	}
 	.beepboxEditor .playback-volume-controls {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 		flex-grow: 1;
+	}
+	
+	.beepboxEditor .soundIcon {
+	  background: ${ColorConfig.editorBackground};
+	  display: inline-block;
+	  height: 10px;
+	  margin-left: 0px;
+	  margin-top: 8px;
+		position: relative;
+		width: 10px;
+	}
+	.beepboxEditor .soundIcon:before {
+	  border-bottom: 6px solid transparent;
+	  border-top: 6px solid transparent;
+	  border-right: 10px solid ${ColorConfig.editorBackground};
+	  content: "";
+	  height: 10px;
+	  left: 6px;
+	  position: absolute;
+	  top: -6px;
+	  width: 0;
 	}
 }
 

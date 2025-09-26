@@ -1,10 +1,13 @@
-// Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
+// Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import {Scale, Config} from "../synth/SynthConfig.js";
+import {Scale, Config} from "../synth/SynthConfig";
+import {ColorConfig} from "../editor/ColorConfig";
 
 export class Preferences {
 	public static readonly defaultVisibleOctaves: number = 3;
 	
+	public customTheme: string | null;
+	public customTheme2: string | null;
 	public autoPlay: boolean;
 	public autoFollow: boolean;
 	public enableNotePreview: boolean;
@@ -14,8 +17,11 @@ export class Preferences {
 	public showLetters: boolean;
 	public showChannels: boolean;
 	public showScrollBar: boolean;
-	public alwaysShowSettings: boolean;
+	public alwaysFineNoteVol: boolean;
+	public displayVolumeBar: boolean;
 	public instrumentCopyPaste: boolean;
+	public instrumentImportExport: boolean;
+	public instrumentButtonsAtTop: boolean;
 	public enableChannelMuting: boolean;
 	public colorTheme: string;
 	public layout: string;
@@ -24,12 +30,20 @@ export class Preferences {
 	public visibleOctaves: number = Preferences.defaultVisibleOctaves;
 	public pressControlForShortcuts: boolean;
 	public keyboardLayout: string;
+	public bassOffset: number;
 	public enableMidi: boolean;
 	public showRecordButton: boolean;
 	public snapRecordedNotesToRhythm: boolean;
 	public ignorePerformedNotesNotInScale: boolean;
 	public metronomeCountIn: boolean;
 	public metronomeWhileRecording: boolean;
+	public notesFlashWhenPlayed: boolean;
+	public showOscilloscope: boolean;
+	public showSampleLoadingStatus: boolean;
+	public showDescription: boolean;
+	public showInstrumentScrollbars: boolean;
+	public closePromptByClickoff: boolean;
+	public frostedGlassBackground: boolean;
 	
 	constructor() {
 		this.reload();
@@ -43,10 +57,13 @@ export class Preferences {
 		this.notesOutsideScale = window.localStorage.getItem("notesOutsideScale") == "true";
 		this.showLetters = window.localStorage.getItem("showLetters") == "true";
 		this.showChannels = window.localStorage.getItem("showChannels") == "true";
-		this.showScrollBar = window.localStorage.getItem("showScrollBar") == "true";
-		this.alwaysShowSettings = window.localStorage.getItem("alwaysShowSettings") == "true";
-		this.instrumentCopyPaste = window.localStorage.getItem("instrumentCopyPaste") == "true";
-		this.enableChannelMuting = window.localStorage.getItem("enableChannelMuting") == "true";
+		this.showScrollBar = window.localStorage.getItem("showScrollBar") != "false";
+		this.alwaysFineNoteVol = window.localStorage.getItem("alwaysFineNoteVol") == "true";
+		this.displayVolumeBar = window.localStorage.getItem("displayVolumeBar") != "false";
+		this.instrumentCopyPaste = window.localStorage.getItem("instrumentCopyPaste") != "false";
+		this.instrumentImportExport = window.localStorage.getItem("instrumentImportExport") == "true";
+		this.instrumentButtonsAtTop = window.localStorage.getItem("instrumentButtonsAtTop") == "true"
+		this.enableChannelMuting = window.localStorage.getItem("enableChannelMuting") != "false";
 		this.displayBrowserUrl = window.localStorage.getItem("displayBrowserUrl") != "false";
 		this.pressControlForShortcuts = window.localStorage.getItem("pressControlForShortcuts") == "true";
 		this.enableMidi = window.localStorage.getItem("enableMidi") != "false";
@@ -55,9 +72,19 @@ export class Preferences {
 		this.ignorePerformedNotesNotInScale = window.localStorage.getItem("ignorePerformedNotesNotInScale") == "true";
 		this.metronomeCountIn = window.localStorage.getItem("metronomeCountIn") != "false";
 		this.metronomeWhileRecording = window.localStorage.getItem("metronomeWhileRecording") != "false";
-		this.keyboardLayout = window.localStorage.getItem("keyboardLayout") || "wickiHayden";
+		this.notesFlashWhenPlayed = window.localStorage.getItem("notesFlashWhenPlayed") == "true";
+		this.showOscilloscope = window.localStorage.getItem("showOscilloscope") == "true";
+		this.showSampleLoadingStatus = window.localStorage.getItem("showSampleLoadingStatus") != "false";
+		this.showDescription = window.localStorage.getItem("showDescription") != "false";
+		this.showInstrumentScrollbars = window.localStorage.getItem("showInstrumentScrollbars") == "true";
+		this.closePromptByClickoff = window.localStorage.getItem("closePromptByClickoff") == "true";
+		this.frostedGlassBackground = window.localStorage.getItem("frostedGlassBackground") == "true";
+		this.keyboardLayout = window.localStorage.getItem("keyboardLayout") || "pianoTransposingC";
+		this.bassOffset = (+(<any>window.localStorage.getItem("bassOffset"))) || 0;
 		this.layout = window.localStorage.getItem("layout") || "small";
-		this.colorTheme = window.localStorage.getItem("colorTheme") || "dark classic";
+		this.colorTheme = window.localStorage.getItem("colorTheme") || ColorConfig.defaultTheme;
+		this.customTheme = window.localStorage.getItem("customTheme");
+        this.customTheme2 = window.localStorage.getItem("customTheme2");
 		this.visibleOctaves = ((<any>window.localStorage.getItem("visibleOctaves")) >>> 0) || Preferences.defaultVisibleOctaves;
 		
 		const defaultScale: Scale | undefined = Config.scales.dictionary[window.localStorage.getItem("defaultScale")!];
@@ -71,6 +98,7 @@ export class Preferences {
 			if (window.localStorage.getItem("fullScreen") == "true") this.layout = "long";
 			window.localStorage.removeItem("fullScreen");
 		}
+		
 	}
 	
 	public save(): void {
@@ -83,9 +111,12 @@ export class Preferences {
 		window.localStorage.setItem("showLetters", this.showLetters ? "true" : "false");
 		window.localStorage.setItem("showChannels", this.showChannels ? "true" : "false");
 		window.localStorage.setItem("showScrollBar", this.showScrollBar ? "true" : "false");
-		window.localStorage.setItem("alwaysShowSettings", this.alwaysShowSettings ? "true" : "false");
+		window.localStorage.setItem("alwaysFineNoteVol", this.alwaysFineNoteVol ? "true" : "false");
+		window.localStorage.setItem("displayVolumeBar", this.displayVolumeBar ? "true" : "false");
 		window.localStorage.setItem("enableChannelMuting", this.enableChannelMuting ? "true" : "false");
 		window.localStorage.setItem("instrumentCopyPaste", this.instrumentCopyPaste ? "true" : "false");
+		window.localStorage.setItem("instrumentImportExport", this.instrumentImportExport ? "true" : "false");
+		window.localStorage.setItem("instrumentButtonsAtTop", this.instrumentButtonsAtTop ? "true" : "false");
 		window.localStorage.setItem("displayBrowserUrl", this.displayBrowserUrl ? "true" : "false");
 		window.localStorage.setItem("pressControlForShortcuts", this.pressControlForShortcuts ? "true" : "false");
 		window.localStorage.setItem("enableMidi", this.enableMidi ? "true" : "false");
@@ -94,10 +125,21 @@ export class Preferences {
 		window.localStorage.setItem("ignorePerformedNotesNotInScale", this.ignorePerformedNotesNotInScale ? "true" : "false");
 		window.localStorage.setItem("metronomeCountIn", this.metronomeCountIn ? "true" : "false");
 		window.localStorage.setItem("metronomeWhileRecording", this.metronomeWhileRecording ? "true" : "false");
+		window.localStorage.setItem("notesFlashWhenPlayed", this.notesFlashWhenPlayed ? "true" : "false");
+		window.localStorage.setItem("showOscilloscope", this.showOscilloscope ? "true" : "false");
+		window.localStorage.setItem("showSampleLoadingStatus", this.showSampleLoadingStatus ? "true" : "false");
+		window.localStorage.setItem("showDescription", this.showDescription ? "true" : "false");
+		window.localStorage.setItem("showInstrumentScrollbars", this.showInstrumentScrollbars ? "true" : "false");
+		window.localStorage.setItem("closePromptByClickoff", this.closePromptByClickoff ? "true" : "false");
+		window.localStorage.setItem("frostedGlassBackground", this.frostedGlassBackground ? "true" : "false");
 		window.localStorage.setItem("keyboardLayout", this.keyboardLayout);
+		window.localStorage.setItem("bassOffset", String(this.bassOffset));
 		window.localStorage.setItem("layout", this.layout);
 		window.localStorage.setItem("colorTheme", this.colorTheme);
+		window.localStorage.setItem("customTheme", this.customTheme!);
+		window.localStorage.setItem("customTheme2", this.customTheme2!);
 		window.localStorage.setItem("volume", String(this.volume));
 		window.localStorage.setItem("visibleOctaves", String(this.visibleOctaves));
+		
 	}
 }

@@ -1,4 +1,4 @@
-// Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
+// Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 // interface shared by number[], Float32Array, and other typed arrays in JavaScript.
 interface NumberArray {
@@ -30,17 +30,15 @@ function countBits(n: number): number {
 // index in base 2. Useful for computing the FFT.
 function reverseIndexBits(array: NumberArray, fullArrayLength: number): void {
 	const bitCount: number = countBits(fullArrayLength);
-	const finalShift: number = 32 - bitCount;
+	if (bitCount > 16) throw new Error("FFT array length must not be greater than 2^16.");
+	const finalShift: number = 16 - bitCount;
 	for (let i: number = 0; i < fullArrayLength; i++) {
-		// Dear JavaScript: Please support bit order reversal intrinsics. Thanks! :D
+		// Dear Javascript: Please support bit order reversal intrinsics. Thanks! :D
 		let j: number;
-		j = ((i >> 1) & 0x55555555) | ((i & 0x55555555) << 1);
-		j = ((j >> 2) & 0x33333333) | ((j & 0x33333333) << 2);
-		j = ((j >> 4) & 0x0F0F0F0F) | ((j & 0x0F0F0F0F) << 4);
-		j = ((j >> 8) & 0x00FF00FF) | ((j & 0x00FF00FF) << 8);
-		j = ((j >>16) & 0x0000FFFF) | ((j & 0x0000FFFF) <<16);
-		j = j >>> finalShift;
-		
+		j = ((i & 0xaaaa) >> 1) | ((i & 0x5555) << 1);
+		j = ((j & 0xcccc) >> 2) | ((j & 0x3333) << 2);
+		j = ((j & 0xf0f0) >> 4) | ((j & 0x0f0f) << 4);
+			j = ((j           >> 8) | ((j &   0xff) << 8)) >> finalShift;
 		if (j > i) {
 			let temp: number = array[i];
 			array[i] = array[j];
@@ -63,7 +61,7 @@ export function discreteFourierTransform(realArray: NumberArray, imagArray: Numb
 		realOut[i] = 0.0;
 		imagOut[i] = 0.0;
 		for (let j: number = 0; j < fullArrayLength; j++) {
-			const radians: number = -Math.PI * 2.0 * j * i / fullArrayLength;
+			const radians: number = -6.2831853 * j * i / fullArrayLength;
 			const c: number = Math.cos(radians);
 			const s: number = Math.sin(radians);
 			realOut[i] += realArray[j] * c - imagArray[j] * s;
@@ -81,20 +79,20 @@ export function fastFourierTransform(realArray: NumberArray, imagArray: NumberAr
 	if (!isPowerOf2(fullArrayLength)) throw new Error("FFT array length must be a power of 2.");
 	if (fullArrayLength < 4) throw new Error("FFT array length must be at least 4.");
 	if (fullArrayLength != imagArray.length) throw new Error("FFT arrays must be the same length.");
-	
+		
 	reverseIndexBits(realArray, fullArrayLength);
 	reverseIndexBits(imagArray, fullArrayLength);
-	
+		
 	// First two passes, with strides of 2 and 4, can be combined and optimized.
 	for (let startIndex: number = 0; startIndex < fullArrayLength; startIndex += 4) {
 		const startIndex1: number = startIndex + 1;
 		const startIndex2: number = startIndex + 2;
 		const startIndex3: number = startIndex + 3;
-		const real0: number = realArray[startIndex ];
+			const real0: number = realArray[startIndex ];
 		const real1: number = realArray[startIndex1];
 		const real2: number = realArray[startIndex2];
 		const real3: number = realArray[startIndex3];
-		const imag0: number = imagArray[startIndex ];
+			const imag0: number = imagArray[startIndex ];
 		const imag1: number = imagArray[startIndex1];
 		const imag2: number = imagArray[startIndex2];
 		const imag3: number = imagArray[startIndex3];
@@ -106,16 +104,16 @@ export function fastFourierTransform(realArray: NumberArray, imagArray: NumberAr
 		const imagTemp1: number = imag0 - imag1;
 		const imagTemp2: number = imag2 + imag3;
 		const imagTemp3: number = imag2 - imag3;
-		realArray[startIndex ] = realTemp0 + realTemp2;
+			realArray[startIndex ] = realTemp0 + realTemp2;
 		realArray[startIndex1] = realTemp1 + imagTemp3;
 		realArray[startIndex2] = realTemp0 - realTemp2;
 		realArray[startIndex3] = realTemp1 - imagTemp3;
-		imagArray[startIndex ] = imagTemp0 + imagTemp2;
+			imagArray[startIndex ] = imagTemp0 + imagTemp2;
 		imagArray[startIndex1] = imagTemp1 - realTemp3;
 		imagArray[startIndex2] = imagTemp0 - imagTemp2;
 		imagArray[startIndex3] = imagTemp1 + realTemp3;
 	}
-	
+		
 	for (let stride: number = 8; stride <= fullArrayLength; stride += stride) {
 		const halfLength: number = stride >>> 1;
 		const radiansIncrement: number = Math.PI * 2.0 / stride;
@@ -158,27 +156,27 @@ export function forwardRealFourierTransform(array: NumberArray): void {
 	const fullArrayLength: number = array.length;
 	const totalPasses: number = countBits(fullArrayLength);
 	if (fullArrayLength < 4) throw new Error("FFT array length must be at least 4.");
-	
+		
 	reverseIndexBits(array, fullArrayLength);
-	
+		
 	// First and second pass.
 	for (let index: number = 0; index < fullArrayLength; index += 4) {
 		const index1: number = index + 1;
 		const index2: number = index + 2;
 		const index3: number = index + 3;
-		const real0: number = array[index ];
+			const real0: number = array[index ];
 		const real1: number = array[index1];
 		const real2: number = array[index2];
 		const real3: number = array[index3];
 		// no imaginary elements yet since the input is fully real.
 		const tempA: number = real0 + real1;
 		const tempB: number = real2 + real3;
-		array[index ] = tempA + tempB;
+			array[index ] = tempA + tempB;
 		array[index1] = real0 - real1;
 		array[index2] = tempA - tempB;
 		array[index3] = real2 - real3;
 	}
-	
+		
 	// Third pass.
 	const sqrt2over2: number = Math.sqrt(2.0) / 2.0;
 	for (let index: number = 0; index < fullArrayLength; index += 8) {
@@ -187,7 +185,7 @@ export function forwardRealFourierTransform(array: NumberArray): void {
 		const index4: number = index + 4;
 		const index5: number = index + 5;
 		const index7: number = index + 7;
-		const real0: number = array[index ];
+			const real0: number = array[index ];
 		const real1: number = array[index1];
 		const imag3: number = array[index3];
 		const real4: number = array[index4];
@@ -195,14 +193,14 @@ export function forwardRealFourierTransform(array: NumberArray): void {
 		const imag7: number = array[index7];
 		const tempA: number = (real5 - imag7) * sqrt2over2;
 		const tempB: number = (real5 + imag7) * sqrt2over2;
-		array[index ] = real0 + real4;
+			array[index ] = real0 + real4;
 		array[index1] = real1 + tempA;
 		array[index3] = real1 - tempA;
 		array[index4] = real0 - real4;
 		array[index5] = tempB - imag3;
 		array[index7] = tempB + imag3;
 	}
-	
+		
 	// Handle remaining passes.
 	for (let pass: number = 3; pass < totalPasses; pass++) {
 		const subStride: number = 1 << pass;
@@ -228,7 +226,7 @@ export function forwardRealFourierTransform(array: NumberArray): void {
 				const indexA0: number = startIndexA + index;
 				const indexA1: number = startIndexB - index;
 				const indexB0: number = startIndexB + index;
-				const indexB1: number = stopIndex   - index;
+					const indexB1: number = stopIndex   - index;
 				const real0: number = array[indexA0];
 				const imag0: number = array[indexA1];
 				const real1: number = array[indexB0];
@@ -237,7 +235,7 @@ export function forwardRealFourierTransform(array: NumberArray): void {
 				const tempB: number = real1 * s - imag1 * c;
 				array[indexA0] = real0 + tempA;
 				array[indexA1] = real0 - tempA;
-				array[indexB0] =-imag0 - tempB;
+					array[indexB0] =-imag0 - tempB;
 				array[indexB1] = imag0 - tempB;
 				const cTemp: number = oscillatorMultiplier * c - cPrev;
 				const sTemp: number = oscillatorMultiplier * s - sPrev;
@@ -269,7 +267,7 @@ export function inverseRealFourierTransform(array: NumberArray, fullArrayLength:
 		const cosIncrement: number = Math.cos(radiansIncrement);
 		const sinIncrement: number = Math.sin(radiansIncrement);
 		const oscillatorMultiplier: number = 2.0 * cosIncrement;
-		
+			
 		for (let startIndex: number = 0; startIndex < fullArrayLength; startIndex += stride) {
 			const startIndexA: number = startIndex;
 			const midIndexA: number = startIndexA + midSubStride;
@@ -290,7 +288,7 @@ export function inverseRealFourierTransform(array: NumberArray, fullArrayLength:
 				const indexA0: number = startIndexA + index;
 				const indexA1: number = startIndexB - index;
 				const indexB0: number = startIndexB + index;
-				const indexB1: number = stopIndex   - index;
+					const indexB1: number = stopIndex   - index;
 				const real0: number = array[indexA0];
 				const real1: number = array[indexA1];
 				const imag0: number = array[indexB0];
@@ -348,17 +346,17 @@ export function inverseRealFourierTransform(array: NumberArray, fullArrayLength:
 		const index1: number = index + 1;
 		const index2: number = index + 2;
 		const index3: number = index + 3;
-		const real0: number = array[index ];
+			const real0: number = array[index ];
 		const real1: number = array[index1] * 2;
 		const imag2: number = array[index2];
 		const imag3: number = array[index3] * 2;
 		const tempA: number = real0 + imag2;
 		const tempB: number = real0 - imag2;
-		array[index ] = tempA + real1;
+			array[index ] = tempA + real1;
 		array[index1] = tempA - real1;
 		array[index2] = tempB + imag3;
 		array[index3] = tempB - imag3;
 	}
-	
+		
 	reverseIndexBits(array, fullArrayLength);
 }

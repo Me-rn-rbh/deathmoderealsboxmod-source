@@ -1,15 +1,20 @@
-// Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
+// Copyright (C) 2021 John Nesky, distributed under the MIT license.
 
-import {Pattern} from "../synth/synth.js";
-import {ColorConfig, ChannelColors} from "./ColorConfig.js";
-import {SongDocument} from "./SongDocument.js";
-import {HTML} from "imperative-html/dist/esm/elements-strict.js";
+import {Pattern} from "../synth/synth";
+import {ColorConfig, ChannelColors} from "./ColorConfig";
+import {SongDocument} from "./SongDocument";
+import {HTML} from "imperative-html/dist/esm/elements-strict";
 
 export class Box {
 	private readonly _text: Text = document.createTextNode("");
 	private readonly _label: HTMLElement = HTML.div({class: "channelBoxLabel"}, this._text);
 	public readonly container: HTMLElement = HTML.div({class: "channelBox", style: `margin: 1px; height: ${ChannelRow.patternHeight - 2}px;`}, this._label);
 	private _renderedIndex: number = -1;
+	private _renderedLabelColor: string = "?";
+	private _renderedVisibility: string = "?";
+	private _renderedBorderLeft: string = "?";
+	private _renderedBorderRight: string = "?";
+	private _renderedBackgroundColor: string = "?";
 	constructor(channel: number, color: string) {
 		this.container.style.background = ColorConfig.uiWidgetBackground;
 		this._label.style.color = color;
@@ -18,14 +23,63 @@ export class Box {
 	public setWidth(width: number): void {
 		this.container.style.width = (width - 2) + "px"; // there's a 1 pixel margin on either side.
 	}
+
+	public setHeight(height: number): void {
+		this.container.style.height = (height - 2) + "px"; // there's a 1 pixel margin on either side.
+	}
 	
-	public setIndex(index: number, selected: boolean, color: string): void {
-		if (this._renderedIndex != index) {
+	public setIndex(index: number, selected: boolean, dim: boolean, color: string, isNoise: boolean, isMod: boolean): void {
+		if (this._renderedIndex != index) {			
+			if (index >= 100) {
+				this._label.setAttribute("font-size", "16");
+				this._label.style.setProperty("transform", "translate(0px, -1.5px)");
+			}
+			else {
+				this._label.setAttribute("font-size", "20");
+				this._label.style.setProperty("transform", "translate(0px, 0px)");
+			}
+
 			this._renderedIndex = index;
 			this._text.data = String(index);
 		}
-		this._label.style.color = selected ? ColorConfig.invertedText : color;
-		this.container.style.background = selected ? color : (index == 0) ? "none" : ColorConfig.uiWidgetBackground;
+		let useColor: string = selected ? ColorConfig.c_invertedText : color;
+		if (this._renderedLabelColor != useColor) {
+			this._label.style.color = useColor;
+			this._renderedLabelColor = useColor;
+		}
+		if (!selected) {
+			if (isNoise)
+				color = dim ? ColorConfig.c_trackEditorBgNoiseDim : ColorConfig.c_trackEditorBgNoise;
+			else if (isMod)
+				color = dim ? ColorConfig.c_trackEditorBgModDim : ColorConfig.c_trackEditorBgMod;
+			else
+				color = dim ? ColorConfig.c_trackEditorBgPitchDim : ColorConfig.c_trackEditorBgPitch;
+		}
+		color = selected ? color : (index == 0) ? "none" : color;
+		if (this._renderedBackgroundColor != color) {
+			this.container.style.background = color;
+			this._renderedBackgroundColor = color;
+		}
+	}
+	// These cache the value given to them, since they're apparently quite
+	// expensive to set.
+	public setVisibility(visibility: string): void {
+		if (this._renderedVisibility != visibility) {
+			this.container.style.visibility = visibility;
+			this._renderedVisibility = visibility;
+		}
+	}
+	public setBorderLeft(borderLeft: string): void {
+		if (this._renderedBorderLeft != borderLeft) {
+			this.container.style.setProperty("border-left", borderLeft);
+			this._renderedBorderLeft = borderLeft;
+		}
+	}
+	public setBorderRight(borderRight: string): void {
+		if (this._renderedBorderRight != borderRight) {
+			this.container.style.setProperty("border-right", borderRight);
+			this._renderedBorderRight = borderRight;
+		}
 	}
 }
 
@@ -33,6 +87,7 @@ export class ChannelRow {
 	public static patternHeight: number = 28;
 	
 	private _renderedBarWidth: number = -1;
+	private _renderedBarHeight: number = -1;
 	private _boxes: Box[] = [];
 	
 	public readonly container: HTMLElement = HTML.div({class: "channelRow"});
@@ -40,6 +95,8 @@ export class ChannelRow {
 	constructor(private readonly _doc: SongDocument, public readonly index: number) {}
 	
 	public render(): void {
+		ChannelRow.patternHeight = this._doc.getChannelHeight();
+
 		const barWidth: number = this._doc.getBarWidth();
 		if (this._boxes.length != this._doc.song.barCount) {
 			for (let x: number = this._boxes.length; x < this._doc.song.barCount; x++) {
@@ -60,6 +117,13 @@ export class ChannelRow {
 				this._boxes[x].setWidth(barWidth);
 			}
 		}
+
+		if (this._renderedBarHeight != ChannelRow.patternHeight) {
+			this._renderedBarHeight = ChannelRow.patternHeight;
+			for (let x: number = 0; x < this._boxes.length; x++) {
+				this._boxes[x].setHeight(ChannelRow.patternHeight);
+			}
+		}
 		
 		for (let i: number = 0; i < this._boxes.length; i++) {
 			const pattern: Pattern | null = this._doc.song.getPattern(this.index, i);
@@ -69,11 +133,24 @@ export class ChannelRow {
 			const box: Box = this._boxes[i];
 			if (i < this._doc.song.barCount) {
 				const colors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this.index);
-				box.setIndex(this._doc.song.channels[this.index].bars[i], selected, dim && !selected ? colors.secondaryChannel : colors.primaryChannel);
-				box.container.style.visibility = "visible";
+				box.setIndex(this._doc.song.channels[this.index].bars[i], selected, dim, dim && !selected ? colors.secondaryChannel : colors.primaryChannel,
+					this.index >= this._doc.song.pitchChannelCount && this.index < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount, this.index >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount);
+				box.setVisibility("visible");
 			} else {
-				box.container.style.visibility = "hidden";
+				box.setVisibility("hidden");
 			}
+			if (i == this._doc.synth.loopBarStart) {
+				box.setBorderLeft(`1px dashed ${ColorConfig.uiWidgetFocus}`);
+			}
+			else {
+				box.setBorderLeft("none");
+            }
+			if (i == this._doc.synth.loopBarEnd) {
+				box.setBorderRight(`1px dashed ${ColorConfig.uiWidgetFocus}`);
+			}
+			else {
+				box.setBorderRight("none");
+            }
 		}
 	}
 }

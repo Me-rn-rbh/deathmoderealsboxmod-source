@@ -1,11 +1,13 @@
-// Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
+// Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import {Dictionary} from "../synth/SynthConfig.js";
-import {Song} from "../synth/synth.js";
+import { Dictionary } from "../synth/SynthConfig";
+import { Song } from "../synth/synth";
 
+	
 export interface RecoveredVersion {
 	uid: string;
 	time: number;
+	name: string;
 	work: number;
 }
 
@@ -35,24 +37,25 @@ export function generateUid(): string {
 	return ((Math.random() * (-1 >>> 0)) >>> 0).toString(32);
 }
 
+function compareSongs(a: RecoveredSong, b: RecoveredSong): number {
+	return b.versions[0].time - a.versions[0].time;
+}
+
 export function errorAlert(error: any): void {
 	console.warn(error);
 	window.alert("Whoops, the song data appears to have been corrupted! Please try to recover the last working version of the song from the \"Recover Recent Song...\" option in BeepBox's \"File\" menu.");
 }
 
-function compareSongs(a: RecoveredSong, b: RecoveredSong): number {
-	return b.versions[0].time - a.versions[0].time;
-}
 
 function compareVersions(a: RecoveredVersion, b: RecoveredVersion): number {
 	return b.time - a.time;
 }
-	
+		
 export class SongRecovery {
 	private _saveVersionTimeoutHandle: ReturnType<typeof setTimeout>;
-	
+		
 	private _song: Song = new Song();
-	
+		
 	public static getAllRecoveredSongs(): RecoveredSong[] {
 		const songs: RecoveredSong[] = [];
 		const songsByUid: Dictionary<RecoveredSong> = {};
@@ -62,7 +65,7 @@ export class SongRecovery {
 				const version: RecoveredVersion = keyToVersion(itemKey);
 				let song: RecoveredSong | undefined = songsByUid[version.uid];
 				if (song == undefined) {
-					song = {versions: []};
+						song = {versions: []};
 					songsByUid[version.uid] = song;
 					songs.push(song);
 				}
@@ -75,10 +78,11 @@ export class SongRecovery {
 		songs.sort(compareSongs);
 		return songs;
 	}
-	
-	public saveVersion(uid: string, songData: string): void {
-		const newTime: number = Math.round(Date.now());
 		
+	public saveVersion(uid: string, name: string, songData: string): void {
+		const newName: string = name;
+		const newTime: number = Math.round(Date.now());
+			
 		clearTimeout(this._saveVersionTimeoutHandle);
 		this._saveVersionTimeoutHandle = setTimeout((): void => {
 			try {
@@ -88,7 +92,7 @@ export class SongRecovery {
 				errorAlert(error);
 				return;
 			}
-			
+				
 			const songs: RecoveredSong[] = SongRecovery.getAllRecoveredSongs();
 			let currentSong: RecoveredSong | null = null;
 			for (const song of songs) {
@@ -97,23 +101,23 @@ export class SongRecovery {
 				}
 			}
 			if (currentSong == null) {
-				currentSong = {versions: []};
+					currentSong = {versions: []};
 				songs.unshift(currentSong);
 			}
 			let versions: RecoveredVersion[] = currentSong.versions;
-			
+				
 			let newWork: number = 1000; // default to 1 second of work for the first change.
 			if (versions.length > 0) {
 				const mostRecentTime: number = versions[0].time;
 				const mostRecentWork: number = versions[0].work;
 				newWork = mostRecentWork + Math.min(maximumWorkPerVersion, newTime - mostRecentTime);
 			}
-			
-			const newVersion: RecoveredVersion = {uid: uid, time: newTime, work: newWork};
+				
+			const newVersion: RecoveredVersion = { uid: uid, name: newName, time: newTime, work: newWork };
 			const newKey: string = versionToKey(newVersion);
 			versions.unshift(newVersion);
 			localStorage.setItem(newKey, songData);
-			
+				
 			// Consider deleting an old version to free up space.
 			let minSpan: number = minimumWorkPerSpan; // start out with a gap between versions.
 			const spanMult: number = Math.pow(2, 1 / 2); // Double the span every 2 versions back.
@@ -141,7 +145,7 @@ export class SongRecovery {
 				}
 				minSpan *= spanMult;
 			}
-			
+				
 			// If there are too many songs, discard the least important ones.
 			// Songs that are older, or have less work, are less important.
 			while (songs.length > maximumSongCount) {

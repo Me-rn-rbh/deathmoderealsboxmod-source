@@ -1,10 +1,10 @@
-// Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
+// Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import {InstrumentType, Config} from "../synth/SynthConfig.js";
-import {Instrument} from "../synth/synth.js";
-import {SongDocument} from "./SongDocument.js";
-import {ChangeSetEnvelopeTarget, ChangeSetEnvelopeType, ChangeRemoveEnvelope} from "./changes.js";
-import {HTML} from "imperative-html/dist/esm/elements-strict.js";
+import {InstrumentType, Config} from "../synth/SynthConfig";
+import {Instrument} from "../synth/synth";
+import {SongDocument} from "./SongDocument";
+import {ChangeSetEnvelopeTarget, ChangeSetEnvelopeType, ChangeRemoveEnvelope} from "./changes";
+import {HTML} from "imperative-html/dist/esm/elements-strict";
 
 export class EnvelopeEditor {
 	public readonly container: HTMLElement = HTML.div({class: "envelopeEditor"});
@@ -68,7 +68,6 @@ export class EnvelopeEditor {
 	
 	public render(): void {
 		const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-		if (!this._doc.prefs.alwaysShowSettings && instrument.preset != instrument.type) return;
 		
 		for (let envelopeIndex: number = this._rows.length; envelopeIndex < instrument.envelopeCount; envelopeIndex++) {
 			const targetSelect: HTMLSelectElement = HTML.select();
@@ -112,9 +111,13 @@ export class EnvelopeEditor {
 		for (let envelopeIndex: number = instrument.envelopeCount; envelopeIndex < this._renderedEnvelopeCount; envelopeIndex++) {
 			this._rows[envelopeIndex].style.display = "none";
 		}
+
+		let useControlPointCount: number = instrument.noteFilter.controlPointCount;
+		if (instrument.noteFilterType)
+			useControlPointCount = 1;
 		
 		if (this._renderedEqFilterCount != instrument.eqFilter.controlPointCount ||
-			this._renderedNoteFilterCount != instrument.noteFilter.controlPointCount ||
+			this._renderedNoteFilterCount != useControlPointCount ||
 			this._renderedInstrumentType != instrument.type ||
 			this._renderedEffects != instrument.effects)
 		{
@@ -131,7 +134,7 @@ export class EnvelopeEditor {
 		
 		this._renderedEnvelopeCount = instrument.envelopeCount;
 		this._renderedEqFilterCount = instrument.eqFilter.controlPointCount;
-		this._renderedNoteFilterCount = instrument.noteFilter.controlPointCount;
+		this._renderedNoteFilterCount = useControlPointCount;
 		this._renderedInstrumentType = instrument.type;
 		this._renderedEffects = instrument.effects;
 	}

@@ -1,5 +1,3 @@
-// Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
-
 /*
 This file contains code to compute digital audio filter coefficients based on
 the desired type, cutoff frequency, and other parameters. You can use these
@@ -369,7 +367,6 @@ export class FilterCoefficients {
 		this.order = 2;
 	}
 	*/
-	
 	public highShelf2ndOrder(cornerRadiansPerSample: number, shelfLinearGain: number, slope: number): void {
 		const A: number = Math.sqrt(shelfLinearGain);
 		const c: number = Math.cos(cornerRadiansPerSample);
@@ -385,7 +382,7 @@ export class FilterCoefficients {
 		this.b[2] =      A * (Aplus  + Aminus * c - sqrtA2Alpha) / a0;
 		this.order = 2;
 	}
-	
+
 	public peak2ndOrder(cornerRadiansPerSample: number, peakLinearGain: number, bandWidthScale: number): void {
 		const sqrtGain: number = Math.sqrt(peakLinearGain);
 		const bandWidth: number = bandWidthScale * cornerRadiansPerSample / (sqrtGain >= 1 ? sqrtGain : 1/sqrtGain);
