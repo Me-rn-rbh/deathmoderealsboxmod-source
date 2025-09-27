@@ -23,7 +23,7 @@ export function prettyNumber(value: number): string {
 }
 
 export class EditorConfig {
-    public static readonly version: string = "V37"; // Currently using patch versions in display (unlike JB)
+    public static readonly version: string = "V50"; // Currently using patch versions in display (unlike JB)
     public static readonly revamp: string = "2"
     public static readonly versionDisplayName: string = "D's Quick Box Mod";
 

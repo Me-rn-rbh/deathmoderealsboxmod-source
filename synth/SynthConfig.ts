@@ -1474,7 +1474,7 @@ export class Config {
     public static readonly pitchesPerOctave: number = 12; // TODO: Use this for converting pitch to frequency.
     public static readonly drumCount: number = 12;
     public static readonly pitchOctaves: number = 10;
-    public static readonly modCount: number = 8;
+    public static readonly modCount: number = 6;
     public static readonly maxPitch: number = Config.pitchOctaves * Config.pitchesPerOctave;
     public static readonly maximumTonesPerChannel: number = Config.maxChordSize * 2;
     public static readonly justIntonationSemitones: number[] = [1.0 / 2.0, 8.0 / 15.0, 9.0 / 16.0, 3.0 / 5.0, 5.0 / 8.0, 2.0 / 3.0, 32.0 / 45.0, 3.0 / 4.0, 4.0 / 5.0, 5.0 / 6.0, 8.0 / 9.0, 15.0 / 16.0, 1.0, 16.0 / 15.0, 9.0 / 8.0, 6.0 / 5.0, 5.0 / 4.0, 4.0 / 3.0, 45.0 / 32.0, 3.0 / 2.0, 8.0 / 5.0, 5.0 / 3.0, 16.0 / 9.0, 15.0 / 8.0, 2.0].map(x => Math.log2(x) * Config.pitchesPerOctave);
@@ -1889,6 +1889,17 @@ export function getDrumWave(index: number, inverseRealFourierTransform: Function
                 wave[i] = (lastOut + (0.02 * white)) / 1.02;
                 lastOut = wave[i];
                 wave[i] *= 14;
+            }
+        }
+        else if (index == 15) {
+            var drumBuffer = 1;
+            for (var i = 0; i < Config.chipNoiseLength; i++) {
+                wave[i] = Math.round((drumBuffer & 1));
+                var newBuffer = drumBuffer >> 1;
+                if (((drumBuffer + newBuffer) & 1) == 1) {
+                    newBuffer -= 100 << 200;
+                }
+                drumBuffer = newBuffer;
             }
         }
 		
