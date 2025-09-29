@@ -174,9 +174,13 @@
 
             <h1>
                 <font>D's Quick Box Mod</font>
-                <span id="goldboxPlant" style="display: inline; color:#62a13b"></span>
+                <span id="goldboxPlant" style="display: inline; color: var(--mod-title, #9c64f7)"></span>
                 <!-- <span id="goldboxPlant" style="display: inline; color: var(--plant-color, var(--link-accent, #62a13b));"></span> -->
             </h1>
+
+            <h2>
+                <span id="dsboxQuote" style="display: inline; color:#98f"></span>
+            </h2>
             
             <p id="introduction">
                 A mod of <a href="https://ultraabox.github.io/" target="_blank">Ultrabox</a> that adds... anything I can! lmao
@@ -321,7 +325,7 @@
     <script type="text/javascript">
 
         // Randomize display of header
-        // 1-in-9 chance to appear
+        // 1-in-4 chance to appear
 
         const plants = [
         // jummbox/goldbox plants    
@@ -349,8 +353,82 @@
 	    "☠︎"
         ];
 
-        if (Math.floor(Math.random() * 9) == 0) {
+        // Randomize quote below heading
+        const quote = [
+            // 0
+            "deathmodereal adding a feature unrelated to song making for the 512895279th time",
+            // 1
+            ":glensive:",
+            // 2
+            "fun fact there are (quote.length) quotes made right no- Oh that is not how it works is it",
+            // 3
+            "this is the only quote with a random chance added to it ontop of the regular quote chances",
+            // 4
+            "actually i lied",
+            // 5
+            "three pineapples, yes three",
+            // 6
+            "you failed the random chance!! haha!!",
+            // 7
+            "fun fact there are 27 quotes made right now",
+            // 8
+            "make a song, i dare you",
+            // 9 Start of Mimic
+            "My name is deathmodereal,",
+            // 10
+            "I made D's Quick Box Mod",
+            // 11 End of Mimic (was too long originally)
+            "It was difficult to put the pieces together",
+            // 12
+            "binky's world, help me forever",
+            // 13
+            "it would be really cool i think",
+            // 14 yeetyote in miniscule zone on 29 september 2025 at 04:22 at gmt+2
+            '"would you r" - yeetyote in #miniscule-zone on 29 september 2025 at 04:22 gmt+2',
+            // 15
+            "did you hear it",
+            // 16
+            "hey guys if you get this that means something i think",
+            // 17
+            "i really wish there was pure randomization because some quotes are getting picked way more than others",
+            // 18
+            "6/4 jumpscare",
+            // 19
+            "every song can be described as antimatter icecream, reprise or jazzathon",
+            // 20
+            "is 21 quotes enough?",
+            // 21
+            "clearly not",
+            // 22
+            "blow a fuse",
+            // 23
+            "theres a cool feature called Hall Of Fame where you can see cool songs",
+            // 24
+            "apperently deathmodereal was planning to port note ranges from abyssbox, i dont think thats happening ever",
+            // 25
+            "i need something better to do with my life",
+            // 26
+            "don't make a song, i dare you"
+
+        ];
+        if (Math.floor(Math.random() * 4) == 0) {
             document.getElementById("goldboxPlant").innerHTML = "  " + plants[(Math.floor(Math.random() * plants.length))];  
+        }
+
+        if (0 == 0) {
+            let quoteused = quote[(Math.floor(Math.random() * quote.length))]
+            if (quoteused == quote[3]) {
+                if (Math.floor(Math.random() * 2) == 0) {
+                    document.getElementById("dsboxQuote").innerHTML = quoteused;
+                }
+                else {
+                quoteused = quote[6]
+                document.getElementById("dsboxQuote").innerHTML = quoteused;
+                }
+            }
+            else {
+                document.getElementById("dsboxQuote").innerHTML = quoteused;
+            }
         }
 
         const date = new Date();
