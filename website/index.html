@@ -325,7 +325,7 @@
     <script type="text/javascript">
 
         // Randomize display of header
-        // 1-in-4 chance to appear
+        // 4-in-5 chance to appear
 
         const plants = [
         // jummbox/goldbox plants    
@@ -350,7 +350,7 @@
         // LemmBox 
 		"🍋",
        // D's Quick Box Mod
-	    "☠︎"
+	    "☠︎", "plant id: 36", "you're really lucky if you get this plant"
         ];
 
         // Randomize quote below heading
@@ -370,48 +370,49 @@
             // 6
             "you failed the random chance!! haha!!",
             // 7
-            "fun fact there are 27 quotes made right now",
-            // 8
             "make a song, i dare you",
-            // 9 Start of Mimic
+            // 8 Start of Mimic
             "My name is deathmodereal,",
-            // 10
+            // 9
             "I made D's Quick Box Mod",
-            // 11 End of Mimic (was too long originally)
+            // 10 End of Mimic (was too long originally)
             "It was difficult to put the pieces together",
-            // 12
+            // 11
             "binky's world, help me forever",
-            // 13
+            // 12
             "it would be really cool i think",
-            // 14 yeetyote in miniscule zone on 29 september 2025 at 04:22 at gmt+2
+            // 13 yeetyote in miniscule zone on 29 september 2025 at 04:22 at gmt+2
             '"would you r" - yeetyote in #miniscule-zone on 29 september 2025 at 04:22 gmt+2',
-            // 15
+            // 14
             "did you hear it",
-            // 16
+            // 15
             "hey guys if you get this that means something i think",
-            // 17
+            // 16
             "i really wish there was pure randomization because some quotes are getting picked way more than others",
-            // 18
+            // 17
             "6/4 jumpscare",
-            // 19
+            // 18
             "every song can be described as antimatter icecream, reprise or jazzathon",
+            // 19
+            "is 20 quotes enough?",
             // 20
-            "is 21 quotes enough?",
-            // 21
             "clearly not",
-            // 22
+            // 21
             "blow a fuse",
-            // 23
+            // 22
             "theres a cool feature called Hall Of Fame where you can see cool songs",
-            // 24
+            // 23
             "apperently deathmodereal was planning to port note ranges from abyssbox, i dont think thats happening ever",
-            // 25
+            // 24
             "i need something better to do with my life",
+            // 25
+            "don't make a song, i dare you",
             // 26
-            "don't make a song, i dare you"
+            "you're really lucky if you get this quote"
 
         ];
-        if (Math.floor(Math.random() * 4) == 0) {
+        quote.push(`fun fact there are ${quote.length + 1} quotes right now`);
+        if (Math.floor(Math.random() * 1.25) == 0) {
             document.getElementById("goldboxPlant").innerHTML = "  " + plants[(Math.floor(Math.random() * plants.length))];  
         }
 
