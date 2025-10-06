@@ -202,8 +202,9 @@ export class LimiterPrompt implements Prompt {
 	private outVolumeHistoricCap: number = 0.0;
 
 	private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-	private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
-	private readonly _resetButton: HTMLButtonElement = button({ style: "width:45%;" }, "Reset");
+	private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:30%;" }, "Okay");
+	private readonly _resetButton: HTMLButtonElement = button({ style: "width:30%;" }, "Reset");
+	private readonly _lineButton: HTMLButtonElement = button({ style: "width:30%;" }, "Line");
 
 	public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 250px;" },
 		h2("Limiter Options"),
@@ -268,6 +269,7 @@ export class LimiterPrompt implements Prompt {
 		div({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
 			this._okayButton,
 			this._resetButton,
+			this._lineButton,
 		),
 		this._cancelButton,
 	);
@@ -304,6 +306,7 @@ export class LimiterPrompt implements Prompt {
 		this.masterGainSlider.addEventListener("input", this._whenInput);
 
 		this._playButton.addEventListener("click", this._togglePlay);
+		this._lineButton.addEventListener("click", this._straightlineLimiter);
 
 		window.requestAnimationFrame(this._volumeUpdate);
 
@@ -406,6 +409,7 @@ export class LimiterPrompt implements Prompt {
 		this.masterGainSlider.removeEventListener("input", this._whenInput);
 
 		this._playButton.removeEventListener("click", this._togglePlay);
+		this._lineButton.removeEventListener("click", this._straightlineLimiter);
 	}
 
 	public whenKeyPressed = (event: KeyboardEvent): void => {
@@ -432,6 +436,20 @@ export class LimiterPrompt implements Prompt {
 
 			this._whenInput();
 		}
+	}
+
+	private _straightlineLimiter = (): void => {
+		// Set song limiter settings to their default
+
+			this.limitRatioSlider.value = "0";
+			this.limitRiseSlider.value = "0";
+			this.limitDecaySlider.value = "0";
+			this.limitThresholdSlider.value = "0";
+			this.compressionRatioSlider.value = "0";
+			this.compressionThresholdSlider.value = "0";
+			this.masterGainSlider.value = "1";
+
+			this._whenInput();
 	}
 
 	private _updateLimiter = (): void => {
