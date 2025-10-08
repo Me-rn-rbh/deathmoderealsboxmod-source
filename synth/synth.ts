@@ -2860,10 +2860,9 @@ export class Song {
     private static readonly _latestGoldBoxVersion: number = 4;
     private static readonly _oldestUltraBoxVersion: number = 1;
     private static readonly _latestUltraBoxVersion: number = 5;
-    private static readonly _latestDsboxmodVersion: number = 64;
     // One-character variant detection at the start of URL to distinguish variants such as JummBox, Or Goldbox. "j" and "g" respectively
 	//also "u" is ultrabox lol
-    private static readonly _variant = 0x44; //"ds" ~ D's Quick Box Mod (hopefully)
+    private static readonly _variant = 0x75; //"u" ~ ultrabox
 
     public title: string;
     public scale: number;
@@ -3086,8 +3085,9 @@ export class Song {
         let bits: BitFieldWriter;
         let buffer: number[] = [];
 
+        // meh
         buffer.push(Song._variant);
-        buffer.push(base64IntToCharCode[Song._latestDsboxmodVersion]);
+        buffer.push(base64IntToCharCode[Song._latestUltraBoxVersion]);
 
         // Length of the song name string
         buffer.push(SongTagCode.songTitle);
@@ -3755,7 +3755,6 @@ export class Song {
         let fromJummBox: boolean;
         let fromGoldBox: boolean;
         let fromUltraBox: boolean;
-        let fromDsboxmod: boolean;
         // let fromMidbox: boolean;
         // let fromDogebox2: boolean;
         // let fromAbyssBox: boolean;
@@ -3766,46 +3765,35 @@ export class Song {
             fromJummBox = true;
             fromGoldBox = false;
             fromUltraBox = false;
-            fromDsboxmod = false;
             charIndex++;
         } else if (variantTest == 0x67) { //"g"
             fromBeepBox = false;
             fromJummBox = false;
             fromGoldBox = true;
             fromUltraBox = false;
-            fromDsboxmod = false;
             charIndex++;
         } else if (variantTest == 0x75) { //"u"
                 fromBeepBox = false;
                 fromJummBox = false;
                 fromGoldBox = false;
 		        fromUltraBox = true;
-                fromDsboxmod = false;
                 charIndex++;
         } else if (variantTest == 0x64) { //"d" 
                 fromBeepBox = false;
                 fromJummBox = true;
                 fromGoldBox = false;
 		        fromUltraBox = false;
-                fromDsboxmod = false;
                 // to-do: add explicit dogebox2 support
                 //fromDogeBox2 = true;
                 charIndex++;
-        } else if (variantTest == 0x44) { //"d" 
-                fromBeepBox = false;
-                fromJummBox = false;
-                fromGoldBox = false;
-		        fromUltraBox = false;
-                fromDsboxmod = true;
                 // to-do: add explicit dogebox2 support
                 //fromDogeBox2 = true;
-                charIndex++;
+            //    charIndex++;
         } else {
             fromBeepBox = true;
             fromJummBox = false;
             fromGoldBox = false;
             fromUltraBox = false;
-            fromDsboxmod = false;
         }
 
         const version: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
@@ -3814,7 +3802,6 @@ export class Song {
         if (fromGoldBox && (version == -1 || version > Song._latestGoldBoxVersion || version < Song._oldestGoldBoxVersion)) return;
         if (fromUltraBox && (version == -1 || version > Song._latestUltraBoxVersion || version < Song._oldestUltraBoxVersion)) return;
         if (fromUltraBox && (version == -1 || version > Song._latestUltraBoxVersion || version < Song._oldestUltraBoxVersion)) return;
-        if (fromDsboxmod) return;
         const beforeTwo: boolean = version < 2;
         const beforeThree: boolean = version < 3;
         const beforeFour: boolean = version < 4;
@@ -3823,7 +3810,7 @@ export class Song {
         const beforeSeven: boolean = version < 7;
         const beforeEight: boolean = version < 8;
         const beforeNine: boolean = version < 9;
-        this.initToDefault(((fromBeepBox && beforeNine)) || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox)));
+        this.initToDefault((fromBeepBox && beforeNine) || (fromJummBox && beforeFive) || (beforeFour && fromGoldBox));
         const forceSimpleFilter: boolean = (fromBeepBox && beforeNine || fromJummBox && beforeFive);
 
         let willLoadLegacySamplesForOldSongs: boolean = false;
@@ -3914,7 +3901,7 @@ export class Song {
         }
 
         let legacySettingsCache: LegacySettings[][] | null = null;
-        if (((fromBeepBox && beforeNine)) || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
+        if ((fromBeepBox && beforeNine) || (fromJummBox && beforeFive) || (beforeFour && fromGoldBox)) {
             // Unfortunately, old versions of BeepBox had a variety of different ways of saving
             // filter-and-envelope-related parameters in the URL, and none of them directly
             // correspond to the new way of saving these parameters. We can approximate the old

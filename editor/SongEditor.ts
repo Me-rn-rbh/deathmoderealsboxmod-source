@@ -826,6 +826,7 @@ export class SongEditor {
         option({ value: "showOscilloscope" }, "Show Oscilloscope"),
         option({ value: "showSampleLoadingStatus" }, "Show Sample Loading Status"),
         option({ value: "showDescription" }, "Show Description"),
+        option({ value: "showInstructions" }, "Show Instructions"),
         option({ value: "layout" }, "Set Layout..."),
         option({ value: "colorTheme" }, "Set Theme..."),
 	    option({ value: "customTheme" }, "Custom Theme..."),
@@ -2203,6 +2204,8 @@ export class SongEditor {
         this._instrumentSettingsArea.style.scrollbarWidth = this._doc.prefs.showInstrumentScrollbars ? "" : "none";
         if (document.getElementById('text-content'))
             document.getElementById('text-content')!.style.display = this._doc.prefs.showDescription ? "" : "none";
+        if (document.getElementById('instructions'))
+            document.getElementById('instructions')!.style.display = this._doc.prefs.showInstructions ? "" : "none";
 
         if (this._doc.getFullScreen()) {
             const semitoneHeight: number = this._patternEditorRow.clientHeight / this._doc.getVisiblePitchCount();
@@ -2279,6 +2282,7 @@ export class SongEditor {
             (prefs.showOscilloscope ? textOnIcon : textOffIcon) + "Show Oscilloscope",
             (prefs.showSampleLoadingStatus ? textOnIcon : textOffIcon) + "Show Sample Loading Status",
             (prefs.showDescription ? textOnIcon : textOffIcon) + "Show Description",
+            (prefs.showInstructions ? textOnIcon : textOffIcon) + "Show Instructions",
             textSpacingIcon + "Set Layout...",
             textSpacingIcon + "Set Theme...",
 	        textSpacingIcon + "Custom Theme...",
@@ -5177,6 +5181,9 @@ export class SongEditor {
                 break;
             case "showDescription":
                 this._doc.prefs.showDescription = !this._doc.prefs.showDescription;
+                break;
+            case "showInstructions":
+                this._doc.prefs.showInstructions = !this._doc.prefs.showInstructions;
                 break;
             case "showInstrumentScrollbars":
                 this._doc.prefs.showInstrumentScrollbars = !this._doc.prefs.showInstrumentScrollbars;

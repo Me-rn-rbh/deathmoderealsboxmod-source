@@ -82,6 +82,7 @@
             margin-top: 0.5em;
             margin-bottom: 0.5em;
             -webkit-text-stroke-width: 0;
+            color: var(--lala, #AAABEF);
         }
 
         .centerDiv {
@@ -90,6 +91,40 @@
 
         a {
             color: var(--link-accent, #98f);
+        }
+
+        small {
+            font-size: 0.8rem;
+            text-align: inherit;
+            margin-top: 0.25em;
+            margin-bottom: 0.25em;
+            -webkit-text-stroke-width: 0;
+            color: var(--inactive-text, #666);
+            background: var(--editor-background);
+            border: thin, dotted;
+            padding: 1px;
+        }
+
+        b {
+            color: var(--lala, #CCCCFF);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #112335;
+            border: thin,solid, #ABABDE;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #CCCCFF;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ABABDE;
         }
 
         /* .donation form {
@@ -122,18 +157,22 @@
 
             .column-container {
 				width: 710px;
-                display: flex;
-				gap: 25px;
+                display: table;
+				
             }
 
             .instructions-column {
-				min-width: 0;
+                min-width: fit-content;
+                max-height: fit-content;
+                padding: 10px;
             }
 
             .bsky-column {
-				width: 300px;
-				flex-shrink: 0;
-			}
+                padding: 5px;
+                flex-shrink: 0;
+                border: 2px, inset;
+                border-color: var(--mod-title, #9c64f7);
+            }
         }
 
         /* narrow screen */
@@ -148,7 +187,7 @@
 
             .column-container {
                 display: flex;
-                flex-direction: column;
+                flex-direction: row;
                 align-items: center;
             }
         }
@@ -191,7 +230,7 @@
                 When you are satisfied with your song, just copy and paste the URL to save and share your song!
             </p> -->
             <p>
-                If you have any questions, please visit the <a href="./faq.html">FAQ</a>. Visit the <a href="./patch_notes.html">patch notes</a> to see the latest changes made.
+                If you have any questions, please visit <a href="./faq.html">Questions Answered</a> to see if your question is there. Visit the <a href="./patch_notes.html">patch notes</a> to see the latest changes made.
                 <img id="Hotdog" src="" width="500" height="333" onclick="changeHotdogSize()" />
             </p>
             <!--
@@ -209,7 +248,7 @@
         </section>
 
         <div class="column-container">
-            <main class="instructions-column">
+            <main class="instructions-column" id="instructions">
                 <section>
                     <h2>
                         Instructions
@@ -281,9 +320,18 @@
                     <p>
                         (psst... Want to see some really cool songs? Check out the <a href="./hof.html">Hall Of Fame!</a>)
                     </p>
+
+                    <p> </p>
+                    <p> </p>
+                    <p> </p>
+
+                    <small>
+                        If, for some reason, you wanna see the 404 page, click <a href="./404.html">here</a>.
+                    </small>
+
                 </section>
             </main>
-            <aside class="bsky-column">
+            <section class="bsky-column">
 				<h2>
 					Shared on Bluesky:
 				</h2>
@@ -294,10 +342,10 @@
 						mode="dark"
 						link-target="_blank"
 						link-image="false"
-						limit="5"
+						limit="10"
 						load-more="true"
 						disable-styles="false"
-						custom-styles="a.mt-4.rounded-md.border.border-slate-300.block {display: none;} .flex > div { max-width: 90%; } .whitespace-pre-wrap { word-wrap: break-word;}"
+						custom-styles="a.mt-4.rounded-md.border.border-slate-500.block {display: none;} .flex > div { max-width: 100%; } .whitespace-pre-wrap { word-wrap: break-word;}"
 					  >
                     </bsky-embed>
                     <script async>
@@ -314,7 +362,7 @@
                     </script>
 					<!-- <script type="module" src="https://cdn.jsdelivr.net/npm/bsky-embed/dist/bsky-embed.es.js" async></script> -->
 				</div>
-			</aside>
+			</section>
         </div>
     </div>
 

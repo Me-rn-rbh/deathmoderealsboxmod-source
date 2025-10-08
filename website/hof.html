@@ -11,7 +11,7 @@
     <style type="text/css">
 
         html {
-            background: var(--page-margin, black);
+            background: var(--page-margin, #112335);
             overflow-x: hidden;
             font-size: large;
             font-family: 'Comic Sans MS', sans-serif;
@@ -42,19 +42,39 @@
             margin-top: 0.5em;
             margin-bottom: 0.5em;
             -webkit-text-stroke-width: 0;
-			/* color: #FF8EC5; */
+            color: var(--lala, #AAABEF)
         }
 
-		h3 {
+        h3 {
             font-size: 1.2rem;
             margin-top: 0.5em;
             margin-bottom: 0.5em;
             -webkit-text-stroke-width: 0;
+            color: var(--lala, #B9CBFF)
         }
 
         a {
             color: var(--link-accent, #98f);
         }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #112335;
+            border: thin,solid, #ABABDE;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #CCCCFF;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ABABDE;
+        }
+
     </style>
   </body>
 <h1>

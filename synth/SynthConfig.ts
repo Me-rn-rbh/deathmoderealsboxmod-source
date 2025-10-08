@@ -843,7 +843,7 @@ export class Config {
 
     public static willReloadForCustomSamples: boolean = false;
 
-    public static jsonFormat: string = "D's Quick Box Mod";
+    public static jsonFormat: string = "Dsboxmod";
     // public static thurmboxImportUrl: string = "https://file.garden/ZMQ0Om5nmTe-x2hq/PandoraArchive%20Samples/";
 
     public static readonly scales: DictionaryArray<Scale> = toNameMap([
