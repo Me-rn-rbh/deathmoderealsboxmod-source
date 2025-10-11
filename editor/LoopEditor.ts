@@ -25,19 +25,19 @@ export class LoopEditor {
 		private _loopAtPointStart: number = -1;
 		private _loopAtPointEnd: number = -1;
 		
-		private readonly _loop: SVGPathElement = SVG.path({fill: "none", stroke: ColorConfig.loopAccent, "stroke-width": 4});
-		private readonly _barLoop: SVGPathElement = SVG.path({fill: "none", stroke: ColorConfig.uiWidgetFocus, "stroke-width": 2});
-		private readonly _highlight: SVGPathElement = SVG.path({fill: ColorConfig.hoverPreview, "pointer-events": "none"});
-		
-	private readonly _svg: SVGSVGElement = SVG.svg({style: `touch-action: pan-y; position: absolute;`, height: this._editorHeight},
+		private readonly _loop: SVGPathElement = SVG.path({fill: ColorConfig.loopAccent, stroke: ColorConfig.loopAccent, "stroke-width": 1});
+		private readonly _barLoop: SVGPathElement = SVG.path({fill: ColorConfig.uiWidgetFocus, stroke: ColorConfig.uiWidgetFocus, "stroke-width": 4});
+		private readonly _highlight: SVGPathElement = SVG.path({fill: ColorConfig.loopAccent, stroke: ColorConfig.hoverPreview, "stroke-width": 1, "pointer-events": "none"});
+
+	private readonly _svg: SVGSVGElement = SVG.svg({ style: `touch-action: pan-y; position: absolute; border: double, ${ColorConfig.loopAccent}; border-width: 1px 1px 1px 1px; border-radius: 16px`, height: this._editorHeight },
 		this._loop,
 		this._highlight,
 		this._barLoop
 	);
 		
-	public readonly container: HTMLElement = HTML.div({class: "loopEditor"}, this._svg);
+	public readonly container: HTMLElement = HTML.div({ class: "loopEditor", style: ``}, this._svg);
 		
-	private _barWidth: number = 32;
+	private _barWidth: number = 28;
 	private _change: ChangeLoop | null = null;
 		private _cursor: Cursor = {startBar: -1, mode: -1};
 	private _mouseX: number = 0;

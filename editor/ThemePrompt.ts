@@ -71,6 +71,8 @@ export class ThemePrompt implements Prompt {
 		),
 		optgroup({ label: "Misc" },
 			option({ value: "azur lane" }, "Azur Lane"),
+			option({ value: "Roblox" }, "Powering Imagination"),
+			option({ value: "windows95"}, "Windows 95"),
 			option({ value: "custom" }, "Custom")
 		),
 	);
@@ -125,11 +127,13 @@ export class ThemePrompt implements Prompt {
 		this._doc.prompt = null;
 		this._doc.prefs.colorTheme = this._themeSelect.value;
 		this._doc.undo();
+		window.location.reload();
 	}
 
 	private _previewTheme = (): void => {
 		ColorConfig.setTheme(this._themeSelect.value);
 		this._doc.notifier.changed();
 	}
+
 }
 //}

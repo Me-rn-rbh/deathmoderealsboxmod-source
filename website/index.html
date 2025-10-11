@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="thething">
 <head>
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
     <!-- CDN for jQuery and select2 -->
@@ -32,7 +32,7 @@
             background: var(--page-margin, black);
             overflow-x: hidden;
             font-size: large;
-            font-family: 'Comic Sans MS', sans-serif;
+            font-family: 'B612', sans-serif;
             line-height: 1.3;
             color: var(--primary-text, white);
         }
@@ -51,9 +51,8 @@
             overflow: auto;
             background: var(--editor-background, black);
             width: 100%;
-			max-width: 710px;
-            padding-left: 30px;
-            padding-right: 30px;
+            max-width: 710px;
+            padding: 0px 60px;
         }
 
         #text-content {
@@ -61,8 +60,8 @@
             background: var(--editor-background, black);
             width: 100%;
 			max-width: 710px;
-            padding-left: 30px;
-            padding-right: 30px;
+            padding-left: 60px;
+            padding-right: 60px;
         }
 
         #Hotdog { display: none; }
@@ -73,7 +72,7 @@
             margin-top: 0.5em;
             margin-bottom: 0.5em;
             -webkit-text-stroke-width: 0;
-            color: var(--mod-title, #9c64f7);
+            color: var(--mod-title);
         }
 
         h2 {
@@ -82,7 +81,7 @@
             margin-top: 0.5em;
             margin-bottom: 0.5em;
             -webkit-text-stroke-width: 0;
-            color: var(--lala, #AAABEF);
+            color: var(--mod-title);
         }
 
         .centerDiv {
@@ -99,16 +98,17 @@
             margin-top: 0.25em;
             margin-bottom: 0.25em;
             -webkit-text-stroke-width: 0;
-            color: var(--inactive-text, #666);
-            background: var(--editor-background);
+            color: var(--inactive-text);
             border: thin, dotted;
             padding: 1px;
         }
 
         b {
-            color: var(--lala, #CCCCFF);
         }
 
+        font {
+            color: var(--mod-title);
+        }
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -211,24 +211,29 @@
     <div id="text-content">
         <section>
 
-            <h1>
+            <h1 style="margin: 10px">
                 <font>D's Quick Box Mod</font>
-                <span id="goldboxPlant" style="display: inline; color: var(--mod-title, #9c64f7)"></span>
+                <span id="goldboxPlant" style="display: inline; color: var(--mod-title)"></span>
                 <!-- <span id="goldboxPlant" style="display: inline; color: var(--plant-color, var(--link-accent, #62a13b));"></span> -->
             </h1>
 
             <h2>
                 <span id="dsboxQuote" style="display: inline; color:#98f"></span>
             </h2>
-            
+
+
+            <h2>
+                <span id="Imagination" style="display: inline; color: var(--primary-text); font-size: 2em">Powering Imagination</span>
+            </h2>
+
             <p id="introduction">
                 A mod of <a href="https://ultraabox.github.io/" target="_blank">Ultrabox</a> that adds... anything I can! lmao
             </p>
             <!-- <p>
-                All song data is contained in the URL at the top of your browser.
-                When you make changes to the song, the URL is updated to reflect your changes.
-                When you are satisfied with your song, just copy and paste the URL to save and share your song!
-            </p> -->
+        All song data is contained in the URL at the top of your browser.
+        When you make changes to the song, the URL is updated to reflect your changes.
+        When you are satisfied with your song, just copy and paste the URL to save and share your song!
+    </p> -->
             <p>
                 If you have any questions, please visit <a href="./faq.html">Questions Answered</a> to see if your question is there. Visit the <a href="./patch_notes.html">patch notes</a> to see the latest changes made.
                 <img id="Hotdog" src="" width="500" height="333" onclick="changeHotdogSize()" />
@@ -481,6 +486,28 @@
                 document.getElementById("dsboxQuote").innerHTML = quoteused;
             }
         }
+
+        if (window.localStorage.getItem("colorTheme") == "Roblox") {
+            document.getElementById("dsboxQuote").style.display = "none";
+        } else {
+            document.getElementById("dsboxQuote").style.display = "inline";
+        };
+
+        if (window.localStorage.getItem("colorTheme") == "Roblox") {
+            document.getElementById("Imagination").style.display = "inline";
+        } else {
+            document.getElementById("Imagination").style.display = "none";
+        };
+
+
+            if (window.localStorage.getItem("comical") == "true") {
+            document.getElementById("thething").style.fontFamily = `Comic Sans MS` 
+        } else if (window.localStorage.getItem("comical") == "false") {
+            document.getElementById("thething").style.fontFamily = document.getElementById("thething").style.fontFamily
+        }
+
+
+
 
         const date = new Date();
 

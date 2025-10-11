@@ -8,10 +8,10 @@ import { ColorConfig } from "./ColorConfig";
 export class BarScrollBar {
 	private readonly _editorWidth: number = 512;
 	private readonly _editorHeight: number = 20;
-	private readonly _playhead: SVGRectElement = SVG.rect("rect", { fill: ColorConfig.playhead, x: 0, y: 0, width: 2, height: this._editorHeight });
+	private readonly _playhead: SVGRectElement = SVG.rect("rect", { fill: ColorConfig.playhead, x: 0, y: 0, width: 1, height: this._editorHeight });
 		private readonly _notches: SVGSVGElement = SVG.svg({"pointer-events": "none"});
-		private readonly _handle: SVGRectElement = SVG.rect({fill: ColorConfig.uiWidgetBackground, x: 0, y: 2, width: 10, height: this._editorHeight - 4});
-		private readonly _handleHighlight: SVGRectElement = SVG.rect({fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": 2, "pointer-events": "none", x: 0, y: 1, width: 10, height: this._editorHeight - 2});
+		private readonly _handle: SVGRectElement = SVG.rect({fill: ColorConfig.uiWidgetBackground, x: 0, y: 1, width: 10, height: this._editorHeight - 2});
+		private readonly _handleHighlight: SVGRectElement = SVG.rect({fill: "none", stroke: ColorConfig.uiWidgetFocus, "stroke-width": 2, "pointer-events": "none", x: 0, y: 1, width: 10, height: this._editorHeight - 2});
 		private readonly _leftHighlight: SVGPathElement = SVG.path({fill: ColorConfig.hoverPreview, "pointer-events": "none"});
 		private readonly _rightHighlight: SVGPathElement = SVG.path({fill: ColorConfig.hoverPreview, "pointer-events": "none"});
 	private _renderedPlayhead: number = -1;
@@ -25,7 +25,7 @@ export class BarScrollBar {
 		this._playhead,
 	);
 		
-		public readonly container: HTMLElement = HTML.div({class: "barScrollBar", style: "width: 512px; height: 20px; overflow: hidden; position: relative;"}, this._svg);
+		public readonly container: HTMLElement = HTML.div({class: "barScrollBar", style: `width: 512px; height: 20px; overflow: hidden; position: relative; border: 1px, solid, ${ColorConfig.playhead};`}, this._svg);
 		
 	private _mouseX: number = 0;
 	private _mouseDown: boolean = false;
@@ -212,7 +212,7 @@ export class BarScrollBar {
 				
 			for (let i: number = 0; i <= this._doc.song.barCount; i++) {
 				const lineHeight: number = (i % 16 == 0) ? 0 : ((i % 4 == 0) ? this._editorHeight / 8 : this._editorHeight / 3);
-					this._notches.appendChild(SVG.rect({fill: ColorConfig.uiWidgetBackground, x: i * this._notchSpace - 1, y: lineHeight, width: 2, height: this._editorHeight - lineHeight * 2}));
+				this._notches.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: i * this._notchSpace - 1, y: lineHeight, width: 2, height: this._editorHeight - lineHeight * 2 }));
 			}
 		}
 		

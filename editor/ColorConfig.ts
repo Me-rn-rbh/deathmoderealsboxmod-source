@@ -10,7 +10,6 @@ export interface ChannelColors extends BeepBoxOption {
     readonly secondaryNote: string;
     readonly primaryNote: string;
 }
-
 export class ColorConfig {
     public static colorLookup: Map<number, ChannelColors> = new Map<number, ChannelColors>();
 	public static usesColorFormula: boolean = false;
@@ -5538,7 +5537,7 @@ export class ColorConfig {
 		  --noise5-primary-channel: #00d70e;
 		  --noise5-secondary-note: #29b700;
 		  --noise5-primary-note: #00f7ff;
-		  --mod1-secondary-channel: #9d5bb9;
+		  --mod1-secondary-channel: #00a2cc;
 		  --mod1-primary-channel: #e16bff;
 		  --mod1-secondary-note: #3a3ea4;
 		  --mod1-primary-note: #fff;
@@ -5594,6 +5593,7 @@ export class ColorConfig {
 		}`,
 		"death": `
 			:root {
+				--mod-title: #CCCCFF;
 				--page-margin: #112335;
 					--editor-background: #112335;
 					--playhead: #AABBFF;
@@ -5699,10 +5699,511 @@ export class ColorConfig {
 					--disabled-note-primary:    #91879f;
 					--disabled-note-secondary:  #6a679a;
 			}
+
+			@font-face {
+			font-family: "Comic Sans MS";
+			)
 		`,
+		"Roblox": `
+		:root {
+			--mod-title: #ff0000;
+			--page-margin: #f9feff;
+			--editor-background: #f9feff;
+			--playhead: rgba(255, 255, 255, 0.9);
+			--primary-text: #202227;
+			--secondary-text: #696a6d;
+			--box-selection-fill: #2252ba;
+			--loop-accent: #0074bf;
+			--link-accent: #0074bf;
+			--ui-widget-background: #f68802;
+			--ui-widget-focus: #d6d8df;
+			--pitch-background: #68d7f5;
+			--tonic: #ffffff;
+			--fifth-note: #5c6064;
+			--white-piano-key: #fff;
+			--black-piano-key: #000;
+			--track-editor-bg-pitch: #00a2ff;
+			--track-editor-bg-pitch-dim: #00a2cc;
+			--track-editor-bg-noise: #f68802;
+			--track-editor-bg-noise-dim: #c64402;
+			--track-editor-bg-mod: #02b757;
+			--track-editor-bg-mod-dim: #029157;
+			--multiplicative-mod-slider: #bb0000;
+			--overwriting-mod-slider: #ad0000;
+			--indicator-primary: #9c64f7;
+			--indicator-secondary: #393e4f;
+			--select2-opt-group: #5d576f;
+			--input-box-outline: #696a6d;
+			--mute-button-normal: #d6d8df;
+			--mute-button-mod: #d6d8df;
+			--mod-label-primary: #696a6d;
+		  --pitch1-secondary-channel: #cc0000;
+		  --pitch1-primary-channel: #ff0000;
+		  --pitch1-secondary-note: #cc0000;
+		  --pitch1-primary-note: #ff0000;
+		  --pitch2-secondary-channel: #bb0000;
+		  --pitch2-primary-channel: #ee0000;
+		  --pitch2-secondary-note: #bb0000;
+		  --pitch2-primary-note: #ee0000;
+		  --pitch3-secondary-channel: #aa0000;
+		  --pitch3-primary-channel: #dd0000;
+		  --pitch3-secondary-note: #aa0000;
+		  --pitch3-primary-note: #dd0000;
+		  --pitch4-secondary-channel: #990000;
+		  --pitch4-primary-channel: #cc0000;
+		  --pitch4-secondary-note: #990000;
+		  --pitch4-primary-note: #cc0000;
+		  --pitch5-secondary-channel: #880000;
+		  --pitch5-primary-channel: #bb0000;
+		  --pitch5-secondary-note: #880000;
+		  --pitch5-primary-note: #bb0000;
+		   --pitch6-secondary-channel: #cc0000;
+		  --pitch6-primary-channel: #ff0000;
+		  --pitch6-secondary-note: #cc0000;
+		  --pitch6-primary-note: #ff0000;
+		  --pitch7-secondary-channel: #bb0000;
+		  --pitch7-primary-channel: #ee0000;
+		  --pitch7-secondary-note: #bb0000;
+		  --pitch7-primary-note: #ee0000;
+		  --pitch8-secondary-channel: #aa0000;
+		  --pitch8-primary-channel: #dd0000;
+		  --pitch8-secondary-note: #aa0000;
+		  --pitch8-primary-note: #dd0000;
+		  --pitch9-secondary-channel: #990000;
+		  --pitch9-primary-channel: #cc0000;
+		  --pitch9-secondary-note: #990000;
+		  --pitch9-primary-note: #cc0000;
+		  --pitch10-secondary-channel: #880000;
+		  --pitch10-primary-channel: #bb0000;
+		  --pitch10-secondary-note: #880000;
+		  --pitch10-primary-note: #bb0000;
+		  --noise1-secondary-channel: #770000;
+		  --noise1-primary-channel: #aa0000;
+		  --noise1-secondary-note: #770000;
+		  --noise1-primary-note: #aa0000;
+		  --noise2-secondary-channel: #660000;
+		  --noise2-primary-channel: #990000;
+		  --noise2-secondary-note: #660000;
+		  --noise2-primary-note: #990000;
+		  --noise3-secondary-channel: #550000;
+		  --noise3-primary-channel: #880000;
+		  --noise3-secondary-note: #50000;
+		  --noise3-primary-note: #880000;
+		  --noise4-secondary-channel: #550000;
+		  --noise4-primary-channel: #880000;
+		  --noise4-secondary-note: #550000;
+		  --noise4-primary-note: #880000;
+		  --noise5-secondary-channel: #440000;
+		  --noise5-primary-channel: #770000;
+		  --noise5-secondary-note: #440000;
+		  --noise5-primary-note: #770000;
+		  --mod1-secondary-channel: #00a2cc;
+		  --mod1-primary-channel: #00a2ff;
+		  --mod1-secondary-note: #00a2cc;
+		  --mod1-primary-note: #00a2ff;
+		  --mod2-secondary-channel: #00a2cc;
+		  --mod2-primary-channel: #00a2ff;
+		  --mod2-secondary-note: #00a2cc;
+		  --mod2-primary-note: #00a2ff;
+		  --mod3-secondary-channel: #00a2cc;
+		  --mod3-primary-channel: #00a2ff;
+		  --mod3-secondary-note: #00a2cc;
+		  --mod3-primary-note: #00a2ff;
+		  --mod4-secondary-channel: #00a2cc;
+		  --mod4-primary-channel: #00a2ff;
+		  --mod4-secondary-note: #00a2cc;
+		  --mod4-primary-note: #00a2ff;
+		  --disabled-note-primary: #696a6d;
+		  --disabled-note-secondary: #60728b;
+			}
+
+		/* replaces hotdog with nothing */
+		#Hotdog {
+			display: hidden !important;
+			content: url("theme_resources/Roblox_logo.png") !important;
+			width: 50%;
+			height: 50%;
+			text-align: center;
+			margin-top: 25px;
+		}
+
+		/* sets cursor */
+		* {
+		cursor: url("theme_resources/Roblox_cursor.png"), auto !important;
+		}
+
+		/* sets background image */
+		body {
+		background-image: url("theme_resources/Roblox_headquarters.png") !important;
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+			}
+
+			/* font-nanigans */
+			@font-face {
+			font-family: "BuilderSans";
+			src:
+			url("theme_resources/BuilderSans-Regular-400.otf") format("opentype") tech(color-COLRv1),
+			}
+
+			@font-face {
+			font-family: "BuilderSansSemiBold";
+			src:
+			url("theme_resources/BuilderSans-SemiBold-600.otf") format("opentype") tech(color-COLRv1),
+			}
+
+			@font-face {
+			font-family: "BuilderSansExtraBold";
+			src:
+			url("theme_resources/BuilderSans-ExtraBold-800.otf") format("opentype") tech(color-COLRv1),
+			}
+
+			@font-face {
+			font-family: "BuilderSansBold";
+			src:
+			url("theme_resources/BuilderSans-Bold-700.otf") format("opentype") tech(color-COLRv1),
+			}
+
+			html {
+				font-family: 'BuilderSans';
+			}
+			h1 {
+				font-family: 'BuilderSansExtraBold';
+			}
+			h2 {
+				font-family: 'BuilderSansBold';
+			}
+			h3 {
+				font-family: 'BuilderSansSemiBold';
+			}
+
+			/* make editor background transparent */
+		#beepboxEditorContainer, .beepboxEditor, #text-content {
+		background: #f9feff7d !important;
+		}
+
+			#text-content > section > h1 > font {
+		display: none;
+		}
+
+		#text-content > section > h1 {
+		margin: auto;
+		width: 100%;
+		height: 100%;
+		content: url("theme_resources/Roblox_logo.png");
+		}
+		.promptContainerBG::before {
+			box-shadow: inset 0 0 2000px rgba(0, 0, 0, .5);
+		}
+
+		.beepboxEditor input[type="range"]::-webkit-slider-thumb
+				{
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]::-webkit-slider-runnable-track
+				{
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]:focus::-webkit-slider-runnable-track
+				{
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]::-ms-thumb
+				{
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]::-ms-track
+				{
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]:focus::-ms-track
+				{
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]::-moz-range-thumb
+				{
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]::-moz-range-track
+				{
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]:focus::-moz-range-track
+				{
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="text"],
+				.beepboxEditor input[type="number"]
+				{
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="checkbox"]
+				{
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="checkbox"]:checked
+				{
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="checkbox"]:checked:after
+				{
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+	
+				div.selectRow span {
+					cursor: url("theme_resources/Roblox_cursor-hand.png"), pointer !important;
+				}
+
+
+		}`,
+
+		"windows95": `
+				:root {		
+				--page-margin: #57a8a9; 		
+				--editor-background: #bfc7c9; 		
+				--playhead: #000000; 	
+				--primary-text: #000000;
+				--secondary-text: #000000; 		
+				--invert-text: #ffffff;
+				--box-selection-fill: #0f44af; 		
+				--loop-accent: #000000; 		
+				--link-accent: #df88ff; 		
+				--ui-widget-background: #ffffff; 		
+				--ui-widget-focus: #ffffff; 		
+				--pitch-background: #ffffff; 		
+				--tonic: #ffffff; 		
+				--fifth-note: #ffffff; 		
+				--white-piano-key: #bfc7c9; 		
+				--black-piano-key: #bfc7c9;
+				--white-piano-key-text: #000000;
+				--black-piano-key-text: #000000;
+				--use-color-formula: false; 		
+				--track-editor-bg-pitch: #bfc7c9; 		
+				--track-editor-bg-pitch-dim: #87878f; 		
+				--track-editor-bg-noise: #bfc7c9; 		
+				--track-editor-bg-noise-dim: #87878f; 		
+				--track-editor-bg-mod: #bfc7c9; 		
+				--track-editor-bg-mod-dim: #87878f; 		
+				--multiplicative-mod-slider: #9f6082; 		
+				--overwriting-mod-slider: #bfc7c9; 		
+				--indicator-primary: #bfc7c9; 		
+				--indicator-secondary: #87878f; 		
+				--select2-opt-group: #bfc7c9; 		
+				--input-box-outline: #18041a; 		
+				--mute-button-normal: #000000;	 		
+				--mute-button-mod: #000000; 		
+			
+		  --pitch1-secondary-channel: #000000;
+		  --pitch1-primary-channel: #ffffff; 
+		  --pitch2-secondary-channel: #000000;
+		  --pitch2-primary-channel: #ffffff; 
+		  --pitch3-secondary-channel: #000000;
+		  --pitch3-primary-channel: #ffffff; 
+		  --pitch4-secondary-channel: #000000;
+		  --pitch4-primary-channel: #ffffff; 
+		  --pitch5-secondary-channel: #000000;
+		  --pitch5-primary-channel: #ffffff; 
+		  --pitch6-secondary-channel: #000000;
+		  --pitch6-primary-channel: #ffffff; 
+		  --pitch7-secondary-channel: #000000;
+		  --pitch7-primary-channel: #ffffff; 
+		  --pitch8-secondary-channel: #000000;
+		  --pitch8-primary-channel: #ffffff; 
+		  --pitch9-secondary-channel: #000000;
+		  --pitch9-primary-channel: #ffffff; 
+		  --pitch10-secondary-channel: #000000;
+		  --pitch10-primary-channel: #ffffff; 
+		  --noise1-secondary-channel: #000000;
+		  --noise1-primary-channel: #ffffff; 
+		  --noise2-secondary-channel: #000000;
+		  --noise2-primary-channel: #ffffff; 
+		  --noise3-secondary-channel: #000000;
+		  --noise3-primary-channel: #ffffff; 
+		  --noise4-secondary-channel: #000000;
+		  --noise4-primary-channel: #ffffff; 
+		  --noise5-secondary-channel: #000000;
+		  --noise5-primary-channel: #ffffff; 
+		  --mod1-secondary-channel: #000000;
+		  --mod1-primary-channel: #ffffff; 
+		  --mod2-secondary-channel: #000000;
+		  --mod2-primary-channel: #ffffff; 
+		  --mod3-secondary-channel: #000000;
+		  --mod3-primary-channel: #ffffff; 
+		  --mod4-secondary-channel: #000000;
+		  --mod4-primary-channel: #ffffff; 
+	
+				--note-flash: #ffffff;
+				--note-flash-secondary: #ffffff77;
+				
+				--oscilloscope-line-R: #00ff00;
+				--oscilloscope-line-L: #00ff00;
+				--text-spacing-icon:   ;
+				--scrollbar-color: #bfc7c9;
+
+					}
+			* {
+			cursor: url("theme_resources/windows_cursor.png"), auto;
+			}
+			#Hotdog {
+				display: none !important;
+				content: url("theme_resources/hotdog.png") !important;
+			}
+			
+				@font-face {
+			   font-family: "W95";
+			   src:
+				url("theme_resources/W95FA.otf") format("opentype") tech(color-COLRv1),
+				}
+	
+	
+				#text-content
+				{
+						border-image-source: url("theme_resources/windows_editorborder.png");
+						border-image-slice: 4 fill; 
+					   border-image-width: 8px; 
+					border-image-repeat: stretch; 
+						padding: 12px; 
+	
+						image-rendering: -moz-crisp-edges !important;         /* Firefox */
+						image-rendering: -webkit-optimize-contrast !important; /* Webkit (Chrome/Safari) */
+						image-rendering: -o-crisp-edges !important;            /* Opera */
+						image-rendering: pixelated !important;                 /* Future browsers */
+						image-rendering: optimizeSpeed !important;             /* IE */
+					}
+
+				#beepboxEditorContainer
+				{
+						border-image-source: url("theme_resources/windows_editorborder.png");
+						border-image-slice: 4 fill; 
+					   	border-image-width: 8px; 
+						border-image-repeat: stretch;
+						padding: 12px;
+						margin-bottom: 10px;
+						margin-top: 10px;
+	
+						image-rendering: -moz-crisp-edges !important;         /* Firefox */
+						image-rendering: -webkit-optimize-contrast !important; /* Webkit (Chrome/Safari) */
+						image-rendering: -o-crisp-edges !important;            /* Opera */
+						image-rendering: pixelated !important;                 /* Future browsers */
+						image-rendering: optimizeSpeed !important;             /* IE */ 
+					}
+
+				.beepboxEditor input,
+				.beepboxEditor select,
+				.beepboxEditor button,
+				.beepboxEditor option,
+				.beepboxEditor optgroup,
+				.beepboxEditor .select2-selection__rendered
+				{
+						border-image-source: url("theme_resources/windows_border.png") !important;
+						border-image-slice: 4 fill !important; 
+					   border-image-width: 4px !important; 
+					border-image-repeat: stretch !important;
+						padding: 2px !important; 
+	
+						image-rendering: -moz-crisp-edges !important;         /* Firefox */
+						image-rendering: -webkit-optimize-contrast !important; /* Webkit (Chrome/Safari) */
+						image-rendering: -o-crisp-edges !important;            /* Opera */
+						image-rendering: pixelated !important;                 /* Future browsers */
+						image-rendering: optimizeSpeed !important;             /* IE */
+	
+						cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+					}
+					
+	
+				html {
+					font-family: 'W95';
+				}
+	
+				.beepboxEditor input[type="range"]::-webkit-slider-thumb
+				{
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]::-webkit-slider-runnable-track
+				{
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]:focus::-webkit-slider-runnable-track
+				{
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]::-ms-thumb
+				{
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]::-ms-track
+				{
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]:focus::-ms-track
+				{
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]::-moz-range-thumb
+				{
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]::-moz-range-track
+				{
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="range"]:focus::-moz-range-track
+				{
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="text"],
+				.beepboxEditor input[type="number"]
+				{
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="checkbox"]
+				{
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="checkbox"]:checked
+				{
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+				 
+				.beepboxEditor input[type="checkbox"]:checked:after
+				{
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+	
+				div.selectRow span {
+					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
+				}
+	
+				`,
+
 	"custom": `${localStorage.getItem("customColors") || `:root {  }`}`,
     };
 
+	
     public static readonly pageMargin: string = "var(--page-margin, black)";
     public static readonly editorBackground: string = "var(--editor-background, black)";
     public static readonly hoverPreview: string = "var(--hover-preview, white)";

@@ -8550,6 +8550,7 @@ export class Synth {
     public renderingSong: boolean = false;
     public heldMods: HeldMod[] = [];
     private wantToSkip: boolean = false;
+    private wantToReverse: boolean = false;
     private playheadInternal: number = 0.0;
     private bar: number = 0;
     private prevBar: number | null = null;
@@ -8646,7 +8647,7 @@ export class Synth {
             if (pattern != null) {
                 let instrument: Instrument = this.song.channels[channel].instruments[pattern.instruments[0]];
                 for (let mod: number = 0; mod < Config.modCount; mod++) {
-                    if (instrument.modulators[mod] == Config.modulators.dictionary["next bar"].index) {
+                    if (instrument.modulators[mod] == Config.modulators.dictionary["next bar"].index || instrument.modulators[mod] == Config.modulators.dictionary["prev bar"].index) {
                         for (const note of pattern.notes) {
                             if (note.pitches[0] == (Config.modCount - 1 - mod)) {
                                 // Find the earliest next bar note.
@@ -8671,6 +8672,7 @@ export class Synth {
         let endBar: number = enableOutro ? this.song.barCount : (this.song.loopStart + this.song.loopLength);
         let hasTempoMods: boolean = false;
         let hasNextBarMods: boolean = false;
+        let hasPrevBarMods: boolean = false;
         let prevTempo: number = this.song.tempo;
 
         // Determine if any tempo or next bar mods happen anywhere in the window
@@ -8685,6 +8687,9 @@ export class Synth {
                         }
                         if (instrument.modulators[mod] == Config.modulators.dictionary["next bar"].index) {
                             hasNextBarMods = true;
+                        }
+                        if (instrument.modulators[mod] == Config.modulators.dictionary["prev bar"].index) {
+                              hasPrevBarMods = true;
                         }
                     }
                 }
@@ -8741,7 +8746,7 @@ export class Synth {
             }
         }
 
-        if (hasTempoMods || hasNextBarMods) {
+        if (hasTempoMods || hasNextBarMods || hasPrevBarMods) {
             // Run from start bar to end bar and observe looping, computing average tempo across each bar
             let bar: number = startBar;
             let ended: boolean = false;
@@ -8753,6 +8758,10 @@ export class Synth {
                 let currentPart: number = 0;
 
                 if (hasNextBarMods) {
+                    partsInBar = this.findPartsInBar(bar);
+                }
+
+                if (hasPrevBarMods) {
                     partsInBar = this.findPartsInBar(bar);
                 }
 
@@ -9161,6 +9170,30 @@ export class Synth {
 
     }
 
+    public unskipBar(): void {
+        if (!this.song) return;
+        const samplesPerTick: number = this.getSamplesPerTick();
+        this.nextBar = this.bar; // Bugfix by LeoV
+        if (this.loopBarStart != this.bar)
+            this.bar--;
+        else {
+            this.bar = this.loopBarEnd;
+        }
+        this.beat = 0;
+        this.part = 0;
+        this.tick = 0;
+        this.tickSampleCountdown = samplesPerTick;
+        this.isAtStartOfTick = true;
+
+        if (this.loopRepeatCount != 0 && this.bar == Math.min(this.loopBarEnd - this.song.loopLength, this.song.loopStart)) {
+            this.bar = this.song.loopStart;
+            if (this.loopBarEnd != -1)
+                this.bar = this.loopBarEnd;
+            if (this.loopRepeatCount > 0) this.loopRepeatCount++;
+        }
+
+    }
+
     private audioProcessCallback = (audioProcessingEvent: any): void => {
         const outputBuffer = audioProcessingEvent.outputBuffer;
         const outputDataL: Float32Array = outputBuffer.getChannelData(0);
@@ -9337,6 +9370,24 @@ export class Synth {
                 this.wantToSkip = false;
                 this.skipBar();
 		    	continue;
+            }
+
+            if (this.wantToReverse) {
+                // Unable to continue, as we have skipped back to a previously visited bar without generating new samples, which means we are infinitely skipping.
+                // In this case processing will return before the designated number of samples are processed. In other words, silence will be generated.
+                let barVisited = this.bar;
+                if (barVisited && bufferIndex == firstSkippedBufferIndex) {
+                    this.pause();
+                    return;
+                }
+                if (firstSkippedBufferIndex == -1) {
+                    firstSkippedBufferIndex = bufferIndex;
+                }
+                if (!barVisited)
+                    skippedBars.push(this.bar);
+                this.wantToReverse = false;
+                this.unskipBar();
+                continue;
             }
 
             for (let channelIndex: number = 0; channelIndex < song.pitchChannelCount + song.noiseChannelCount; channelIndex++) {
@@ -13234,6 +13285,10 @@ export class Synth {
             // Denote next bar skip
             else if (setting == Config.modulators.dictionary["next bar"].index) {
                 synth.wantToSkip = true;
+            }
+
+            else if (setting == Config.modulators.dictionary["prev bar"].index) {
+                synth.wantToReverse = true;
             }
             // Extra info for eq filter target needs to be set as well
             else if (setting == Config.modulators.dictionary["eq filter"].index) {

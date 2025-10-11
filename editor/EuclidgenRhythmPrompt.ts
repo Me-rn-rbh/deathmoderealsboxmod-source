@@ -158,11 +158,11 @@ export class EuclideanRhythmPrompt implements Prompt {
 	private _barsAvailable: number = Config.barCountMax;
 
 	private _barPreviewBarIndex: number = 0;
-	private readonly _barPreviewWidth: number = 400;
-	private readonly _barPreviewHeight: number = 10;
+	private readonly _barPreviewWidth: number = 600;
+	private readonly _barPreviewHeight: number = 80;
 
-	private readonly _clockWidth: number = 100;
-	private readonly _clockHeight: number = 100;
+	private readonly _clockWidth: number = 150;
+	private readonly _clockHeight: number = 150;
 	private readonly _clockPointMinRadius: number = this._clockWidth / this._maxSteps;
 	private readonly _clockPointMaxRadius: number = this._clockWidth / 16;
 	private readonly _clockPadding: number = this._clockWidth / this._maxSteps;
@@ -214,7 +214,7 @@ export class EuclideanRhythmPrompt implements Prompt {
 		)
 	);
 
-	private readonly _clockWire: SVGCircleElement = SVG.circle({ cx: this._clockWidth / 2, cy: this._clockHeight / 2, r: this._clockRadius, stroke: ColorConfig.primaryText, "stroke-width": "0.5", fill: "none" });
+	private readonly _clockWire: SVGCircleElement = SVG.circle({ cx: this._clockWidth / 2, cy: this._clockHeight / 2, r: this._clockRadius, stroke: ColorConfig.primaryText, "stroke-width": "1", fill: "none" });
 	private readonly _clockPoints: SVGSVGElement = SVG.svg({ "pointer-events": "none" });
 
 	private readonly _stepsStepper: HTMLInputElement = input({ style: "width: 3em; margin-left: 1em;", type: "number", min: this._minSteps, max: this._maxSteps, value: "8", step: "1" });
@@ -239,58 +239,58 @@ export class EuclideanRhythmPrompt implements Prompt {
 
 	private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
 
-	public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 600px;" },
-		h2("Generate Euclidean Rhythm"),
+	public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 800px;" },
+		h2("Euclidean Rhythm"),
 		div({ style: "display: flex; flex-direction: row; align-items: center;" },
 			this._sequenceButtonContainer
 		),
 		div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: space-between;" },
-			div({ style: "flex-grow: 0; flex-shrink: 0;" },
+			div({ style: "flex-grow: 2; flex-shrink: 0;" },
 				this._barPreviewGoToFirstButton,
 				this._barPreviewGoBackButton
 			),
 			this._barPreviewLabel,
-			div({ style: "flex-grow: 0; flex-shrink: 0;" },
+			div({ style: "flex-grow: 2; flex-shrink: 0;" },
 				this._barPreviewGoForwardButton,
 				this._barPreviewGoToLastButton
 			),
 		),
 		div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: center;" },
-			SVG.svg({ "pointer-events": "none", style: "touch-action: none; overflow: hidden;", width: "100%", height: "20px", viewBox: `0 0 ${this._barPreviewWidth} ${this._barPreviewHeight}`, preserveAspectRatio: "none" },
+			SVG.svg({ "pointer-events": "none", style: "touch-action: none; overflow: hidden;", width: "100%", height: "40px", viewBox: `0 0 ${this._barPreviewWidth} ${this._barPreviewHeight}`, preserveAspectRatio: "none" },
 				this._barPreviewBackground,
 				this._barPreviewSteps
 			),
 		),
 		div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: space-evenly;" },
-			div({ style: "max-width: 150px; height: 100%;" },
-				SVG.svg({ "pointer-events": "none", width: "100%", height: "100%", style: "touch-action: none; overflow: hidden; margin-right: 1.5em; max-width: 150px; height: 100%;", viewBox: `0 0 ${this._clockWidth} ${this._clockHeight}`, preserveAspectRatio: "none" },
+			div({ style: "width: 100%; height: 100%;"},
+				SVG.svg({ "pointer-events": "none", width: "100%", height: "100%", style: "touch-action: none; overflow: hidden; margin-right: 1.5em; width: 100%; height: 100%;", viewBox: `0 0 ${this._clockWidth} ${this._clockHeight}`, preserveAspectRatio: "none" },
 					this._clockWire,
 					this._clockPoints
 				),
 			),
-			div({ style: "display: flex; height: 100%;" },
-				div({ style: "flex-grow: 1; " },
-					div({ style: "display: flex; flex-direction: row; align-items: center; height: 3em; justify-content: flex-end;" },
+			div({ style: "display: table; height: 100%;" },
+				div({ style: "flex-grow: 1; display: flex; padding-bottom: 20px;" },
+					div({ style: "display: flex; flex-direction: column; align-items: center; height: 3em; justify-content: flex-end; margin-top: 0.5em" },
 						div({ style: `text-align: right; flex-grow: 1; color: ${ColorConfig.primaryText};` },
 							"Steps"
 						),
 						this._stepsStepper
 					),
-					div({ style: "display: flex; flex-direction: row; align-items: center; height: 3em; justify-content: flex-end; margin-top: 0.5em;" },
+					div({ style: "display: flex; flex-direction: column; align-items: center; height: 3em; justify-content: flex-end; margin-top: 0.5em;" },
 						div({ style: `text-align: right; flex-grow: 1; color: ${ColorConfig.primaryText};` },
 							"Pulses"
 						),
 						this._pulsesStepper
 					),
-					div({ style: "display: flex; flex-direction: row; align-items: center; height: 3em; justify-content: flex-end; margin-top: 0.5em;" },
+					div({ style: "display: flex; flex-direction: column; align-items: center; height: 3em; justify-content: flex-end; margin-top: 0.5em;" },
 						div({ style: `text-align: right; flex-grow: 1; color: ${ColorConfig.primaryText};` },
 							"Rotation"
 						),
 						this._rotationStepper
 					),
 				),
-				div({ style: "flex-grow: 1; margin-left: 1em;" },
-					div({ style: "display: flex; flex-direction: row; align-items: center; height: 3em; justify-content: flex-end; margin-bottom: 1em;" },
+				div({ style: "flex-grow: 1; margin-up: 1em; display: flex; padding-top: 20px" },
+					div({ style: "display: flex; flex-direction: column; align-items: center; height: 3em; justify-content: flex-end; margin-top: 0.5em;" },
 						div({ style: `text-align: right; flex-grow: 1; color: ${ColorConfig.primaryText};` },
 							"Size"
 						),
@@ -299,13 +299,13 @@ export class EuclideanRhythmPrompt implements Prompt {
 							this._stepSizeDenominatorStepper
 						)
 					),
-					div({ style: "display: flex; flex-direction: row; align-items: center; height: 3em; justify-content: flex-end; margin-top: 0.5em;" },
+					div({ style: "display: flex; flex-direction: column; align-items: center; height: 3em; justify-content: flex-end; margin-top: 0.5em;" },
 						div({ style: `text-align: right; flex-grow: 1; color: ${ColorConfig.primaryText};` },
 							"Channel"
 						),
 						this._channelStepper
 					),
-					div({ style: "display: flex; flex-direction: row; align-items: center; height: 3em; justify-content: flex-end; margin-top: 0.5em;" },
+					div({ style: "display: flex; flex-direction: column; align-items: center; height: 3em; justify-content: flex-end; margin-top: 0.5em;" },
 						div({ style: `text-align: right; flex-grow: 1; color: ${ColorConfig.primaryText};` },
 							"Pitch"
 						),

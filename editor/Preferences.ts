@@ -1,7 +1,8 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 import {Scale, Config} from "../synth/SynthConfig";
-import {ColorConfig} from "../editor/ColorConfig";
+import { ColorConfig } from "../editor/ColorConfig";
+import { BackDropPrompt } from "./BackDropPrompt";
 
 export class Preferences {
 	public static readonly defaultVisibleOctaves: number = 3;
@@ -44,8 +45,9 @@ export class Preferences {
 	public showInstructions: boolean;
 	public showInstrumentScrollbars: boolean;
 	public closePromptByClickoff: boolean;
-	public frostedGlassBackground: boolean;
-	
+	public frostedGlassBackground: string;
+	public comical: boolean;
+	public temposlider: boolean;
 	constructor() {
 		this.reload();
 	}
@@ -80,7 +82,7 @@ export class Preferences {
 		this.showInstructions = window.localStorage.getItem("showInstructions") != "false";
 		this.showInstrumentScrollbars = window.localStorage.getItem("showInstrumentScrollbars") == "true";
 		this.closePromptByClickoff = window.localStorage.getItem("closePromptByClickoff") == "true";
-		this.frostedGlassBackground = window.localStorage.getItem("frostedGlassBackground") == "true";
+		this.frostedGlassBackground = window.localStorage.getItem("frostedGlassBackground") || BackDropPrompt.active;
 		this.keyboardLayout = window.localStorage.getItem("keyboardLayout") || "pianoTransposingC";
 		this.bassOffset = (+(<any>window.localStorage.getItem("bassOffset"))) || 0;
 		this.layout = window.localStorage.getItem("layout") || "small";
@@ -88,6 +90,8 @@ export class Preferences {
 		this.customTheme = window.localStorage.getItem("customTheme");
         this.customTheme2 = window.localStorage.getItem("customTheme2");
 		this.visibleOctaves = ((<any>window.localStorage.getItem("visibleOctaves")) >>> 0) || Preferences.defaultVisibleOctaves;
+		this.comical = window.localStorage.getItem("comical") == "true";
+		this.temposlider = window.localStorage.getItem("temposlider") == "false";
 		
 		const defaultScale: Scale | undefined = Config.scales.dictionary[window.localStorage.getItem("defaultScale")!];
 		this.defaultScale = (defaultScale != undefined) ? defaultScale.index : 0;
@@ -100,7 +104,7 @@ export class Preferences {
 			if (window.localStorage.getItem("fullScreen") == "true") this.layout = "long";
 			window.localStorage.removeItem("fullScreen");
 		}
-		
+
 	}
 	
 	public save(): void {
@@ -134,7 +138,7 @@ export class Preferences {
 		window.localStorage.setItem("showInstructions", this.showInstructions ? "true" : "false");
 		window.localStorage.setItem("showInstrumentScrollbars", this.showInstrumentScrollbars ? "true" : "false");
 		window.localStorage.setItem("closePromptByClickoff", this.closePromptByClickoff ? "true" : "false");
-		window.localStorage.setItem("frostedGlassBackground", this.frostedGlassBackground ? "true" : "false");
+		window.localStorage.setItem("frostedGlassBackground", this.frostedGlassBackground);
 		window.localStorage.setItem("keyboardLayout", this.keyboardLayout);
 		window.localStorage.setItem("bassOffset", String(this.bassOffset));
 		window.localStorage.setItem("layout", this.layout);
@@ -143,6 +147,8 @@ export class Preferences {
 		window.localStorage.setItem("customTheme2", this.customTheme2!);
 		window.localStorage.setItem("volume", String(this.volume));
 		window.localStorage.setItem("visibleOctaves", String(this.visibleOctaves));
+		window.localStorage.setItem("comical", this.comical ? "true" : "false");
+		window.localStorage.setItem("temposlider", this.temposlider ? "true" : "false");
 		
 	}
 }

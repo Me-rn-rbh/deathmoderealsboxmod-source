@@ -10,7 +10,6 @@ import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
 import { ChangeSequence, UndoableChange } from "./Change";
 import { ChangeVolume, FilterMoveData, ChangeTempo, ChangePan, ChangeReverb, ChangeDistortion, ChangeOperatorAmplitude, ChangeFeedbackAmplitude, ChangePulseWidth, ChangeDetune, ChangeVibratoDepth, ChangeVibratoSpeed, ChangeVibratoDelay, ChangePanDelay, ChangeChorus, ChangeEQFilterSimplePeak, ChangeNoteFilterSimplePeak, ChangeStringSustain, ChangeEnvelopeSpeed, ChangeSupersawDynamism, ChangeSupersawShape, ChangeSupersawSpread, ChangePitchShift, ChangeChannelBar, ChangeDragSelectedNotes, ChangeEnsurePatternExists, ChangeNoteTruncate, ChangeNoteAdded, ChangePatternSelection, ChangePinTime, ChangeSizeBend, ChangePitchBend, ChangePitchAdded, ChangeArpeggioSpeed, ChangeBitcrusherQuantization, ChangeBitcrusherFreq, ChangeEchoSustain, ChangeEQFilterSimpleCut, ChangeNoteFilterSimpleCut, ChangeFilterMovePoint, ChangeDuplicateSelectedReusedPatterns, ChangeHoldingModRecording, ChangeDecimalOffset } from "./changes";
 import { prettyNumber } from "./EditorConfig";
-
 function makeEmptyReplacementElement<T extends Node>(node: T): T {
     const clone: T = <T>node.cloneNode(false);
     node.parentNode!.replaceChild(clone, node);
@@ -43,7 +42,7 @@ export class PatternEditor {
     private _svgNoteContainer: SVGSVGElement = SVG.svg();
     private readonly _svgPlayhead: SVGRectElement = SVG.rect({ x: "0", y: "0", width: "4", fill: ColorConfig.playhead, "pointer-events": "none" });
     private readonly _selectionRect: SVGRectElement = SVG.rect({ class: "dashed-line dash-move", fill: ColorConfig.boxSelectionFill, stroke: ColorConfig.hoverPreview, "stroke-width": 2, "stroke-dasharray": "5, 3", "fill-opacity": "0.4", "pointer-events": "none", visibility: "hidden" });
-    private readonly _svgPreview: SVGPathElement = SVG.path({ fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": "2", "pointer-events": "none" });
+    private readonly _svgPreview: SVGPathElement = SVG.path({fill: ColorConfig.boxSelectionFill, stroke: ColorConfig.hoverPreview, "stroke-width": 2, "pointer-events": "none" });
     public modDragValueLabel: HTMLDivElement = HTML.div({ width: "90", "text-anchor": "start", contenteditable: "true", style: "display: flex, justify-content: center; align-items:center; position:absolute; pointer-events: none;", "dominant-baseline": "central", });
     public _svg: SVGSVGElement = SVG.svg({ id:'firstImage', style: `background-image: url(${getLocalStorageItem("customTheme", "")}); background-repeat: no-repeat; background-size: 100% 100%; background-color: ${ColorConfig.editorBackground}; touch-action: none; position: absolute;`, width: "100%", height: "100%" },
 	SVG.defs(
@@ -127,10 +126,14 @@ export class PatternEditor {
     constructor(private _doc: SongDocument, private _interactive: boolean, private _barOffset: number) {
         for (let i: number = 0; i < Config.pitchesPerOctave; i++) {
             const rectangle: SVGRectElement = SVG.rect();
+            if (window.localStorage.getItem("customTheme") == "windows95") {
+                rectangle.setAttribute("border",`2px, inset, ${ ColorConfig.uiWidgetFocus }`)
+            };
             rectangle.setAttribute("x", "1");
             rectangle.setAttribute("fill", (i == 0) ? ColorConfig.tonic : ColorConfig.pitchBackground);
             this._svgNoteBackground.appendChild(rectangle);
             this._backgroundPitchRows[i] = rectangle;
+           
         }
 
         this._backgroundDrumRow.setAttribute("x", "1");

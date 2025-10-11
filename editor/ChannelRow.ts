@@ -81,6 +81,13 @@ export class Box {
 			this._renderedBorderRight = borderRight;
 		}
 	}
+	public setBorder(border: string): void {
+		if (this._renderedBorderLeft != border && this._renderedBorderLeft != border) {
+			this.container.style.setProperty("border", border);
+			this._renderedBorderLeft = border;
+			this._renderedBorderRight = border;
+		}
+	}
 }
 
 export class ChannelRow {
@@ -150,7 +157,13 @@ export class ChannelRow {
 			}
 			else {
 				box.setBorderRight("none");
-            }
+			}
+			if (window.localStorage.getItem("colorTheme") == "windows95") {
+				box.setBorder(`2px outset ${ColorConfig.uiWidgetFocus}`)
+			}
+			else {
+				box.setBorder("none")
+			}
 		}
 	}
 }
