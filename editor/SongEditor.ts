@@ -857,8 +857,8 @@ export class SongEditor {
     private readonly _instrumentButtons: HTMLButtonElement[] = [];
     private readonly _instrumentAddButton: HTMLButtonElement = button({ type: "button", class: "add-instrument last-button" });
     private readonly _instrumentRemoveButton: HTMLButtonElement = button({ type: "button", class: "remove-instrument" });
-    private readonly _instrumentsButtonBar: HTMLDivElement = div({ class: "instrument-bar" }, this._instrumentRemoveButton, this._instrumentAddButton);
-    private readonly _instrumentsButtonRow: HTMLDivElement = div({ class: "selectRow", style: "display: none;" }, span({ class: "tip", onclick: () => this._openPrompt("instrumentIndex") }, "Instrument:"), this._instrumentsButtonBar);
+    private readonly _instrumentsButtonBar: HTMLDivElement = div({ class: "instrument-bar", style: "margin: 0px 10px; display: flex; min-width: 125px" }, this._instrumentRemoveButton, this._instrumentAddButton);
+    private readonly _instrumentsButtonRow: HTMLDivElement = div({ class: "selectRow", style: "display: none;" }, span({ class: "tip", onclick: () => this._openPrompt("instrumentIndex") }, "?"), this._instrumentsButtonBar);
     private readonly _instrumentVolumeSlider: Slider = new Slider(input({ style: "margin: 0; position: sticky;", type: "range", min: Math.floor(-Config.volumeRange / 2), max: Math.floor(Config.volumeRange / 2), value: "0", step: "1" }), this._doc, (oldValue: number, newValue: number) => new ChangeVolume(this._doc, oldValue, newValue), true);
     private readonly _instrumentVolumeSliderInputBox: HTMLInputElement = input({ style: "width: 4em; font-size: 80%", id: "volumeSliderInputBox", type: "number", step: "1", min: Math.floor(-Config.volumeRange / 2), max: Math.floor(Config.volumeRange / 2), value: "0" });
     private readonly _instrumentVolumeSliderTip: HTMLDivElement = div({ class: "selectRow", style: "height: 1em" }, span({ class: "tip", style: "font-size: smaller;", onclick: () => this._openPrompt("instrumentVolume") }, "Volume: "));
@@ -1116,10 +1116,10 @@ export class SongEditor {
 
     private readonly _songTitleInputBox: InputBox = new InputBox(input({ style: `font-weight:bold; border:none; width: 98%; background-color:${ColorConfig.editorBackground}; color:${ColorConfig.primaryText}; text-align:center`, maxlength: "60", type: "text", value: EditorConfig.versionDisplayName }), this._doc, (oldValue: string, newValue: string) => new ChangeSongTitle(this._doc, oldValue, newValue));
 
-    private readonly _removeLoopButton: HTMLButtonElement = button({ style: `margin: 4px; border: thin, inset; max-width: 200px`, class: "removeLoopButton", type: "button", title: "removeLoopButton" }, "Remove Loop");
-    private readonly _barLoopButton: HTMLButtonElement = button({ style: `margin: 4px; border: thin, inset; max-width: 200px`, class: "barLoopButton", type: "button", title: "barLoopButton" }, "One Bar Loop");
-    private readonly _songLoopButton: HTMLButtonElement = button({ style: `margin: 4px; border: thin, inset; max-width: 200px`, class: "songLoopButton", type: "button", title: "songLoopButton" }, "Song Wide Loop");
-    private readonly _selectLoopButton: HTMLButtonElement = button({ style: `margin: 4px; border: thin, inset; max-width: 200px`, class: "selectLoopButton", type: "button", title: "selectLoopButton" }, "Selection Wide Loop");
+    private readonly _removeLoopButton: HTMLButtonElement = button({ style: `margin: 4px; border: thin, inset; max-width: 200px; height: auto`, class: "removeLoopButton", type: "button", title: "removeLoopButton" }, "Remove Loop");
+    private readonly _barLoopButton: HTMLButtonElement = button({ style: `margin: 4px; border: thin, inset; max-width: 200px; height: auto`, class: "barLoopButton", type: "button", title: "barLoopButton" }, "One Bar Loop");
+    private readonly _songLoopButton: HTMLButtonElement = button({ style: `margin: 4px; border: thin, inset; max-width: 200px; height: auto`, class: "songLoopButton", type: "button", title: "songLoopButton" }, "Song Wide Loop");
+    private readonly _selectLoopButton: HTMLButtonElement = button({ style: `margin: 4px; border: thin, inset; max-width: 200px; height: auto`, class: "selectLoopButton", type: "button", title: "selectLoopButton" }, "Selection Wide Loop");
 
     private readonly _feedbackAmplitudeSlider: Slider = new Slider(input({ type: "range", min: "0", max: Config.operatorAmplitudeMax, value: "0", step: "1", title: "Feedback Amplitude" }), this._doc, (oldValue: number, newValue: number) => new ChangeFeedbackAmplitude(this._doc, oldValue, newValue), false);
     private readonly _feedbackRow2: HTMLDivElement = div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("feedbackVolume") }, "Fdback Vol:"), this._feedbackAmplitudeSlider.container);

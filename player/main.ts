@@ -168,15 +168,15 @@ if (!showOscilloscope) {
 	oscilloscope.canvas.style.display = "none";
 	synth.oscEnabled = false;
 }
-let titleText: HTMLHeadingElement = h1({ style: "flex-grow: 1; margin: 0 1px; margin-left: 10px; overflow: hidden;" }, "");
+let titleText: HTMLHeadingElement = h1({ style: "flex-grow: 1; margin: 0 1px; padding: 5px; overflow: hidden; border: thin, solid" }, "No Title Found!");
 	let editLink: HTMLAnchorElement = a({target: "_top", style: "margin: 0 4px;"}, "✎ Edit");
 	let copyLink: HTMLAnchorElement = a({href: "javascript:void(0)", style: "margin: 0 4px;"}, "⎘ Copy URL");
 	let shareLink: HTMLAnchorElement = a({href: "javascript:void(0)", style: "margin: 0 4px;"}, "⤳ Share");
 	let fullscreenLink: HTMLAnchorElement = a({target: "_top", style: "margin: 0 4px;"}, "⇱ Fullscreen");
 
 let draggingPlayhead: boolean = false;
-	const playButton: HTMLButtonElement = button({style: "width: 100%; height: 100%; max-height: 50px;"});
-	const playButtonContainer: HTMLDivElement = div({style: "flex-shrink: 0; display: flex; padding: 2px; width: 80px; height: 100%; box-sizing: border-box; align-items: center;"},
+	const playButton: HTMLButtonElement = button({style: "width: 110%; height: 100%; max-height: 50px;"});
+	const playButtonContainer: HTMLDivElement = div({style: "flex-shrink: 0; display: flex; padding: 10px; width: 80px; height: 100%; box-sizing: border-box; align-items: center;"},
 	playButton,
 );
 	const loopIcon: SVGPathElement = path({d: "M 4 2 L 4 0 L 7 3 L 4 6 L 4 4 Q 2 4 2 6 Q 2 8 4 8 L 4 10 Q 0 10 0 6 Q 0 2 4 2 M 8 10 L 8 12 L 5 9 L 8 6 L 8 8 Q 10 8 10 6 Q 10 4 8 4 L 8 2 Q 12 2 12 6 Q 12 10 8 10 z"});
@@ -199,8 +199,8 @@ const volumeSlider: HTMLInputElement = input({ title: "volume", type: "range", v
 
 	const timeline: SVGSVGElement = svg({style: "min-width: 0; min-height: 0; touch-action: pan-y pinch-zoom;"});
 	const playhead: HTMLDivElement = div({style: `position: absolute; left: 0; top: 0; width: 2px; height: 100%; background: ${ColorConfig.playhead}; pointer-events: none;`});
-	const timelineContainer: HTMLDivElement = div({style: "display: flex; flex-grow: 1; flex-shrink: 1; position: relative;"}, timeline, playhead);
-	const visualizationContainer: HTMLDivElement = div({style: "display: flex; flex-grow: 1; flex-shrink: 1; height: 0; position: relative; align-items: center; overflow: hidden;"}, timelineContainer);
+	const timelineContainer: HTMLDivElement = div({style: "display: flex; flex-grow: 1; flex-shrink: 1; position: relative; padding: 5px"}, timeline, playhead);
+	const visualizationContainer: HTMLDivElement = div({style: "display: flex; flex-grow: 1; flex-shrink: 1; height: 0; position: relative; align-items: center; overflow: hidden; border: medium, double; margin: 20px 20px 5px 20px;"}, timelineContainer);
 	let noteFlashElementsPerBar: (SVGPathElement[])[];
 	let currentNoteFlashElements: SVGPathElement[] = [];
 	let currentNoteFlashBar: number = -1;
@@ -208,13 +208,13 @@ const volumeSlider: HTMLInputElement = input({ title: "volume", type: "range", v
 
 const outVolumeBarBg: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "90%", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetBackground });
 const outVolumeBar: SVGRectElement = SVG.rect({ "pointer-events": "none", height: "50%", width: "0%", x: "5%", y: "25%", fill: "url('#volumeGrad2')" });
-const outVolumeCap: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "2px", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetFocus });
+const outVolumeCap: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "2px", height: "50%", x: "15%", y: "25%", fill: ColorConfig.uiWidgetFocus });
 const stop1: SVGStopElement = SVG.stop({ "stop-color": "lime", offset: "60%" });
 const stop2: SVGStopElement = SVG.stop({ "stop-color": "orange", offset: "90%" });
 const stop3: SVGStopElement = SVG.stop({ "stop-color": "red", offset: "100%" });
 const gradient: SVGGradientElement = SVG.linearGradient({ id: "volumeGrad2", gradientUnits: "userSpaceOnUse" }, stop1, stop2, stop3);
 const defs: SVGDefsElement = SVG.defs({}, gradient);
-const volumeBarContainer: SVGSVGElement = SVG.svg({ style: `touch-action: none; overflow: hidden; margin: auto;`, width: "160px", height: "10px", preserveAspectRatio: "none" },
+const volumeBarContainer: SVGSVGElement = SVG.svg({ style: `touch-action: none; overflow: hidden; margin: auto;`, width: "200px", height: "20px", preserveAspectRatio: "none" },
 	defs,
 	outVolumeBarBg,
 	outVolumeBar,
@@ -222,19 +222,28 @@ const volumeBarContainer: SVGSVGElement = SVG.svg({ style: `touch-action: none; 
 );
 document.body.appendChild(visualizationContainer);
 document.body.appendChild(
-		div({style: `flex-shrink: 0; height: 20vh; min-height: 22px; max-height: 70px; display: flex; align-items: center;`},
+		div({style: `flex-shrink: 2; height: 20vh; min-height: 22px; max-height: 77px; display: inline-flex; align-contents: center; margin: 5px 0px; gap: 25px;`},
+		div({style: `flex-shrink: 0; display: flex; align-items: center; padding: 0px 10px;`},
 		playButtonContainer,
 		loopButton,
-		volumeIcon,
-		volumeSlider,
 		zoomButton,
-		volumeBarContainer,
-		oscilloscope.canvas, //make it auto remove itself later
 		titleText,
 		editLink,
 		copyLink,
 		shareLink,
 		fullscreenLink,
+		),
+		div({ style: `flex-shrink: 0; display: flex; align-items: center; padding: 0px 10px;` },
+		volumeIcon,
+		volumeSlider,
+		),
+		div({ style: `flex-shrink: 0; display: flex; align-items: center; padding: 0px 10px;` },
+		volumeBarContainer,
+		oscilloscope.canvas, //make it auto remove itself later
+		),
+		div({ style: `flex-shrink: 0; display: flex; align-items: center; padding: 0px 10px;` },
+		titleText,
+		),
 	),
 );
 
@@ -368,7 +377,7 @@ function animate(): void {
 
 function volumeUpdate(): void {
 	if (synth.song == null) {
-		outVolumeCap.setAttribute("x", "5%");
+		outVolumeCap.setAttribute("x", "15%");
 		outVolumeBar.setAttribute("width", "0%");
 		return;
 }
@@ -554,6 +563,7 @@ function renderTimeline(): void {
 
 		const wavePitchHeight: number = (timelineHeight-1) / windowPitchCount;
 		const drumPitchHeight: number =  (timelineHeight-1) / Config.drumCount;
+		const modPitchHeight: number =  (timelineHeight-1) / Config.modCount;
 		
 	for (let bar: number = 0; bar < synth.song.barCount + 1; bar++) {
 		const color: string = (bar == synth.song.loopStart || bar == synth.song.loopStart + synth.song.loopLength) ? ColorConfig.loopAccent : ColorConfig.uiWidgetBackground;
@@ -562,6 +572,12 @@ function renderTimeline(): void {
 		
 	for (let octave: number = 0; octave <= windowOctaves; octave++) {
 			timeline.appendChild(rect({x: 0, y: octave * 12 * wavePitchHeight, width: timelineWidth, height: wavePitchHeight + 1, fill: ColorConfig.tonic, opacity: 0.75}));
+	}
+
+	if (window.localStorage.getItem("showFifth") == "true") {
+		for (let fifth: number = 0; fifth <= windowOctaves; fifth++) {
+			timeline.appendChild(rect({ x: 0, y: (fifth * 12 * wavePitchHeight) + (5 * wavePitchHeight), width: timelineWidth, height: wavePitchHeight - 1, fill: ColorConfig.fifthNote, opacity: 0.75 }));
+		}
 	}
 
 	// note flash colors
@@ -583,7 +599,8 @@ function renderTimeline(): void {
 	for (let channel: number = synth.song.channels.length - 1 - synth.song.modChannelCount; channel >= 0; channel--) {
 
 		const isNoise: boolean = synth.song.getChannelIsNoise(channel);
-		const pitchHeight: number = isNoise ? drumPitchHeight : wavePitchHeight;
+		const isMod: boolean = synth.song.getChannelIsMod(channel);
+		const pitchHeight: number = isMod ? (modPitchHeight) : (isNoise ? drumPitchHeight : wavePitchHeight);
 			
 		const configuredOctaveScroll: number = synth.song.channels[channel].octave;
 		const newOctaveScroll: number = Math.max(0, Math.min(Config.pitchOctaves - windowOctaves, Math.ceil(configuredOctaveScroll - windowOctaves * 0.5)));
@@ -602,6 +619,7 @@ function renderTimeline(): void {
 					const d: string = drawNote(pitch, note.start, note.pins, (pitchHeight + 1) / 2, offsetX, offsetY, partWidth, pitchHeight);
 						const noteElement: SVGPathElement = path({d: d, fill: ColorConfig.getChannelColor(synth.song, channel).primaryChannel});
 					if (isNoise) noteElement.style.opacity = String(0.6);
+					if (isMod) noteElement.style.opacity = String(0.6)
 					timeline.appendChild(noteElement);
 
 					if (notesFlashWhenPlayed) {

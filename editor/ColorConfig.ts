@@ -5980,7 +5980,7 @@ export class ColorConfig {
 				--invert-text: #ffffff;
 				--box-selection-fill: #0f44af; 		
 				--loop-accent: #000000; 		
-				--link-accent: #df88ff; 		
+				--link-accent: #0f44af; 		
 				--ui-widget-background: #ffffff; 		
 				--ui-widget-focus: #ffffff; 		
 				--pitch-background: #ffffff; 		
@@ -6198,6 +6198,364 @@ export class ColorConfig {
 					cursor: url("theme_resources/windows_cursor_hand.png"), pointer !important;
 				}
 	
+				`,
+
+		"discord": `
+				:root {		
+				--page-margin: #121214; 		
+				--editor-background: #1a1a1e; 		
+				--playhead: #ffffff; 	
+				--primary-text: #ffffff;
+				--secondary-text: #8f9097; 		
+				--invert-text: #000000;
+				--box-selection-fill: #0539a4; 		
+				--loop-accent: #28282d; 		
+				--link-accent: #4b86d0; 		
+				--ui-widget-background: #28282d; 		
+				--ui-widget-focus: #212126; 		
+				--pitch-background: #202024; 		
+				--tonic: #ce9c5c; 		
+				--fifth-note: #25201c; 		
+				--white-piano-key: #ffffff; 		
+				--black-piano-key: #1a1a1e;
+				--white-piano-key-text: #ffffff;
+				--black-piano-key-text: #1a1a1e;
+				--use-color-formula: false; 		
+				--track-editor-bg-pitch: #aaaab1; 		
+				--track-editor-bg-pitch-dim: #777880; 		
+				--track-editor-bg-noise: #aaaab1; 		
+				--track-editor-bg-noise-dim: #777880; 		
+				--track-editor-bg-mod: #aaaab1; 		
+				--track-editor-bg-mod-dim: #777880; 		
+				--multiplicative-mod-slider: #1f1f22; 		
+				--overwriting-mod-slider: #35353b; 		
+				--indicator-primary: #bfc7c9; 		
+				--indicator-secondary: #87878f; 		
+				--select2-opt-group: #28282d; 		
+				--input-box-outline: #303135; 		
+				--mute-button-normal: #aaaab1;	 		
+				--mute-button-mod: #222327; 	
+			
+		  --pitch1-secondary-channel: #21203f;
+		  --pitch1-primary-channel: #31304f; 
+		  --pitch2-secondary-channel: #21203f;
+		  --pitch2-primary-channel: #31304f; 
+		  --pitch3-secondary-channel: #21203f;
+		  --pitch3-primary-channel: #31304f; 
+		  --pitch4-secondary-channel: #21203f;
+		  --pitch4-primary-channel: #31304f; 
+		  --pitch5-secondary-channel: #21203f;
+		  --pitch5-primary-channel: #31304f; 
+		  --pitch6-secondary-channel: #21203f;
+		  --pitch6-primary-channel: #31304f; 
+		  --pitch7-secondary-channel: #21203f;
+		  --pitch7-primary-channel: #31304f; 
+		  --pitch8-secondary-channel: #21203f;
+		  --pitch8-primary-channel: #31304f; 
+		  --pitch9-secondary-channel: #21203f;
+		  --pitch9-primary-channel: #31304f; 
+		  --pitch10-secondary-channel: #21203f;
+		  --pitch10-primary-channel: #31304f; 
+		  --noise1-secondary-channel: #21203f;
+		  --noise1-primary-channel: #31304f; 
+		  --noise2-secondary-channel: #21203f;
+		  --noise2-primary-channel: #31304f; 
+		  --noise3-secondary-channel: #21203f;
+		  --noise3-primary-channel: #31304f; 
+		  --noise4-secondary-channel: #21203f;
+		  --noise4-primary-channel: #31304f; 
+		  --noise5-secondary-channel: #21203f;
+		  --noise5-primary-channel: #31304f; 
+		  --mod1-secondary-channel: #ad6a84;
+		  --mod1-primary-channel: #bd7a94;
+		  --mod2-secondary-channel: #d071e0;
+		  --mod2-primary-channel: #e081f0; 
+		  --mod3-secondary-channel: #7a68db;
+		  --mod3-primary-channel: #8a78eb; 
+		  --mod4-secondary-channel: #3353ce;
+		  --mod4-primary-channel: #4363de;
+		  --mod1-secondary-note: #ad6a84;
+		  --mod1-primary-note: #bd7a94;
+		  --mod2-secondary-note: #d071e0;
+		  --mod2-primary-note: #e081f0; 
+		  --mod3-secondary-note: #7a68db;
+		  --mod3-primary-note: #8a78eb; 
+		  --mod4-secondary-note: #3353ce;
+		  --mod4-primary-note: #4363de; 
+	
+				--note-flash: #ffffff;
+				--note-flash-secondary: #ffffff77;
+				
+				--oscilloscope-line-R: #00ff00;
+				--oscilloscope-line-L: #00ff00;
+				--text-spacing-icon: - ;
+				--scrollbar-color: #666771;
+			}
+
+			@font-face {
+			   font-family: "ggsans";
+			   src:
+				url("theme_resources/ggsansmono-Normal.ttf") format("truetype") tech(color-COLRv1),
+				}
+
+			@font-face {
+			   font-family: "ggsansbold";
+			   src:
+				url("theme_resources/ggsansmono-Bold.ttf") format("truetype") tech(color-COLRv1),
+				}
+
+			@font-face {
+			   font-family: "ginto";
+			   src:
+				url("theme_resources/gABCGintoDiscord-Regular.ttf") format("truetype") tech(color-COLRv1),
+				}
+
+			@font-face {
+			   font-family: "gintomedium";
+			   src:
+				url("theme_resources/ABCGintoDiscord-Medium.ttf") format("truetype") tech(color-COLRv1),
+				}
+
+			@font-face {
+			   font-family: "gintonordbold";
+			   src:
+				url("theme_resources/ABCGintoDiscordNord-Bold.ttf") format("truetype") tech(color-COLRv1),
+				}
+
+			html {
+				font-family: "ggsans"
+			}
+
+			bold {
+				font-family: "ggsansbold"
+			}
+
+			h1 {
+				font-family: "gintonordbold"
+			}
+
+			h2 {
+				font-family: "gintomedium"
+			}
+
+			h3 {
+				font-family: "ginto"
+			}
+
+			`,
+
+		"minesweeper": `
+				:root {		
+				--page-margin: #888888; 		
+				--editor-background: #bdbdbd; 		
+				--playhead: #ffffff; 	
+				--primary-text: #000000;
+				--secondary-text: #000000; 		
+				--invert-text: #ffffff;
+				--box-selection-fill: #0f44af; 		
+				--loop-accent: #7b7b7b; 		
+				--link-accent: #0f44af; 		
+				--ui-widget-background: #bdbdbd; 		
+				--ui-widget-focus: #bdbdbd; 		
+				--pitch-background: #dbdbdb; 		
+				--tonic: #8b8b8b; 		
+				--fifth-note: #acacac; 		
+				--white-piano-key: #ffffff; 		
+				--black-piano-key: #7b7b7b;
+				--white-piano-key-text: #7b7b7b;
+				--black-piano-key-text: #ffffff;
+				--use-color-formula: false; 		
+				--track-editor-bg-pitch: #4d0000; 		
+				--track-editor-bg-pitch-dim: #000000; 		
+				--track-editor-bg-noise: #4d0000; 		
+				--track-editor-bg-noise-dim: #000000; 		
+				--track-editor-bg-mod: #2f0000; 		
+				--track-editor-bg-mod-dim: #000000; 		
+				--multiplicative-mod-slider: #ff0101; 		
+				--overwriting-mod-slider: #ff0101; 		
+				--indicator-primary: #ffffff; 		
+				--indicator-secondary: #acacac; 		
+				--select2-opt-group: #bdbdbd; 		
+				--input-box-outline: #acacac; 		
+				--mute-button-normal: #4d0000;	 		
+				--mute-button-mod: #2f0000; 		
+			
+		  --pitch1-secondary-channel: #0000ef;
+		  --pitch1-primary-channel: #0101ff;
+		  --pitch1-secondary-note: #0000ef;
+		  --pitch1-primary-note: #0101ff;
+		  --pitch2-secondary-channel: #006b00;
+		  --pitch2-primary-channel: #007b00;
+		  --pitch2-secondary-note: #006b00;
+		  --pitch2-primary-note: #007b00;
+		  --pitch3-secondary-channel: #ef0000;
+		  --pitch3-primary-channel: #ff0101;
+		  --pitch3-secondary-note: #ef0000;
+		  --pitch3-primary-note: #ff0101;
+		  --pitch4-secondary-channel: #00006b;
+		  --pitch4-primary-channel: #00007b;
+		  --pitch4-secondary-note: #00006b;
+		  --pitch4-primary-note: #00007b;
+		  --pitch5-secondary-channel: #6b0000;
+		  --pitch5-primary-channel: #7b0000;
+		  --pitch5-secondary-note: #6b0000;
+		  --pitch5-primary-note: #7b0000;
+		   --pitch6-secondary-channel: #007274;
+		  --pitch6-primary-channel: #008284;
+		  --pitch6-secondary-note: #007274;
+		  --pitch6-primary-note: #008284;
+		  --pitch7-secondary-channel: #740074;
+		  --pitch7-primary-channel: #840084;
+		  --pitch7-secondary-note: #740074;
+		  --pitch7-primary-note: #840084;
+		  --pitch8-secondary-channel: #656565;
+		  --pitch8-primary-channel: #757575;
+		  --pitch8-secondary-note: #656565;
+		  --pitch8-primary-note: #757575;
+		  --pitch9-secondary-channel: #ef00bf;
+		  --pitch9-primary-channel: #ff00af;
+		  --pitch9-secondary-note: #ef00bf;
+		  --pitch9-primary-note: #ff00af;
+		  --pitch10-secondary-channel: #efaad9;
+		  --pitch10-primary-channel: #ffbae9;
+		  --pitch10-secondary-note: #efaad9;
+		  --pitch10-primary-note: #ffbae9;
+		  --noise1-secondary-channel: #efef00;
+		  --noise1-primary-channel: #ffff00;
+		  --noise1-secondary-note: #efef00;
+		  --noise1-primary-note: #ffff00;
+		  --noise2-secondary-channel: #ef6def;
+		  --noise2-primary-channel: #ff7dff;
+		  --noise2-secondary-note: #ef6def;
+		  --noise2-primary-note: #ff7dff;
+		  --noise3-secondary-channel: #00efef;
+		  --noise3-primary-channel: #01ffff;
+		  --noise3-secondary-note: #00efef;
+		  --noise3-primary-note: #01ffff;
+		  --noise4-secondary-channel: #efef6b;
+		  --noise4-primary-channel: #ffff7b;
+		  --noise4-secondary-note: #efef6b;
+		  --noise4-primary-note: #ffff7b;
+		  --noise5-secondary-channel: #6befef;
+		  --noise5-primary-channel: #7bffff;
+		  --noise5-secondary-note: #6befef;
+		  --noise5-primary-note: #7bffff;
+		  --mod1-secondary-channel: #ef0000;
+		  --mod1-primary-channel: #ff0000;
+		  --mod1-secondary-note: #ef0000;
+		  --mod1-primary-note: #ff0000;
+		  --mod2-secondary-channel: #ef0000;
+		  --mod2-primary-channel: #00a2ff;
+		  --mod2-secondary-note: #ef0000;
+		  --mod2-primary-note: #00a2ff;
+		  --mod3-secondary-channel: #ef0000;
+		  --mod3-primary-channel: #00a2ff;
+		  --mod3-secondary-note: #ef0000;
+		  --mod3-primary-note: #00a2ff;
+		  --mod4-secondary-channel: #ef0000;
+		  --mod4-primary-channel: #00a2ff;
+		  --mod4-secondary-note: #ef0000;
+		  --mod4-primary-note: #00a2ff;
+		  --disabled-note-primary: #bdbdbd;
+		  --disabled-note-secondary: #7b7b7b;
+	
+				--note-flash: #ffffff;
+				--note-flash-secondary: #ffffff77;
+				
+				--oscilloscope-line-R: #000000;
+				--oscilloscope-line-L: #000000;
+				--text-spacing-icon:   ;
+				--scrollbar-color: #bfc7c9;
+
+					}
+			* {
+			cursor: url("theme_resources/windows_cursor.png"), auto;
+			}
+			#Hotdog {
+				display: none !important;
+				content: url("theme_resources/hotdog.png") !important;
+			}
+			
+				@font-face {
+			   font-family: "minesweeper";
+			   src:
+				url("theme_resources/mine-sweeper.otf") format("opentype") tech(color-COLRv1),
+				}
+				
+				@font-face {
+			   font-family: "W95FA";
+			   src:
+				url("theme_resources/W95FA.otf") format("opentype") tech(color-COLRv1),
+				}
+	
+				#text-content
+				{
+						border-image-source: url("theme_resources/minesweeper_border.png");
+						border-image-slice: 4 fill; 
+					   border-image-width: 8px; 
+					border-image-repeat: stretch; 
+						padding: 12px; 
+	
+						image-rendering: -moz-crisp-edges !important;         /* Firefox */
+						image-rendering: -webkit-optimize-contrast !important; /* Webkit (Chrome/Safari) */
+						image-rendering: -o-crisp-edges !important;            /* Opera */
+						image-rendering: pixelated !important;                 /* Future browsers */
+						image-rendering: optimizeSpeed !important;             /* IE */
+					}
+
+				#beepboxEditorContainer
+				{
+						border-image-source: url("theme_resources/minesweeper_border.png");
+						border-image-slice: 4 fill; 
+					   	border-image-width: 8px; 
+						border-image-repeat: stretch;
+						padding: 12px;
+						margin-bottom: 10px;
+						margin-top: 10px;
+	
+						image-rendering: -moz-crisp-edges !important;         /* Firefox */
+						image-rendering: -webkit-optimize-contrast !important; /* Webkit (Chrome/Safari) */
+						image-rendering: -o-crisp-edges !important;            /* Opera */
+						image-rendering: pixelated !important;                 /* Future browsers */
+						image-rendering: optimizeSpeed !important;             /* IE */ 
+					}
+
+				.beepboxEditor select,
+				.beepboxEditor button,
+				.beepboxEditor option,
+				.beepboxEditor optgroup,
+				.beepboxEditor .select2-selection__rendered
+				{
+						border-image-source: url("theme_resources/minesweeper_border.png") !important;
+						border-image-slice: 4 fill !important; 
+					   border-image-width: 4px !important; 
+					border-image-repeat: stretch !important;
+						padding: 2px !important; 
+	
+						image-rendering: -moz-crisp-edges !important;         /* Firefox */
+						image-rendering: -webkit-optimize-contrast !important; /* Webkit (Chrome/Safari) */
+						image-rendering: -o-crisp-edges !important;            /* Opera */
+						image-rendering: pixelated !important;                 /* Future browsers */
+						image-rendering: optimizeSpeed !important;             /* IE */
+	
+					}
+					
+	
+				.trackContainer {
+					font-family: 'minesweeper';
+				}
+
+				.version-area {
+					content: url("../website/theme_resources/minesweeper_face.png") !important;
+					align-items: center;
+					margin: 10px
+				}
+				
+				html {
+					font-family: 'W95FA';
+				}
+
+				
 				`,
 
 	"custom": `${localStorage.getItem("customColors") || `:root {  }`}`,

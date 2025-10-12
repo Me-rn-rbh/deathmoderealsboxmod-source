@@ -88,6 +88,10 @@ export class Box {
 			this._renderedBorderRight = border;
 		}
 	}
+	public setColor(color: string): void {
+			this.container.style.setProperty("color", color);
+			this._renderedLabelColor = color
+	}
 }
 
 export class ChannelRow {
@@ -138,10 +142,14 @@ export class ChannelRow {
 			const dim: boolean = (pattern == null || pattern.notes.length == 0);
 			
 			const box: Box = this._boxes[i];
-			if (i < this._doc.song.barCount) {
-				const colors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this.index);
-				box.setIndex(this._doc.song.channels[this.index].bars[i], selected, dim, dim && !selected ? colors.secondaryChannel : colors.primaryChannel,
-					this.index >= this._doc.song.pitchChannelCount && this.index < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount, this.index >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount);
+			if (window.localStorage.getItem("colorTheme") != "minesweeper") {
+				if (i < this._doc.song.barCount) {
+					const colors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this.index);
+					box.setIndex(this._doc.song.channels[this.index].bars[i], selected, dim, dim && !selected ? colors.secondaryChannel : colors.primaryChannel,
+						this.index >= this._doc.song.pitchChannelCount && this.index < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount, this.index >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount);
+					box.setVisibility("visible");
+				}
+			} else if (window.localStorage.getItem("colorTheme") == "minesweeper") {
 				box.setVisibility("visible");
 			} else {
 				box.setVisibility("hidden");
@@ -158,11 +166,70 @@ export class ChannelRow {
 			else {
 				box.setBorderRight("none");
 			}
-			if (window.localStorage.getItem("colorTheme") == "windows95") {
+			if (window.localStorage.getItem("colorTheme") == "windows95" || window.localStorage.getItem("colorTheme") == "minesweeper") {
 				box.setBorder(`2px outset ${ColorConfig.uiWidgetFocus}`)
 			}
 			else {
 				box.setBorder("none")
+			}
+			if (window.localStorage.getItem("colorTheme") == "minesweeper") {
+				if (pattern == null) {
+				box.container.textContent = "";
+				}
+				if (pattern != null && box.container.textContent != null) {
+					box.container.textContent = `${pattern.notes.length}`
+					if (pattern.notes.length == 0) {
+						box.setColor ("#000000")
+					}
+					if (pattern.notes.length == 1) {
+						box.setColor("var(--pitch1-primary-note)")
+					}
+					if (pattern.notes.length == 2) {
+						box.setColor("var(--pitch2-primary-note)")
+					}
+					if (pattern.notes.length == 3) {
+						box.setColor("var(--pitch3-primary-note)")
+					}
+					if (pattern.notes.length == 4) {
+						box.setColor("var(--pitch4-primary-note)")
+					}
+					if (pattern.notes.length == 5) {
+						box.setColor("var(--pitch5-primary-note)")
+					}
+					if (pattern.notes.length == 6) {
+						box.setColor("var(--pitch6-primary-note)")
+					}
+					if (pattern.notes.length == 7) {
+						box.setColor("var(--pitch7-primary-note)")
+					}
+					if (pattern.notes.length == 8) {
+						box.setColor("var(--pitch8-primary-note)")
+					}
+					if (pattern.notes.length == 9) {
+						box.setColor("var(--pitch9-primary-note)")
+					}
+					if (pattern.notes.length == 10) {
+						box.setColor("var(--pitch10-primary-note)")
+					}
+					if (pattern.notes.length == 11) {
+						box.setColor("var(--noise1-primary-note)")
+					}
+					if (pattern.notes.length == 12) {
+						box.setColor("var(--noise2-primary-note)")
+					}
+					if (pattern.notes.length == 13) {
+						box.setColor("var(--noise3-primary-note)")
+					}
+					if (pattern.notes.length == 14) {
+						box.setColor("var(--noise4-primary-note)")
+					}
+					if (pattern.notes.length == 15) {
+						box.setColor("var(--noise5-primary-note)")
+					}
+					if (pattern.notes.length > 15) {
+						box.setColor("#000000");
+					}
+				}
 			}
 		}
 	}

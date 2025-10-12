@@ -108,6 +108,7 @@
 
         font {
             color: var(--mod-title);
+            font-size: 2.0rem;
         }
         ::-webkit-scrollbar {
             width: 8px;
@@ -218,7 +219,7 @@
             </h1>
 
             <h2>
-                <span id="dsboxQuote" style="display: inline; color:#98f"></span>
+                <span id="dsboxQuote" style="display: inline"></span>
             </h2>
 
 
@@ -506,7 +507,9 @@
             document.getElementById("thething").style.fontFamily = document.getElementById("thething").style.fontFamily
         }
 
-
+        if (window.localStorage.getItem("colorTheme") == "discord") {
+            document.getElementById("dsboxQuote").style.color = "#5865F2"
+        }
 
 
         const date = new Date();

@@ -72,7 +72,9 @@ export class ThemePrompt implements Prompt {
 		optgroup({ label: "Misc" },
 			option({ value: "azur lane" }, "Azur Lane"),
 			option({ value: "Roblox" }, "Powering Imagination"),
-			option({ value: "windows95"}, "Windows 95"),
+			option({ value: "windows95" }, "Windows 95"),
+			option({value: "discord"}, "Discord"),
+			option({value: "minesweeper"}, "Minesweeper"),
 			option({ value: "custom" }, "Custom")
 		),
 	);
