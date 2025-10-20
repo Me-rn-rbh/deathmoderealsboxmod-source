@@ -110,6 +110,24 @@
             color: var(--mod-title);
             font-size: 2.0rem;
         }
+
+        textbox {
+            margin: 10px;
+            padding: 2px;
+            border: 2px solid;
+            border-color: #fffffbaa;
+            background-color: #fffffbaa;
+            border-radius: 10px;
+            width: 711px;
+            min-height: 300px;
+            display: none;
+        }
+
+        textboxtext {
+            color: #fb458d;
+            font-size: 1.5em;
+        }
+
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -209,6 +227,9 @@
             Sorry, UltraBox requires a JavaScript-enabled browser.
         </noscript>
     </div>
+        <textbox id="visualnoveltextbox">
+            <textboxtext id="visualnoveltext"></textboxtext>
+        </textbox>
     <div id="text-content">
         <section>
 
@@ -236,7 +257,7 @@
         When you are satisfied with your song, just copy and paste the URL to save and share your song!
     </p> -->
             <p>
-                If you have any questions, please visit <a href="./faq.html">Questions Answered</a> to see if your question is there. Visit the <a href="./patch_notes.html">patch notes</a> to see the latest changes made.
+                If you have any questions, please visit <a href="./faq.html" target="_blank">Questions Answered</a> to see if your question is there. Visit the <a href="./patch_notes.html" target="_blank">patch notes</a> to see the latest changes made.
                 <img id="Hotdog" src="" width="500" height="333" onclick="changeHotdogSize()" />
             </p>
             <!--
@@ -250,7 +271,7 @@
         </form>
         would be appreciated!
     </div>
-    -->
+    --> 
         </section>
 
         <div class="column-container">
@@ -324,7 +345,12 @@
                     </p>
 
                     <p>
-                        (psst... Want to see some really cool songs? Check out the <a href="./hof.html">Hall Of Fame!</a>)
+                        There's actually different variants of this mod, which you can check over at this cool <a href="./editions.html" target="_blank">editions</a> page!
+                    </p>
+
+
+                    <p>
+                        (psst... Want to see some really cool songs? Check out the <a href="./hof.html" target="_blank">Hall Of Fame!</a>)
                     </p>
 
                     <p> </p>
@@ -332,7 +358,7 @@
                     <p> </p>
 
                     <small>
-                        If, for some reason, you wanna see the 404 page, click <a href="./404.html">here</a>.
+                        If, for some reason, you wanna see the 404 page, click <a href="./404.html" target="_blank">here</a>.
                     </small>
 
                 </section>
@@ -468,6 +494,24 @@
 
         ];
         quote.push(`fun fact there are ${quote.length + 1} quotes right now`);
+
+        // Retry Now
+        const visualnoveltexts = [
+            "Retry Now!!",
+            "We can't get together this run either...",
+            "Promise me if you lie, you'll stick a needle in your eye.",
+            "We're sure to meet in the next life, right?",
+            "Retry Now!!!",
+            "Throw everything away-whoosh.",
+            "We can't get together this run either★",
+            "We're sure to meet in the next life, right?★",
+            "Throw everything away-whoosh★",
+        ]
+        if (0 == 0) {
+            document.getElementById("visualnoveltext").innerHTML = "  " + visualnoveltexts[(Math.floor(Math.random() * visualnoveltexts.length))];  
+        }
+
+
         if (Math.floor(Math.random() * 1.25) == 0) {
             document.getElementById("goldboxPlant").innerHTML = "  " + plants[(Math.floor(Math.random() * plants.length))];  
         }

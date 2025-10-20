@@ -74,7 +74,12 @@ export class ThemePrompt implements Prompt {
 			option({ value: "Roblox" }, "Powering Imagination"),
 			option({ value: "windows95" }, "Windows 95"),
 			option({value: "discord"}, "Discord"),
-			option({value: "minesweeper"}, "Minesweeper"),
+			option({ value: "minesweeper" }, "Minesweeper"),
+			option({ value: "starstruck" }, "Starstruck (bad)"),
+			option({ value: "you should retry NOW" }, "Retry Now"),
+			option({ value: "halloween" }, "Halloween"),
+			option({ value: "lemonlime" }, "LemonLime"),
+			option({ value: "hacker"}, "Hacker Stock Images"),
 			option({ value: "custom" }, "Custom")
 		),
 	);

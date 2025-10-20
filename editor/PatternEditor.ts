@@ -2435,7 +2435,10 @@ export class PatternEditor {
                     if (this._doc.prefs.notesFlashWhenPlayed) noteFlashColor = ColorConfig.getComputed("--note-flash-secondary");
                 for (let channel: number = this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount - 1; channel >= 0; channel--) {
                     if (channel == this._doc.channel) continue;
-                    if (this._doc.song.getChannelIsNoise(channel) != this._doc.song.getChannelIsNoise(this._doc.channel)) continue;
+                    if (this._doc.prefs.realshowchannels == false) {
+                        if (this._doc.song.getChannelIsNoise(channel) != this._doc.song.getChannelIsNoise(this._doc.channel)) continue;
+                    } else {
+                    }
 
                     const pattern2: Pattern | null = this._doc.song.getPattern(channel, this._doc.bar + this._barOffset);
                     if (pattern2 == null) continue;
@@ -2446,7 +2449,15 @@ export class PatternEditor {
                             let notePath: SVGPathElement = SVG.path();
                             notePath.setAttribute("fill", ColorConfig.getChannelColor(this._doc.song, channel).secondaryNote);
                             notePath.setAttribute("pointer-events", "none");
-                            this._drawNote(notePath, pitch, note.start, note.pins, this._pitchHeight * 0.19, false, octaveOffset);
+                            if (this._doc.prefs.realshowchannels) {
+                                if (this._doc.song.getChannelIsNoise(channel) == false) {
+                                    this._drawNote(notePath, pitch, note.start, note.pins, this._pitchHeight * 0.35, true, octaveOffset);
+                                } else if (this._doc.song.getChannelIsNoise(channel) == true) {
+                                    this._drawNote(notePath, pitch, note.start, note.pins, this._pitchHeight * 0.5, true, 0);
+                                }
+                            } else {
+                                this._drawNote(notePath, pitch, note.start, note.pins, this._pitchHeight * 0.19, false, octaveOffset);
+                            }
                             this._svgNoteContainer.appendChild(notePath);
 
                             if (this._doc.prefs.notesFlashWhenPlayed) {
@@ -2454,7 +2465,15 @@ export class PatternEditor {
                                 // const noteFlashColor = ColorConfig.getComputed("--note-flash-secondary") !== "" ? "var(--note-flash-secondary)" : "#ffffff77";
                                 notePath.setAttribute("fill", noteFlashColor);
                                 notePath.setAttribute("pointer-events", "none");
-                                this._drawNote(notePath, pitch, note.start, note.pins, this._pitchHeight * 0.19, false, octaveOffset);
+                                if (this._doc.prefs.realshowchannels) {
+                                    if (this._doc.song.getChannelIsNoise(channel) == false) {
+                                        this._drawNote(notePath, pitch, note.start, note.pins, this._pitchHeight * 0.35, true, octaveOffset);
+                                    } else if (this._doc.song.getChannelIsNoise(channel) == true) {
+                                        this._drawNote(notePath, pitch, note.start, note.pins, this._pitchHeight * 0.5, true, 0);
+                                    }
+                                } else {
+                                    this._drawNote(notePath, pitch, note.start, note.pins, this._pitchHeight * 0.19, false, octaveOffset);
+                                }
                                 this._svgNoteContainer.appendChild(notePath);
                                 notePath.classList.add('note-flash');
                                 notePath.style.opacity = "0";

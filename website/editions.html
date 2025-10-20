@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#CCCCDE" />
+    <meta property="og:image" content="/icon_maskable_192.png" />
+    <meta name="description" content="Hi" />
+    <title>D's Quick Editions</title>
+</head>
+<style type="text/css">
+
+    html {
+        background-image: url(website_things/vortexvfx.gif);
+        background-size: 2000px;
+        font-size: large;
+        font-family: 'Comic Sans MS', sans-serif;
+        line-height: 1.3;
+        color: var(--primary-text, white);
+        width: max-content;
+        height: max-content;
+        overflow: auto;
+    }
+
+    body {
+        width: 1980px;
+        height: 1080px;
+        border: medium double #ffffff22;
+        margin: 5px;
+    }
+
+    h1 {
+        font-size: 1.7rem;
+        -webkit-text-stroke-width: 0;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        -webkit-text-stroke-width: 0;
+        color: var(--lala, #AAABEF)
+    }
+
+    h3 {
+        font-size: 1.2rem;
+        -webkit-text-stroke-width: 0;
+        color: var(--lala, #B9CBFF);
+    }
+
+    h4 {
+        font-size: 1.125rem;
+        -webkit-text-stroke-width: 0;
+        color: var(--primary-text);
+    }
+
+    a {
+        color: var(--link-accent, #98f);
+    }
+
+    code {
+        background-color: var(--eee, #011325);
+        padding: 0px;
+        border: thin, solid;
+        border-radius: inherit;
+    }
+
+    small {
+        font-size: 0.8rem;
+        margin-top: 0.25em;
+        margin-bottom: 0.25em;
+        -webkit-text-stroke-width: 0;
+        color: var(--inactive-text, #666);
+        background: var(--editor-background);
+        border: thin, dotted;
+        padding: 1px;
+    }
+
+    b {
+        color: var(--lala, #CCCCFF);
+    }
+
+    part {
+        border: medium, inset;
+        border-color: var(--lala, #CCCCFF);
+        padding: 10px;
+        text-align: center;
+        position: absolute;
+        cursor: move;
+        width: 250px;
+        overflow-wrap: break-word;
+        background-color: #111535aa;
+    }
+
+    oldpart {
+        border: medium, inset;
+        border-color: var(--lala, #CCCCFF);
+        box-shadow: 0 0 15px #ccf;
+        filter: saturate(0);
+        padding: 10px;
+        text-align: center;
+        position: absolute;
+        width: 250px;
+        overflow-wrap: break-word;
+        background-color: #111535aa;
+    }
+
+</style>
+
+<body>
+    <part id="main" class="editions">
+        <h1>D's Quick Box Mod</h1>
+        <h4><i>"The Intended Experience!"</i></h4>
+        <p>The Main edition of D's Quick Box Mod, (almost) tested and all that.</p>
+        <p>Available <a href="https://me-rn-rbh.github.io/Deathmodereals-Quick-Box-Mod" target="_blank">here.</a></p>
+    </part>
+    <part id="testing" class="editions">
+        <h1>D's Quick Test</h1>
+        <h4><i>"It'll be Broken, but that's the Point!"</i></h4>
+        <p>The testing version of D's Quick Box Mod, made so the creator (me) can test if things will work on the Main edition.</p>
+        <p>Test <a href="https://me-rn-rbh.github.io/Ds-Quick-Test" target="_blank">here.</a></p>
+    </part>
+    <oldpart id="archive" class="editions">
+        <h1>D's Old Box Mod</h1>
+        <h4><i>"This is what D's Quick Box Mod looked like a Month ago, Yikes!"</i></h4>
+        <p>The old version of D's Quick Box Mod, which was originally a BeepBox fork.</p>
+        <p>No updates are planned, but I may do some fixes and QoL sometimes.</p>
+        <p>Experience <a href="https://me-rn-rbh.github.io/Deathmodereals-Old-Box-Mod" target="_blank">here.</a></p>
+    </oldpart>
+</body>
+
+
+
+<script>
+
+    dragElement(document.getElementById("main"));
+    positionElement(document.getElementById("main"), 500);
+
+    dragElement(document.getElementById("testing"));
+    positionExtreme(document.getElementById("testing"), 1000);
+
+    positionExtreme(document.getElementById("archive"), 1500);
+
+    function positionElement(elmnt, amount) {
+        elmnt.style.top = Math.ceil(((Math.random() * 1.5) * amount)) + "px";
+        elmnt.style.left = Math.ceil(((Math.random() * 1.5) * amount)) + "px";
+    }
+
+    function positionExtreme(elmnt, amount) {
+        elmnt.style.top = Math.ceil(Math.min(((Math.random() * 1.5) * amount), 1080 - elmnt.offsetHeight)) + "px";
+        elmnt.style.left = Math.ceil(Math.min(((Math.random() * 1.5) * amount), 1980 - elmnt.offsetWidth)) + "px";
+    }
+
+    function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (document.getElementById(elmnt.id + "header")) {
+            /* if present, the header is where you move the DIV from:*/
+            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+        } else {
+            /* otherwise, move the DIV from anywhere inside the DIV:*/
+            elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+
+            if ((elmnt.offsetTop - pos2) < 10) {
+                elmnt.style.top = "10px"
+            }
+            if ((elmnt.offsetLeft - pos1) < 10) {
+                elmnt.style.left = "10px"
+            }
+            if ((elmnt.offsetLeft - pos1) > (1980 - elmnt.offsetWidth)) {
+                elmnt.style.left = (1980 - elmnt.offsetWidth + 5) + "px"
+            }
+            if ((elmnt.offsetTop - pos1) > (1080 - elmnt.offsetHeight)) {
+                elmnt.style.top = (1080 - elmnt.offsetHeight + 5) + "px"
+            }
+        }
+
+        function closeDragElement() {
+            /* stop moving when mouse button is released:*/
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+</script>
+
+</html>

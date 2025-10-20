@@ -820,8 +820,10 @@ export class SongEditor {
             option({ value: "showFifth" }, 'Highlight "Fifth" Note'),
             option({ value: "notesFlashWhenPlayed" }, "Notes Flash When Played"),
             option({ value: "instrumentButtonsAtTop" }, "Instrument Buttons at Top"),
-            option({ value: "frostedGlassBackground" }, "Frosted Glass Prompt Backdrop"),
+            option({ value: "frostedbg" }, "Frosted Glass Backdrop"),
+            option({ value: "reshade"}, "Frosted Glass Backdrop Outside Prompts (Refresh!)"),
             option({ value: "showChannels" }, "Show All Channels"),
+            option({ value: "realShowChannels"}, "REAL Show All Channels (requires Show All Chanels)"),
             option({ value: "showScrollBar" }, "Show Octave Scroll Bar"),
             option({ value: "showInstrumentScrollbars" }, "Show Intsrument Scrollbars"),
             option({ value: "showLetters" }, "Show Piano Keys"),
@@ -835,6 +837,13 @@ export class SongEditor {
             option({ value: "customTheme" }, "Custom Theme..."),
             option({ value: "comical" }, "Enable Comic Sans In Song Editor")
         ),
+    );
+    private readonly _loopControls: HTMLSelectElement = select({  style: `margin: 4px; border: thin, inset; max-width: 200px; height: auto`,  class: `menu loopControls` },
+        option({ selected: true, disabled: true, hidden: false }, "Loop Controls"),
+        option({ value: "removeLoop" }, "Remove Loop"),
+        option({ value: "barLoop" }, "One Bar Loop"),
+        option({ value: "songLoop" }, "Song Wide Loop"),
+        option({ value: "selectionLoop" }, "Selection Wide Loop"),
     );
     private readonly _scaleSelect: HTMLSelectElement = buildOptions(select(), Config.scales.map(scale => scale.name));
     private readonly _keySelect: HTMLSelectElement = buildOptions(select(), Config.keys.map(key => key.name).reverse());
@@ -1099,7 +1108,7 @@ export class SongEditor {
         ]),
     ]);
 
-    public readonly _globalOscscope: oscilloscopeCanvas = new oscilloscopeCanvas(canvas({ width: 144, height: 64, style: `border: 2px solid ${ColorConfig.uiWidgetBackground}; position: static; margiontop: 2px; margin-bottom: 2px`, id: "oscilloscopeAll" }), 1);
+    public readonly _globalOscscope: oscilloscopeCanvas = new oscilloscopeCanvas(canvas({ width: 144, height: 64, style: `border: 2px solid ${ColorConfig.uiWidgetBackground}; position: static; margin-top: 2px; margin-bottom: 2px`, id: "oscilloscopeAll" }), 1);
     private readonly _globalOscscopeContainer: HTMLDivElement = div({ style: "height: 70px; margin-left: auto; margin-right: auto;" },
         this._globalOscscope.canvas
     );
@@ -1116,10 +1125,6 @@ export class SongEditor {
 
     private readonly _songTitleInputBox: InputBox = new InputBox(input({ style: `font-weight:bold; border:none; width: 98%; background-color:${ColorConfig.editorBackground}; color:${ColorConfig.primaryText}; text-align:center`, maxlength: "60", type: "text", value: EditorConfig.versionDisplayName }), this._doc, (oldValue: string, newValue: string) => new ChangeSongTitle(this._doc, oldValue, newValue));
 
-    private readonly _removeLoopButton: HTMLButtonElement = button({ style: `margin: 4px; border: thin, inset; max-width: 200px; height: auto`, class: "removeLoopButton", type: "button", title: "removeLoopButton" }, "Remove Loop");
-    private readonly _barLoopButton: HTMLButtonElement = button({ style: `margin: 4px; border: thin, inset; max-width: 200px; height: auto`, class: "barLoopButton", type: "button", title: "barLoopButton" }, "One Bar Loop");
-    private readonly _songLoopButton: HTMLButtonElement = button({ style: `margin: 4px; border: thin, inset; max-width: 200px; height: auto`, class: "songLoopButton", type: "button", title: "songLoopButton" }, "Song Wide Loop");
-    private readonly _selectLoopButton: HTMLButtonElement = button({ style: `margin: 4px; border: thin, inset; max-width: 200px; height: auto`, class: "selectLoopButton", type: "button", title: "selectLoopButton" }, "Selection Wide Loop");
 
     private readonly _feedbackAmplitudeSlider: Slider = new Slider(input({ type: "range", min: "0", max: Config.operatorAmplitudeMax, value: "0", step: "1", title: "Feedback Amplitude" }), this._doc, (oldValue: number, newValue: number) => new ChangeFeedbackAmplitude(this._doc, oldValue, newValue), false);
     private readonly _feedbackRow2: HTMLDivElement = div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("feedbackVolume") }, "Fdback Vol:"), this._feedbackAmplitudeSlider.container);
@@ -1261,13 +1266,6 @@ export class SongEditor {
         this._trackEditor.container,
         this._loopEditor.container,
     );
-    private readonly _loopControls: HTMLDivElement = div({ class: "loopControls", style: `display: flex; align-content: space-evenly; min-width: 500px` },
-        this._removeLoopButton,
-        this._barLoopButton,
-        this._songLoopButton,
-        this._selectLoopButton,
-
-    );
     private readonly _trackVisibleArea: HTMLDivElement = div({ style: "position: absolute; width: 100%; height: 100%; pointer-events: none;" });
     private readonly _trackAndMuteContainer: HTMLDivElement = div({ class: "trackAndMuteContainer", style: "width: 101%;" },
         this._muteEditor.container,
@@ -1278,7 +1276,7 @@ export class SongEditor {
     private readonly _trackArea: HTMLDivElement = div({ class: "track-area" },
         this._trackAndMuteContainer,
         this._barScrollBar.container,
-        this._loopControls
+        this._loopControls,
     );
 
     private readonly _menuArea: HTMLDivElement = div({ class: "menu-area" },
@@ -1440,6 +1438,7 @@ export class SongEditor {
         window.addEventListener("resize", this.whenUpdated);
         window.requestAnimationFrame(this.updatePlayButton);
         window.requestAnimationFrame(this._animate);
+        this._reshade();
 
         if (!("share" in navigator)) {
             this._fileMenu.removeChild(this._fileMenu.querySelector("[value='shareUrl']")!);
@@ -1592,6 +1591,7 @@ export class SongEditor {
         this._fileMenu.addEventListener("change", this._fileMenuHandler);
         this._editMenu.addEventListener("change", this._editMenuHandler);
         this._optionsMenu.addEventListener("change", this._optionsMenuHandler);
+        this._loopControls.addEventListener("change", this._loopControlsHandler);
         this._customWavePresetDrop.addEventListener("change", this._customWavePresetHandler);
         this._tempoStepper.addEventListener("change", this._whenSetTempo);
         this._scaleSelect.addEventListener("change", this._whenSetScale);
@@ -1646,10 +1646,6 @@ export class SongEditor {
         this._volumeSlider.input.addEventListener("input", this._setVolumeSlider);
         this._zoomInButton.addEventListener("click", this._zoomIn);
         this._zoomOutButton.addEventListener("click", this._zoomOut);
-        this._removeLoopButton.addEventListener("click", this._removeLoop);
-        this._barLoopButton.addEventListener("click", this._barLoop);
-        this._songLoopButton.addEventListener("click", this._songLoop);
-        this._selectLoopButton.addEventListener("click", this._selectLoop);
         this._patternArea.addEventListener("mousedown", this._refocusStageNotEditing);
         this._trackArea.addEventListener("mousedown", this.refocusStage);
 
@@ -2049,7 +2045,7 @@ export class SongEditor {
                 this._doc.performance.play();
             }
             this._wasPlaying = false;
-            this._promptContainerBG.style.display = "none";
+            this._reshade();
             this._promptContainer.style.display = "none";
             this._promptContainer.removeChild(this.prompt.container);
             this.prompt.cleanUp();
@@ -2140,7 +2136,7 @@ export class SongEditor {
                 case "configureShortener":
                     this.prompt = new ShortenerConfigPrompt(this._doc);
                     break;
-                case "frostedGlassBackground":
+                case "BackDropPrompt":
                     this.prompt = new BackDropPrompt(this._doc);
                     break;
                 default:
@@ -2153,7 +2149,7 @@ export class SongEditor {
                     this._wasPlaying = this._doc.synth.playing;
                     this._doc.performance.pause();
                 }
-                if (BackDropPrompt.active = "none") {
+                if (window.localStorage.getItem("frostedactive") == "false") {
                     this._promptContainer.style.display = "";
                     this._promptContainerBG.style.display = "";
                     this._promptContainerBG.style.backgroundColor = ColorConfig.editorBackground;
@@ -2163,8 +2159,8 @@ export class SongEditor {
                     this._promptContainer.style.display = "";
                     this._promptContainerBG.style.display = "";
                     this._promptContainerBG.style.backgroundColor = "rgba(0,0,0, 0)";
-                    this._promptContainerBG.style.backdropFilter = BackDropPrompt.backdropfilter
-                    this._promptContainerBG.style.opacity = BackDropPrompt.backdropopacity;
+                    this._promptContainerBG.style.backdropFilter = this._doc.prefs.frostedfilter
+                    this._promptContainerBG.style.opacity = this._doc.prefs.frostedopacity;
                 };
                 this._promptContainer.appendChild(this.prompt.container);
                 document.body.appendChild(this._promptContainerBG);
@@ -2298,8 +2294,10 @@ export class SongEditor {
             (prefs.showFifth ? textOnIcon : textOffIcon) + 'Highlight "Fifth" Note',
             (prefs.notesFlashWhenPlayed ? textOnIcon : textOffIcon) + "Notes Flash When Played",
             (prefs.instrumentButtonsAtTop ? textOnIcon : textOffIcon) + "Instrument Buttons at Top",
-            textSpacingIcon + "Nothing",
+            textSpacingIcon + "Frosted Glass Backdrop",
+            (prefs.reshade ? textOnIcon : textOffIcon) + "Frosted Glass Backdrop Outside Prompts (Refresh!)",
             (prefs.showChannels ? textOnIcon : textOffIcon) + "Show All Channels",
+            (prefs.realshowchannels ? textOnIcon : textOffIcon) + "REAL Show All Channels (requires Show All Chanels)",
             (prefs.showScrollBar ? textOnIcon : textOffIcon) + "Show Octave Scroll Bar",
             (prefs.showInstrumentScrollbars ? textOnIcon : textOffIcon) + "Show Instrument Scrollbars",
             (prefs.showLetters ? textOnIcon : textOffIcon) + "Show Piano Keys",
@@ -5170,6 +5168,9 @@ export class SongEditor {
             case "showChannels":
                 this._doc.prefs.showChannels = !this._doc.prefs.showChannels;
                 break;
+            case "realShowChannels":
+                this._doc.prefs.realshowchannels = !this._doc.prefs.realshowchannels;
+                break;
             case "showScrollBar":
                 this._doc.prefs.showScrollBar = !this._doc.prefs.showScrollBar;
                 break;
@@ -5234,9 +5235,12 @@ export class SongEditor {
             case "temposlider":
                 this._doc.prefs.temposlider = !this._doc.prefs.temposlider;
                 break;
-            /*  case "frostedGlassBackground":
-               this._openPrompt("BackDropPrompt");
-               break; */
+            case "frostedbg":
+                this._openPrompt("BackDropPrompt");
+                break;
+            case "reshade":
+                this._doc.prefs.reshade = !this._doc.prefs.reshade;
+                break;
         }
         this._optionsMenu.selectedIndex = 0;
         this._doc.notifier.changed();
@@ -5293,6 +5297,25 @@ export class SongEditor {
         this._doc.prefs.save();
     }
 
+    private _loopControlsHandler = (event: Event): void => {
+        switch (this._loopControls.value) {
+            case "removeLoop":
+                this._removeLoop();
+                break;
+            case "barLoop":
+                this._barLoop();
+                break;
+            case "songLoop":
+                this._songLoop();
+                break;
+            case "selectionLoop":
+                this._selectLoop();
+                break;
+            
+        }
+        this._loopControls.selectedIndex = 0;
+    }
+
     private _removeLoop = (): void => {
         this._doc.song.loopStart = this._doc.song.barCount
         this._doc.notifier.changed();
@@ -5321,4 +5344,16 @@ export class SongEditor {
         this.refocusStage();
     }
 
+    private _reshade = (): void => {
+        if (this._doc.prefs.reshade == true) {
+            this._promptContainerBG.style.display = "";
+            this._promptContainerBG.style.backgroundColor = "rgba(0,0,0, 0)";
+            this._promptContainerBG.style.backdropFilter = this._doc.prefs.frostedfilter
+            this._promptContainerBG.style.opacity = this._doc.prefs.frostedopacity;
+            document.body.appendChild(this._promptContainerBG);
+        } else if (this._doc.prefs.reshade == false) {
+            this._promptContainerBG.style.display = "none";
+            document.body.appendChild(this._promptContainerBG);
+        }
+    }
 }

@@ -3013,7 +3013,7 @@ export class Song {
 
     public initToDefault(andResetChannels: boolean = true): void {
         let randomtempos = [20, 25, 50, 75, 100, 150, 160, 200, 225, 250, 300, 320];
-        let randomkeys = [0, 2, 4, 6, 8, 10, 12];
+        let randomkeys = [0, 2, 4, 5, 7, 9, 11];
         this.scale = 0;
         this.scaleCustom = [true, false, true, true, false, false, false, true, true, false, true, true];
 	    //this.scaleCustom = [true, false, false, false, false, false, false, false, false, false, false, false];

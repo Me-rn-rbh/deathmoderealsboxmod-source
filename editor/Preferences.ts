@@ -45,9 +45,13 @@ export class Preferences {
 	public showInstructions: boolean;
 	public showInstrumentScrollbars: boolean;
 	public closePromptByClickoff: boolean;
-	public frostedGlassBackground: string;
+	public frostedactive: boolean;
+	public frostedopacity: string;
+	public frostedfilter: string;
 	public comical: boolean;
 	public temposlider: boolean;
+	public realshowchannels: boolean;
+	public reshade: boolean;
 	constructor() {
 		this.reload();
 	}
@@ -82,7 +86,9 @@ export class Preferences {
 		this.showInstructions = window.localStorage.getItem("showInstructions") != "false";
 		this.showInstrumentScrollbars = window.localStorage.getItem("showInstrumentScrollbars") == "true";
 		this.closePromptByClickoff = window.localStorage.getItem("closePromptByClickoff") == "true";
-		this.frostedGlassBackground = window.localStorage.getItem("frostedGlassBackground") || BackDropPrompt.active;
+		this.frostedactive = window.localStorage.getItem("frostedactive") == "true";
+		this.frostedopacity = window.localStorage.getItem("frostedopacity") || BackDropPrompt.backdropopacity;
+		this.frostedfilter = window.localStorage.getItem("frostedfilter") || BackDropPrompt.backdropfilter;
 		this.keyboardLayout = window.localStorage.getItem("keyboardLayout") || "pianoTransposingC";
 		this.bassOffset = (+(<any>window.localStorage.getItem("bassOffset"))) || 0;
 		this.layout = window.localStorage.getItem("layout") || "small";
@@ -91,7 +97,9 @@ export class Preferences {
         this.customTheme2 = window.localStorage.getItem("customTheme2");
 		this.visibleOctaves = ((<any>window.localStorage.getItem("visibleOctaves")) >>> 0) || Preferences.defaultVisibleOctaves;
 		this.comical = window.localStorage.getItem("comical") == "true";
-		this.temposlider = window.localStorage.getItem("temposlider") == "false";
+		this.temposlider = window.localStorage.getItem("temposlider") == "true";
+		this.realshowchannels = window.localStorage.getItem("realshowchannels") == "true";
+		this.reshade = window.localStorage.getItem("reshade") == "true";
 		
 		const defaultScale: Scale | undefined = Config.scales.dictionary[window.localStorage.getItem("defaultScale")!];
 		this.defaultScale = (defaultScale != undefined) ? defaultScale.index : 0;
@@ -138,7 +146,9 @@ export class Preferences {
 		window.localStorage.setItem("showInstructions", this.showInstructions ? "true" : "false");
 		window.localStorage.setItem("showInstrumentScrollbars", this.showInstrumentScrollbars ? "true" : "false");
 		window.localStorage.setItem("closePromptByClickoff", this.closePromptByClickoff ? "true" : "false");
-		window.localStorage.setItem("frostedGlassBackground", this.frostedGlassBackground);
+		window.localStorage.setItem("frostedactive", this.frostedactive ? "true" : "false");
+		window.localStorage.setItem(("frostedopacity"), this.frostedopacity);
+		window.localStorage.setItem(("frostedfilter"), this.frostedfilter);
 		window.localStorage.setItem("keyboardLayout", this.keyboardLayout);
 		window.localStorage.setItem("bassOffset", String(this.bassOffset));
 		window.localStorage.setItem("layout", this.layout);
@@ -149,6 +159,8 @@ export class Preferences {
 		window.localStorage.setItem("visibleOctaves", String(this.visibleOctaves));
 		window.localStorage.setItem("comical", this.comical ? "true" : "false");
 		window.localStorage.setItem("temposlider", this.temposlider ? "true" : "false");
+		window.localStorage.setItem("realshowchannels", this.realshowchannels ? "true" : "false");
+		window.localStorage.setItem("reshade", this.reshade ? "true" : "false");
 		
 	}
 }

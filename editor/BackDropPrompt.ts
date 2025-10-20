@@ -5,14 +5,12 @@ import { Prompt } from "./Prompt";
 import { SongDocument } from "./SongDocument";
 
 //namespace beepbox {
-const { button, div, input, h2, h3 } = HTML;
+const { button, div, input, h2, /*h3*/ } = HTML;
 
 export class BackDropPrompt implements Prompt {
 	public static backdropfilter = "";
 	public static backdropopacity = "";
-	public static backdropblur = 0;
-	public static backdropbrightness = 0;
-	public static active = "none"
+	public static active = false;
 
 	private readonly _backdropopacityInputBox: HTMLInputElement = input({ style: "width: 4em; font-size: 80%", id: "backdropopacityInputBox", type: "number", step: "0.05", min: 0, max: 1, value: "0" });
 	private readonly _backdropblurInputBox: HTMLInputElement = input({ style: "width: 4em; font-size: 80%", id: "backdropblurInputBox", type: "number", step: "1", min: 0, max: 20, value: "0" });
@@ -25,19 +23,19 @@ export class BackDropPrompt implements Prompt {
 		h2("Customize Backdrop"),
 		div({ style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
 			div({style: "display: flex"},
-				h3("Blur"),
+				div("Blur"),
 			div({ class: "selectContainer", style: "width: 100%;" }, this._backdropblurInputBox),
 			)
 		),
 		div({ style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
 			div({ style: "display: flex" },
-				h3("Brightness"),
+				div("Brightness"),
 				div({ class: "selectContainer", style: "width: 100%;" }, this._backdropbrightnessInputBox),
 			)
 		),
 		div({ style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
 			div({ style: "display: flex" },
-				h3("Opacity"),
+				div("Opacity"),
 				div({ class: "selectContainer", style: "width: 100%;" }, this._backdropopacityInputBox),
 			)
 		),
@@ -70,13 +68,17 @@ export class BackDropPrompt implements Prompt {
 	}
 
 	private _saveChanges = (): void => {
+		BackDropPrompt.backdropfilter = "brightness" + `(${this._backdropbrightnessInputBox.value})` + " " + "blur" + `(${this._backdropblurInputBox.value}px)`;
+		BackDropPrompt.backdropopacity = `${this._backdropopacityInputBox.value}`;
+		if (this._doc.prefs.frostedopacity != BackDropPrompt.backdropopacity || this._doc.prefs.frostedfilter != BackDropPrompt.backdropfilter) {
+			BackDropPrompt.active = true;
+		} else if (this._doc.prefs.frostedopacity == BackDropPrompt.backdropopacity && this._doc.prefs.frostedfilter == BackDropPrompt.backdropfilter) {
+			BackDropPrompt.active = false;
+		}
+		this._doc.prefs.frostedactive = BackDropPrompt.active;
+		this._doc.prefs.frostedopacity = BackDropPrompt.backdropopacity;
+		this._doc.prefs.frostedfilter = BackDropPrompt.backdropfilter;
 		this._doc.prompt = null;
-		BackDropPrompt.backdropfilter = "brightness" + `(${this._backdropbrightnessInputBox})` + "blur" + `(${this._backdropblurInputBox}px)`;
-		BackDropPrompt.backdropopacity = `${this._backdropopacityInputBox}`;
-		BackDropPrompt.active = "yes";
-		if (BackDropPrompt.backdropfilter == "brightness(0) blur(0px)" && BackDropPrompt.backdropopacity == "0") {
-			BackDropPrompt.active = "none"
-		};
 		this._doc.undo();
 	}
 

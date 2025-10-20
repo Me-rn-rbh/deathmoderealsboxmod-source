@@ -532,6 +532,89 @@ export class Layout {
 				}
 			}
 		`,
+		"monstrosity": `\
+			/* Top-heavy */
+			@media (min-width: 711px) {
+				#beepboxEditorContainer {
+					max-width: initial;
+					height: 100%;
+					padding-top: 0px;
+				}
+				.beepboxEditor {
+					width: 100%;
+					height: 100%;
+					grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+					grid-template-rows: max-content 1fr;
+					grid-template-areas: "track-area pattern-area" "settings-area pattern-area";
+				}
+				.beepboxEditor .pattern-area {
+					width: 100%;
+					height: 100%;
+				}
+				.beepboxEditor .track-area {
+					width: 100%;
+					height: 25%;
+					max-height: 35%
+				}
+				.beepboxEditor .editor-widget-column {
+					flex: 0;
+				}
+				.beepboxEditor .trackAndMuteContainer {
+					width: 100%;
+					flex: 0;
+					flex-basis: initial;
+					flex-grow: 0;
+					overflow-y: auto;
+					max-height: 97.5vh;
+				}
+				.beepboxEditor .instrument-settings-area {
+					overflow-y: scroll;
+					position: relative;
+				}
+				.beepboxEditor .instrument-settings-area > .editor-controls {
+					position: absolute;
+					width: 100%;
+					overflow-y: scroll;
+				}
+				
+				.beepboxEditor .song-settings-area {
+					overflow-y: scroll;
+				}
+				
+				.beepboxEditor .settings-area {
+					width: 100%;
+					grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+					grid-template-rows: auto auto auto minmax(0, 1fr);
+					grid-template-areas:
+						"version-area instrument-settings-area"
+						"play-pause-area instrument-settings-area"
+						"menu-area instrument-settings-area"
+						"song-settings-area instrument-settings-area";
+				}
+				.beepboxEditor .version-area {
+					position: sticky;
+					top: 0;
+					z-index: 1;
+					background: ${ColorConfig.editorBackground};
+				}
+				.beepboxEditor .play-pause-area {
+					position: sticky;
+					top: 22px;
+					z-index: 1;
+					background: ${ColorConfig.editorBackground};
+				}
+				.beepboxEditor .menu-area {
+					position: sticky;
+					top: 82px;
+					z-index: 1;
+					background: ${ColorConfig.editorBackground};
+				}
+				
+				.beepboxEditor .trackContainer {
+					overflow: visible;
+				}
+			}
+		`,
 
 	}
 		

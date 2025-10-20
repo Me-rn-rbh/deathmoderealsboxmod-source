@@ -884,7 +884,6 @@ export class Config {
 		{ name: "D", isWhiteKey: true, basePitch: 14 },
 		{ name: "D♯", isWhiteKey: false, basePitch: 15 },
         { name: "E", isWhiteKey: true, basePitch: 16 },
-        { name: "E#???", isWhiteKey: true, basePitch: 17 },
 		{ name: "F", isWhiteKey: true, basePitch: 17 },
 		{ name: "F♯", isWhiteKey: false, basePitch: 18 },
 		{ name: "G", isWhiteKey: true, basePitch: 19 },
@@ -892,7 +891,6 @@ export class Config {
 		{ name: "A", isWhiteKey: true, basePitch: 21 },
 		{ name: "A♯", isWhiteKey: false, basePitch: 22 },
         { name: "B", isWhiteKey: true, basePitch: 23 },
-        { name: "B♯???", isWhiteKey: false, basePitch: 24 },
 				// { name: "C+", isWhiteKey: false, basePitch: 24 },
 		//taken from todbox, called "B#" for some reason lol
 		// { name: "G- (actually F#-)", isWhiteKey: false, basePitch: 6 },
