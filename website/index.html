@@ -55,11 +55,26 @@
             padding: 0px 60px;
         }
 
+        caContainer {
+            border: 4px ridge var(--ui-widget-background);
+            padding: 2px;
+            margin: 5px;
+            margin-top: 50px;
+            width: 400px;
+            height: 400px;
+            place-content: center;
+            text-align: center;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url();
+        }
+
         #text-content {
             overflow: auto;
             background: var(--editor-background, black);
             width: 100%;
-			max-width: 710px;
+            max-width: 710px;
             padding-left: 60px;
             padding-right: 60px;
         }
@@ -222,10 +237,15 @@
             el.style.backgroundRepeat= "repeat";
         }
     </script>
-    <div id="beepboxEditorContainer">
-        <noscript>
-            Sorry, UltraBox requires a JavaScript-enabled browser.
-        </noscript>
+    <div style="display: flex; flex-direction: row">
+        <div id="beepboxEditorContainer">
+            <noscript>
+                Sorry, UltraBox requires a JavaScript-enabled browser.
+            </noscript>
+        </div>
+        <caContainer id="CoverArtContainer" style="aspect-ratio: 1/1">
+                Add Cover Art Here!
+        </caContainer>
     </div>
         <textbox id="visualnoveltextbox">
             <textboxtext id="visualnoveltext"></textboxtext>
@@ -545,7 +565,7 @@
         };
 
 
-            if (window.localStorage.getItem("comical") == "true") {
+        if (window.localStorage.getItem("comical") == "true") {
             document.getElementById("thething").style.fontFamily = `Comic Sans MS` 
         } else if (window.localStorage.getItem("comical") == "false") {
             document.getElementById("thething").style.fontFamily = document.getElementById("thething").style.fontFamily
@@ -554,6 +574,13 @@
         if (window.localStorage.getItem("colorTheme") == "discord") {
             document.getElementById("dsboxQuote").style.color = "#5865F2"
         }
+
+        if (window.localStorage.getItem("coverart") == "true") {
+            document.getElementById("CoverArtContainer").style.display = ""
+        } else {
+            document.getElementById("CoverArtContainer").style.display = "none"
+        }
+
 
 
         const date = new Date();

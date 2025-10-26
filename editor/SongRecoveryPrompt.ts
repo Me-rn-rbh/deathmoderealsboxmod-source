@@ -11,7 +11,7 @@ export class SongRecoveryPrompt implements Prompt {
 	private readonly _songContainer: HTMLDivElement = div();
 		private readonly _cancelButton: HTMLButtonElement = button({class: "cancelButton"});
 		
-		public readonly container: HTMLDivElement = div({class: "prompt", style: "width: 300px;"},
+		public readonly container: HTMLDivElement = div({class: "prompt", style: "max-width: 500px;"},
 		h2("Song Recovery"),
 			div({style: "max-height: 385px; overflow-y: auto;"},
 			p("This is a TEMPORARY list of songs you have recently modified. Please keep your own backups of songs you care about! SONGS THAT USE SAMPLES WILL TAKE A WHILE TO LOAD, so be patient!"),
@@ -37,7 +37,7 @@ export class SongRecoveryPrompt implements Prompt {
 				versionMenu.appendChild(option({ value: version.time }, version.name + ": " + new Date(version.time).toLocaleString()));
 			}
 				
-				const player: HTMLIFrameElement = iframe({style: "width: 100%; height: 60px; border: none; display: block;"});
+				const player: HTMLIFrameElement = iframe({style: "width: 100%; height: 100%; border: none; display: block;"});
 			player.src = "player/" + (OFFLINE ? "index.html" : "") + "#song=" + window.localStorage.getItem(versionToKey(song.versions[0]));
 				const container: HTMLDivElement = div({style: "margin: 4px 0;"}, div({class: "selectContainer", style: "width: 100%; margin: 2px 0;"}, versionMenu), player);
 			this._songContainer.appendChild(container);

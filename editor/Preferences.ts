@@ -52,6 +52,7 @@ export class Preferences {
 	public temposlider: boolean;
 	public realshowchannels: boolean;
 	public reshade: boolean;
+	public coverart: boolean;
 	constructor() {
 		this.reload();
 	}
@@ -100,6 +101,7 @@ export class Preferences {
 		this.temposlider = window.localStorage.getItem("temposlider") == "true";
 		this.realshowchannels = window.localStorage.getItem("realshowchannels") == "true";
 		this.reshade = window.localStorage.getItem("reshade") == "true";
+		this.coverart = window.localStorage.getItem("coverart") == "true";
 		
 		const defaultScale: Scale | undefined = Config.scales.dictionary[window.localStorage.getItem("defaultScale")!];
 		this.defaultScale = (defaultScale != undefined) ? defaultScale.index : 0;
@@ -161,6 +163,7 @@ export class Preferences {
 		window.localStorage.setItem("temposlider", this.temposlider ? "true" : "false");
 		window.localStorage.setItem("realshowchannels", this.realshowchannels ? "true" : "false");
 		window.localStorage.setItem("reshade", this.reshade ? "true" : "false");
+		window.localStorage.setItem("coverart", this.coverart ? "true" : "false");
 		
 	}
 }

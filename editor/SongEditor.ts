@@ -56,6 +56,8 @@ import { AddSamplesPrompt } from "./AddSamplesPrompt";
 import { ShortenerConfigPrompt } from "./ShortenerConfigPrompt";
 
 import { BackDropPrompt } from "./BackDropPrompt";
+import { ToolBoxPrompt } from "./ToolBoxPrompt";
+import { AddCoverArtPrompt } from "./AddCoverArtPrompt";
 
 const { button, div, input, select, span, optgroup, option, canvas } = HTML;
 
@@ -798,6 +800,8 @@ export class SongEditor {
         option({ value: "channelSettings" }, "Channel Settings... (Q)"),
         option({ value: "limiterSettings" }, "Limiter Settings... (⇧L)"),
         option({ value: "addExternal" }, "Add Custom Samples... (⇧Q)"),
+        option({ value: "addArt" }, "Add Cover Art... "),
+        option({ value: "toolbox" }, "Toolbox... "),
     );
     private readonly _optionsMenu: HTMLSelectElement = select({ style: "width: 100%;" },
         option({ selected: true, disabled: true, hidden: false }, "Preferences"), // todo: "hidden" should be true but looks wrong on mac chrome, adds checkmark next to first visible option even though it's not selected. :(
@@ -835,7 +839,8 @@ export class SongEditor {
             option({ value: "layout" }, "Set Layout..."),
             option({ value: "colorTheme" }, "Set Theme..."),
             option({ value: "customTheme" }, "Custom Theme..."),
-            option({ value: "comical" }, "Enable Comic Sans In Song Editor")
+            option({ value: "comical" }, "Enable Comic Sans In Song Editor"),
+            option({ value: "coverart"}, "Enable Cover Art"),
         ),
     );
     private readonly _loopControls: HTMLSelectElement = select({  style: `margin: 4px; border: thin, inset; max-width: 200px; height: auto`,  class: `menu loopControls` },
@@ -2121,6 +2126,9 @@ export class SongEditor {
                 case "addExternal":
                     this.prompt = new AddSamplesPrompt(this._doc);
                     break;
+                case "AddCoverArtPrompt":
+                    this.prompt = new AddCoverArtPrompt(this._doc);
+                    break;
                 case "generateEuclideanRhythm":
                     this.prompt = new EuclideanRhythmPrompt(this._doc);
                     break;
@@ -2138,6 +2146,9 @@ export class SongEditor {
                     break;
                 case "BackDropPrompt":
                     this.prompt = new BackDropPrompt(this._doc);
+                    break;
+                case "ToolBoxPrompt":
+                    this.prompt = new ToolBoxPrompt(this._doc);
                     break;
                 default:
                     this.prompt = new TipPrompt(this._doc, promptName);
@@ -2310,6 +2321,7 @@ export class SongEditor {
             textSpacingIcon + "Set Theme...",
             textSpacingIcon + "Custom Theme...",
             (prefs.comical ? textOnIcon : textOffIcon) + "Enable Comic Sans (Refresh!)",
+            (prefs.coverart ? textOnIcon : textOffIcon) + "Enable Cover Art (Refresh!)",
         ];
         // Technical dropdown
         const technicalOptionGroup: HTMLOptGroupElement = <HTMLOptGroupElement>this._optionsMenu.children[1];
@@ -2743,6 +2755,8 @@ export class SongEditor {
                     this._noteFilterRow.style.display = "";
                     this._noteFilterSimpleCutRow.style.display = "none";
                     this._noteFilterSimplePeakRow.style.display = "none";
+                    this._noteFilterEditor.container.style.border = "1px dotted";
+                    this._noteFilterEditor.container.style.margin = "2px";
                 }
             } else {
                 this._noteFilterRow.style.display = "none";
@@ -2872,7 +2886,8 @@ export class SongEditor {
             this._envelopeSpeedSlider.updateValue(instrument.envelopeSpeed);
             this._envelopeSpeedSlider.input.title = "x" + prettyNumber(Config.arpSpeedScale[instrument.envelopeSpeed]);
             this._envelopeSpeedDisplay.textContent = "x" + prettyNumber(Config.arpSpeedScale[instrument.envelopeSpeed]);
-
+            this._eqFilterEditor.container.style.border = "1px double";
+            this._eqFilterEditor.container.style.margin = "2px";
 
             if (instrument.type == InstrumentType.customChipWave) {
                 this._customWaveDrawCanvas.redrawCanvas();
@@ -5138,6 +5153,12 @@ export class SongEditor {
             case "addExternal":
                 this._openPrompt("addExternal");
                 break;
+            case "addArt":
+                this._openPrompt("AddCoverArtPrompt");
+                break;
+            case "toolbox":
+                this._openPrompt("ToolBoxPrompt");
+                break;
         }
         this._editMenu.selectedIndex = 0;
     }
@@ -5240,6 +5261,9 @@ export class SongEditor {
                 break;
             case "reshade":
                 this._doc.prefs.reshade = !this._doc.prefs.reshade;
+                break;
+            case "coverart":
+                this._doc.prefs.coverart = !this._doc.prefs.coverart;
                 break;
         }
         this._optionsMenu.selectedIndex = 0;
