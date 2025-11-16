@@ -142,6 +142,124 @@
             font-size: 1.5em;
         }
 
+        .raindrop {
+            width: 0px;
+            height: 50px;
+            border: solid 1px;
+            border-radius: 50px;
+            border-image: linear-gradient(to top, #FFFFFF, #FFFFFF00) 0 1 round;
+            animation: raindropping linear infinite;
+            z-index: 20;
+            position: absolute;
+            top: -50vh
+        }
+
+        .snowflake {
+            width: 15px;
+            height: 15px;
+            background-image: url("website_things/snowflake.png");
+            background-size: contain;
+            animation: snowfalling linear infinite;
+            z-index: 20;
+            position: absolute;
+            top: -50vh
+        }
+
+        .sickfog {
+            background-color: #FFF2;
+            filter: blur(10px), brightness(1.5);
+            block-size: 100vh;
+            pointer-events: none;
+            width: 100vw;
+            position: fixed;
+            z-index: 10;
+            display: none;
+        }
+
+        .snowfog {
+            background-color: #FFF3;
+            filter: blur(10px), brightness(1.5);
+            block-size: 100vh;
+            pointer-events: none;
+            width: 100vw;
+            position: fixed;
+            z-index: 10;
+            display: none;
+        }
+
+        @keyframes raindropping {
+            from {
+                transform: translateY(-50vh)
+            }
+            to {
+                transform: translateY(150vh)
+            }
+        }
+
+        @keyframes snowfalling {
+            from {
+                transform: translateY(-50vh) rotate(0deg);
+            }
+
+            to {
+                transform: translateY(150vh) rotate(720deg);
+            }
+        }
+
+        .raindrop:nth-child(1) {left:5%; animation-duration: 5s}
+        .raindrop:nth-child(2) {left:37%; animation-duration: 4.3s}
+        .raindrop:nth-child(3) {left:84%; animation-duration: 5.12s}
+        .raindrop:nth-child(4) {left:26%; animation-duration: 4.7s}
+        .raindrop:nth-child(5) {left:19%; animation-duration: 3.56s}
+        .raindrop:nth-child(6) {left:65%; animation-duration: 6.5s}
+        .raindrop:nth-child(7) {left:56%; animation-duration: 3.56s}
+        .raindrop:nth-child(8) {left:72%; animation-duration: 4.456s}
+        .raindrop:nth-child(9) {left:91%; animation-duration: 3.65s}
+        .raindrop:nth-child(10) {left:46%; animation-duration: 2.99s}
+        .raindrop:nth-child(11) {left:8%; animation-duration: 3.96s}
+        .raindrop:nth-child(12) {left:3%; animation-duration: 7.12s}
+        .raindrop:nth-child(13) {left:99%; animation-duration: 6.85s}
+        .raindrop:nth-child(14) {left:7%; animation-duration: 3.4s}
+        .raindrop:nth-child(15) {left:32%; animation-duration: 4.98s}
+        .raindrop:nth-child(16) {left:87%; animation-duration: 5s}
+        .raindrop:nth-child(17) {left:31%; animation-duration: 4.25s}
+        .raindrop:nth-child(18) {left:15%; animation-duration: 3.123s}
+        .raindrop:nth-child(19) {left:69%; animation-duration: 5.76s}
+        .raindrop:nth-child(20) {left:60%; animation-duration: 4.12s}
+        .raindrop:nth-child(21) {left:76%; animation-duration: 4.765s}
+        .raindrop:nth-child(22) {left:85%; animation-duration: 3.7891s}
+        .raindrop:nth-child(23) {left:42%; animation-duration: 3.45s}
+        .raindrop:nth-child(24) {left:12%; animation-duration: 4.7642s}
+        .raindrop:nth-child(25) {left:1%; animation-duration: 2.567s}
+        .raindrop:nth-child(26) {left:95%; animation-duration: 7s}
+
+        .snowflake:nth-child(1) {left:5%; animation-duration: 5s}
+        .snowflake:nth-child(2) {left:37%; animation-duration: 4.3s}
+        .snowflake:nth-child(3) {left:84%; animation-duration: 5.12s}
+        .snowflake:nth-child(4) {left:26%; animation-duration: 4.7s}
+        .snowflake:nth-child(5) {left:19%; animation-duration: 3.56s}
+        .snowflake:nth-child(6) {left:65%; animation-duration: 6.5s}
+        .snowflake:nth-child(7) {left:56%; animation-duration: 3.56s}
+        .snowflake:nth-child(8) {left:72%; animation-duration: 4.456s}
+        .snowflake:nth-child(9) {left:91%; animation-duration: 3.65s}
+        .snowflake:nth-child(10) {left:46%; animation-duration: 2.99s}
+        .snowflake:nth-child(11) {left:8%; animation-duration: 3.96s}
+        .snowflake:nth-child(12) {left:3%; animation-duration: 7.12s}
+        .snowflake:nth-child(13) {left:99%; animation-duration: 6.85s}
+        .snowflake:nth-child(14) {left:7%; animation-duration: 3.4s}
+        .snowflake:nth-child(15) {left:32%; animation-duration: 4.98s}
+        .snowflake:nth-child(16) {left:87%; animation-duration: 5s}
+        .snowflake:nth-child(17) {left:31%; animation-duration: 4.25s}
+        .snowflake:nth-child(18) {left:15%; animation-duration: 3.123s}
+        .snowflake:nth-child(19) {left:69%; animation-duration: 5.76s}
+        .snowflake:nth-child(20) {left:60%; animation-duration: 4.12s}
+        .snowflake:nth-child(21) {left:76%; animation-duration: 4.765s}
+        .snowflake:nth-child(22) {left:85%; animation-duration: 3.7891s}
+        .snowflake:nth-child(23) {left:42%; animation-duration: 3.45s}
+        .snowflake:nth-child(24) {left:12%; animation-duration: 4.7642s}
+        .snowflake:nth-child(25) {left:1%; animation-duration: 2.567s}
+        .snowflake:nth-child(26) {left:95%; animation-duration: 7s}
+
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -229,11 +347,11 @@
 <body id="secondImage">
     <script>
         const image = localStorage.getItem('customTheme2');
-        const el  = document.getElementById('secondImage');
+        const el = document.getElementById('secondImage');
 
         if (image != null && image !== "null" && image !== "undefined") {
-            el.style.backgroundImage="url(" + image + ")";
-            el.style.backgroundRepeat= "repeat";
+            el.style.backgroundImage = "url(" + image + ")";
+            el.style.backgroundRepeat = "repeat";
         }
     </script>
     <div style="display: flex; flex-direction: row; flex-wrap: wrap">
@@ -243,12 +361,12 @@
             </noscript>
         </div>
         <caContainer id="CoverArtContainer" style="aspect-ratio: 1/1">
-                Add Cover Art Here!
+            Add Cover Art Here!
         </caContainer>
     </div>
-        <textbox id="visualnoveltextbox">
-            <textboxtext id="visualnoveltext"></textboxtext>
-        </textbox>
+    <textbox id="visualnoveltextbox">
+        <textboxtext id="visualnoveltext"></textboxtext>
+    </textbox>
     <div id="text-content">
         <section>
 
@@ -258,7 +376,7 @@
                 <!-- <span id="goldboxPlant" style="display: inline; color: var(--plant-color, var(--link-accent, #62a13b));"></span> -->
             </h1>
 
-            <h2>
+            <h2 id="justoutsidedsboxQuote">
                 <span id="dsboxQuote" style="display: inline"></span>
             </h2>
 
@@ -271,26 +389,26 @@
                 A mod of <a href="https://ultraabox.github.io/" target="_blank">Ultrabox</a> that adds... anything I can! lmao
             </p>
             <!-- <p>
-        All song data is contained in the URL at the top of your browser.
-        When you make changes to the song, the URL is updated to reflect your changes.
-        When you are satisfied with your song, just copy and paste the URL to save and share your song!
-    </p> -->
+                All song data is contained in the URL at the top of your browser.
+                When you make changes to the song, the URL is updated to reflect your changes.
+                When you are satisfied with your song, just copy and paste the URL to save and share your song!
+            </p> -->
             <p>
                 If you have any questions, please visit <a href="./faq.html" target="_blank">Questions Answered</a> to see if your question is there. Visit the <a href="./patch_notes.html" target="_blank">patch notes</a> to see the latest changes made.
                 <img id="Hotdog" src="" width="500" height="333" onclick="changeHotdogSize()" />
             </p>
             <!--
-    <div class="donation">
-        BeepBox is a passion project, and will always be free to use. If you find it valuable and have the means, any gratuity via
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-            <input type="hidden" name="cmd" value="_donations" />
-            <input type="hidden" name="business" value="QZJTX9GRYEV9N" />
-            <input type="hidden" name="currency_code" value="USD" />
-            <input type="submit" name="submit" value="Paypal"/>
-        </form>
-        would be appreciated!
-    </div>
-    --> 
+            <div class="donation">
+                BeepBox is a passion project, and will always be free to use. If you find it valuable and have the means, any gratuity via
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                    <input type="hidden" name="cmd" value="_donations" />
+                    <input type="hidden" name="business" value="QZJTX9GRYEV9N" />
+                    <input type="hidden" name="currency_code" value="USD" />
+                    <input type="submit" name="submit" value="Paypal"/>
+                </form>
+                would be appreciated!
+            </div>
+            -->
         </section>
 
         <div class="column-container">
@@ -383,38 +501,119 @@
                 </section>
             </main>
             <section class="bsky-column">
-				<h2>
-					Shared on Bluesky:
-				</h2>
-				<div>
-					<!-- <a class="bsky-timeline" data-width="300" data-height="2000" data-link-color="#9988ff" data-chrome="noheader nofooter transparent" data-dnt="true" data-theme="dark" href="https://twitter.com/beepboxco?ref_src=twsrc%5Etfw" target="_blank">Songs retweeted by @beepboxco</a> -->
-                    <bsky-embed
-						feed="at://did:plc:mbrx5fkqsdgk5l2dfhygecm6/app.bsky.feed.generator/aaabsv7gjrgl2"
-						mode="dark"
-						link-target="_blank"
-						link-image="false"
-						limit="10"
-						load-more="true"
-						disable-styles="false"
-						custom-styles="a.mt-4.rounded-md.border.border-slate-500.block {display: none;} .flex > div { max-width: 100%; } .whitespace-pre-wrap { word-wrap: break-word;}"
-					  >
+                <h2>
+                    Shared on Bluesky:
+                </h2>
+                <div>
+                    <!-- <a class="bsky-timeline" data-width="300" data-height="2000" data-link-color="#9988ff" data-chrome="noheader nofooter transparent" data-dnt="true" data-theme="dark" href="https://twitter.com/beepboxco?ref_src=twsrc%5Etfw" target="_blank">Songs retweeted by @beepboxco</a> -->
+                    <bsky-embed feed="at://did:plc:mbrx5fkqsdgk5l2dfhygecm6/app.bsky.feed.generator/aaabsv7gjrgl2"
+                                mode="dark"
+                                link-target="_blank"
+                                link-image="false"
+                                limit="10"
+                                load-more="true"
+                                disable-styles="false"
+                                custom-styles="a.mt-4.rounded-md.border.border-slate-500.block {display: none;} .flex > div { max-width: 100%; } .whitespace-pre-wrap { word-wrap: break-word;}">
                     </bsky-embed>
                     <script async>
-                    // only load bsky-embed if it's actually visible
-                    // (the downside of doing this is that you have to manually reload the page to load/unload the library)
-                    if (window.localStorage.getItem("showDescription") != "false") {
-                        const bsky_script = document.createElement("script");
+                        // only load bsky-embed if it's actually visible
+                        // (the downside of doing this is that you have to manually reload the page to load/unload the library)
+                        if (window.localStorage.getItem("showDescription") != "false") {
+                            const bsky_script = document.createElement("script");
 
-                        bsky_script.src = "https://cdn.jsdelivr.net/npm/bsky-embed@0.2.2/dist/bsky-embed.es.min.js";
-                        bsky_script.type = "module";
+                            bsky_script.src = "https://cdn.jsdelivr.net/npm/bsky-embed@0.2.2/dist/bsky-embed.es.min.js";
+                            bsky_script.type = "module";
 
-                        document.head.appendChild(bsky_script);
-                    }
+                            document.head.appendChild(bsky_script);
+                        }
                     </script>
-					<!-- <script type="module" src="https://cdn.jsdelivr.net/npm/bsky-embed/dist/bsky-embed.es.js" async></script> -->
-				</div>
-			</section>
+                    <!-- <script type="module" src="https://cdn.jsdelivr.net/npm/bsky-embed/dist/bsky-embed.es.js" async></script> -->
+                </div>
+            </section>
         </div>
+    </div>
+    <div class="sickfog" id="rain1">
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+        <div class="raindrop"></div>
+    </div>
+
+    <div class="sickfog">
+        <div class="raindrop" style="animation-duration: 2.5s; margin-left: 20px"></div>
+        <div class="raindrop" style="animation-delay: 1.65s; margin-right: 5px"></div>
+        <div class="raindrop" style="animation-delay: 2.32s; animation-duration: 4.65s; right: 35%"></div>
+        <div class="raindrop" style="animation-duration: 6.25s; margin-left: 17px"></div>
+        <div class="raindrop" style="animation-delay: 2.125s; margin-right: 8px"></div>
+        <div class="raindrop" style="animation-delay: 0.85s; animation-duration: 6s; right: 20vw"></div>
+        <div class="raindrop" style="animation-duration: 3.21s; margin-right: 12vh"></div>
+        <div class="raindrop" style="animation-delay: 2.125s; margin-right: 80px"></div>
+        <div class="raindrop" style="animation-delay: 2.45s; animation-duration: 4.125s; left: 35%"></div>
+        <div class="raindrop" style="animation-duration: 4.765s; margin-left: 26px"></div>
+    </div>
+
+    <div class="snowfog" id="snow1">
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+    </div>
+
+    <div class="snowfog">
+        <div class="snowflake" style="animation-duration: 2.5s; margin-left: 20px"></div>
+        <div class="snowflake" style="animation-delay: 1.65s; margin-right: 5px"></div>
+        <div class="snowflake" style="animation-delay: 2.32s; animation-duration: 4.65s; right: 35%"></div>
+        <div class="snowflake" style="animation-duration: 6.25s; margin-left: 17px"></div>
+        <div class="snowflake" style="animation-delay: 2.125s; margin-right: 8px"></div>
+        <div class="snowflake" style="animation-delay: 0.85s; animation-duration: 6s; right: 20vw"></div>
+        <div class="snowflake" style="animation-duration: 3.21s; margin-right: 12vh"></div>
+        <div class="snowflake" style="animation-delay: 2.125s; margin-right: 80px"></div>
+        <div class="snowflake" style="animation-delay: 2.45s; animation-duration: 4.125s; left: 35%"></div>
+        <div class="snowflake" style="animation-duration: 4.765s; margin-left: 26px"></div>
     </div>
 
     <!--
@@ -427,29 +626,29 @@
         // 4-in-5 chance to appear
 
         const plants = [
-        // jummbox/goldbox plants    
-        "🍂", "🌿", "🌺", "🍃", "🍄", "🍀🌷", "🌈🍂🍁🍀🌷🍄🐲🌈🍃🌺🍄", " 1️⃣3️⃣1️⃣2️⃣",
-        // blubox plants
-        "≽(◕ ᴗ ◕)≼", "≽(ᴗ _ ᴗ)≼", "≽(⌐ _ ⌐)≼", "≽(ᵕ ‿ ᵕ)≼", 
-        // familiarbox plant (there were others, but the code of familiarbox is long gone)
-        // this is a reference to (now outdated?) lore jinx made for one of their projects 
-        "☀️⭐🕒👁️",
-        // suggested by mel, meant to supplement the lack of a worm logo
-        "🪱",
-        // this is from paandorasbox (might have also been present in familiarbox?)
-        " :wackybox:",
-        // plant originally suggested by mel in reference to the "(don't) eat thegubbys" meme. has now been reduced to just the fish emoji
-        "🐟",
-        // blubox desktop plants 
-        "⚡","🔵","💫",
-        // dogebox2 plants 
-        "🍕","🌭","🍔","🍟",
-        // Slarmoo's Box plants
-        "✨","🌈","🌧️","🪨","🐍","🌲","🌳","𓆏","🦀","🍄‍🟫",
-        // LemmBox 
-		"🍋",
-       // D's Quick Box Mod
-	    "☠︎", "plant id: 36", "you're really lucky if you get this plant"
+            // jummbox/goldbox plants
+            "🍂", "🌿", "🌺", "🍃", "🍄", "🍀🌷", "🌈🍂🍁🍀🌷🍄🐲🌈🍃🌺🍄", " 1️⃣3️⃣1️⃣2️⃣",
+            // blubox plants
+            "≽(◕ ᴗ ◕)≼", "≽(ᴗ _ ᴗ)≼", "≽(⌐ _ ⌐)≼", "≽(ᵕ ‿ ᵕ)≼",
+            // familiarbox plant (there were others, but the code of familiarbox is long gone)
+            // this is a reference to (now outdated?) lore jinx made for one of their projects
+            "☀️⭐🕒👁️",
+            // suggested by mel, meant to supplement the lack of a worm logo
+            "🪱",
+            // this is from paandorasbox (might have also been present in familiarbox?)
+            " :wackybox:",
+            // plant originally suggested by mel in reference to the "(don't) eat thegubbys" meme. has now been reduced to just the fish emoji
+            "🐟",
+            // blubox desktop plants
+            "⚡", "🔵", "💫",
+            // dogebox2 plants
+            "🍕", "🌭", "🍔", "🍟",
+            // Slarmoo's Box plants
+            "✨", "🌈", "🌧️", "🪨", "🐍", "🌲", "🌳", "𓆏", "🦀", "🍄‍🟫",
+            // LemmBox
+            "🍋",
+            // D's Quick Box Mod
+            "☠︎", "plant id: 36", "you're really lucky if you get this plant"
         ];
 
         // Randomize quote below heading
@@ -527,12 +726,12 @@
             "Throw everything away-whoosh★",
         ]
         if (0 == 0) {
-            document.getElementById("visualnoveltext").innerHTML = "  " + visualnoveltexts[(Math.floor(Math.random() * visualnoveltexts.length))];  
+            document.getElementById("visualnoveltext").innerHTML = "  " + visualnoveltexts[(Math.floor(Math.random() * visualnoveltexts.length))];
         }
 
 
         if (Math.floor(Math.random() * 1.25) == 0) {
-            document.getElementById("goldboxPlant").innerHTML = "  " + plants[(Math.floor(Math.random() * plants.length))];  
+            document.getElementById("goldboxPlant").innerHTML = "  " + plants[(Math.floor(Math.random() * plants.length))];
         }
 
         if (0 == 0) {
@@ -542,8 +741,8 @@
                     document.getElementById("dsboxQuote").innerHTML = quoteused;
                 }
                 else {
-                quoteused = quote[6]
-                document.getElementById("dsboxQuote").innerHTML = quoteused;
+                    quoteused = quote[6]
+                    document.getElementById("dsboxQuote").innerHTML = quoteused;
                 }
             }
             else {
@@ -563,9 +762,8 @@
             document.getElementById("Imagination").style.display = "none";
         };
 
-
         if (window.localStorage.getItem("comical") == "true") {
-            document.getElementById("thething").style.fontFamily = `Comic Sans MS` 
+            document.getElementById("thething").style.fontFamily = `Comic Sans MS`
         } else if (window.localStorage.getItem("comical") == "false") {
             document.getElementById("thething").style.fontFamily = document.getElementById("thething").style.fontFamily
         }
@@ -580,13 +778,32 @@
             document.getElementById("CoverArtContainer").style.display = "none"
         }
 
+        // weather
+        if (Math.floor(Math.random() * 4) == 0) {
+            let chosen = Math.floor(Math.random() * 2)
+            if (chosen == 0) {
+                const fogs = document.getElementsByClassName("sickfog");
+                for (let i = 0; i < fogs.length; i++) {
+                    fogs[i].style.display = "block";
+                }
+                document.getElementById("dsboxQuote").innerHTML = "It's Raining!";
+            }
+            if (chosen == 1) {
+                const fogs = document.getElementsByClassName("snowfog");
+                for (let i = 0; i < fogs.length; i++) {
+                    fogs[i].style.display = "block";
+                }
+                document.getElementById("dsboxQuote").innerHTML = "It's Snowy!!!";
+            }
+        }
+
 
 
         const date = new Date();
 
         // boxmod birthday (september 21th)
         if ((date.getDate() == 21) && date.getMonth() == 9) {
-            document.getElementById("goldboxPlant").innerHTML = "☠︎🎂🎉";  
+            document.getElementById("goldboxPlant").innerHTML = "☠︎🎂🎉";
         }
 
         function changeHotdogSize() {
@@ -600,7 +817,7 @@
             document.getElementById("keyboard-instructions").style.display = "none";
             document.getElementById("mobile-instructions").style.display = "";
             document.getElementById("bar-editing").innerHTML = "Tap the boxes to move to a different part of the song, or tap on the currently selected box to swap which pattern is played during that part of the song.";
-			//document.getElementById("offline-instructions").innerHTML = 'You can use UltraBox when your device is offline if you put a shortcut to UltraBox on your home screen. <ul><li>Chrome: find the "Add to Home Screen" option in the ⋮ menu.</li><li>Firefox: find the "Add Page Shortcut" option in the ⋮ menu.</li><li>Safari: find the "Add to Home Screen" option in the bookmark menu.</li></ul>';
+            //document.getElementById("offline-instructions").innerHTML = 'You can use UltraBox when your device is offline if you put a shortcut to UltraBox on your home screen. <ul><li>Chrome: find the "Add to Home Screen" option in the ⋮ menu.</li><li>Firefox: find the "Add Page Shortcut" option in the ⋮ menu.</li><li>Safari: find the "Add to Home Screen" option in the bookmark menu.</li></ul>';
         }
 
         function browserHasRequiredFeatures() {
@@ -630,15 +847,15 @@
             document.getElementById("beepboxEditorContainer").innerHTML = "Sorry, UltraBox doesn't support your browser. Try a recent version of Chrome, Firefox, Edge, Safari, or Opera.";
         }
 
-		// If the page was loaded with an old song version that old versions of BeepBox support,
-		// update the links to the old versions so that they'll open the song.
-	    //HEY, ULTRABOX DOESN'T HAVE THESE, WHAT DO WE DO????
-		if (/^#[1-6]/.test(location.hash)) {
-			document.getElementById("linkTo2_3").href += location.hash;
-		}
-		if (/^#[1-8]/.test(location.hash)) {
-			document.getElementById("linkTo3_0").href += location.hash;
-		}
+        // If the page was loaded with an old song version that old versions of BeepBox support,
+        // update the links to the old versions so that they'll open the song.
+        //HEY, ULTRABOX DOESN'T HAVE THESE, WHAT DO WE DO????
+        if (/^#[1-6]/.test(location.hash)) {
+            document.getElementById("linkTo2_3").href += location.hash;
+        }
+        if (/^#[1-8]/.test(location.hash)) {
+            document.getElementById("linkTo3_0").href += location.hash;
+        }
     </script>
 </body>
 </html>

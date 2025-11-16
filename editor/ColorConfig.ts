@@ -5968,7 +5968,7 @@ export class ColorConfig {
 		background: #f9feff7d !important;
 		}
 
-			#text-content > section > h1 > font {
+		#text-content > section > h1 > font {
 		display: none;
 		}
 
@@ -7179,6 +7179,117 @@ export class ColorConfig {
 		
 
 
+			`,
+
+		"minecraft": `
+		:root {
+			--mod-title: #a9a09d;
+			--page-margin: #0000;
+			--editor-background: #0000;
+			--hover-preview: #fff;
+			--playhead: #fff;
+			--primary-text: #e0d0d0;
+			--secondary-text: #8b8383;
+			--inverted-text: #593d29;
+			--text-selection: #71b147;
+			--box-selection-fill: #71b147;
+			--loop-accent: #8ddca0;
+			--link-accent: #aaaaff;
+			--ui-widget-background: #f5932a;
+			--ui-widget-focus: #bc7121;
+			--pitch-background: #0005;
+			--tonic: #5b402b66;
+			--fifth-note: #42424266;
+			--white-piano-key: #cdcdcd;
+			--black-piano-key: #232323;
+			--track-editor-bg-pitch: #727272;
+			--track-editor-bg-pitch-dim: #414141;
+			--track-editor-bg-noise: #727272;
+			--track-editor-bg-noise-dim: #414141;
+			--track-editor-bg-mod: #727272;
+			--track-editor-bg-mod-dim: #414141;
+			--multiplicative-mod-slider: #18a6ab;
+			--overwriting-mod-slider: #1c787a;
+			--indicator-primary: #34c26a;
+			--indicator-secondary: #167a21;
+			--select2-opt-group: linear-gradient(#f5932a, #bc7121);
+			--input-box-outline: #ffffff;
+			--mute-button-normal: #36452c;
+			--mute-button-mod: #4955c2;
+			--pitch-channel-limit: 1;
+			--noise-channel-limit: 1;
+			--mod-channel-limit  : 1;
+			--pitch1-secondary-channel: #b59a88;
+			--pitch1-primary-channel: #edccb7;
+			--pitch1-secondary-note: #b59a88;
+			--pitch1-primary-note: #edccb7;
+			--noise1-secondary-channel: #cabe3c;
+			--noise1-primary-channel: #ffed28;
+			--noise1-secondary-note: #cabe3c;
+			--noise1-primary-note: #ffed28;
+			--mod1-secondary-channel: #18a6ab;
+			--mod1-primary-channel: #15eef6;
+			--mod1-secondary-note: #18a6ab;
+			--mod1-primary-note: #15eef6;
+			--mod-label-primary: #5fb9a7;
+			--mod-label-secondary-text: #aaccc5;
+			--disabled-note-primary: #414141;
+			--disabled-note-secondary: #222222;
+
+			--oscilloscope-line-R: #f5932a;
+			--oscilloscope-line-L: #bc7121;
+			--text-spacing-icon: ;
+			--scrollbar-color: #bc7121;
+		}
+
+		.pattern-area
+			{
+				background-image: url("theme_resources/dirt.png") !important;
+				background-position: center;
+				background-repeat: repeat;
+			}
+		body {
+				background-image: url("theme_resources/stone.png") !important;
+				background-position: center;
+				background-repeat: repeat;
+	
+				image-rendering: -moz-crisp-edges !important;         /* Firefox */
+				image-rendering: -webkit-optimize-contrast !important; /* Webkit (Chrome/Safari) */
+				image-rendering: -o-crisp-edges !important;            /* Opera */
+				image-rendering: pixelated !important;                 /* Future browsers */
+				image-rendering: optimizeSpeed !important;             /* IE */
+					}
+
+		@font-face {
+			   font-family: "Minecraftia";
+			   src:
+				url("theme_resources/Minecraftia-Regular.ttf") format("truetype") tech(color-COLRv1),
+				}
+		
+		#text-content {
+			font-family: "Minecraftia";
+			text-underline-offset: -8px;
+		}
+		#text-content > section > h1 > font {
+		display: none;
+		}
+
+		#text-content > section > h1 {
+		margin-top: 20px;
+		margin-bottom: 20px;
+		width: 100%;
+		height: 100%;
+		content: url("theme_resources/minecraft_logo.png");
+		}
+
+		#dsboxQuote {
+		display: none;
+		}
+		#justoutsidedsboxQuote {
+		width: 100%;
+		height: 100%;
+		content: url("theme_resources/animals.png");
+		}
 			`,
 
 	"custom": `${localStorage.getItem("customColors") || `:root {  }`}`,
