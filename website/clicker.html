@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+    <meta charset="utf-8" />
+    <title>D's Quick Clicker</title>
+    <meta name="application-name" content="D's Quick Clicker" />
+    <link href="https://fonts.googleapis.com/css?family=B612" rel="stylesheet" media="none" onload="if (this.media != 'all') this.media='all';" /> <!-- this is a trick to load CSS asynchronously. -->
+
+    <style type="text/css">
+
+        html {
+            background: #112335;
+            overflow-x: hidden;
+            overflow-y: clip;
+            font-size: large;
+            font-family: 'Comic Sans MS', sans-serif;
+            line-height: 1.3;
+            color: var(--primary-text, white);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            -webkit-text-stroke-width: 0;
+            color: #CCCCFF;
+        }
+
+        fbutton {
+            border: #AAABEF 4px solid;
+            border-radius: 100%;
+            background-image: radial-gradient(#CCCCFF, #AAABEF);
+            width: 35vw;
+            height: 35vw;
+            display: block;
+            text-align: center;
+            align-content: center;
+            font-size: 5em;
+            font-family: 'Times New Roman', Times, serif;
+            left: 32.5vw;
+            position: absolute
+        }
+
+        wbutton {
+            border: 5px solid;
+            border-color: #F00;
+            border-radius: 20px;
+            margin: 10px;
+            padding: 5px;
+            background: linear-gradient(to right, #F00, #A00);
+            text-align: center;
+            align-content: center;
+            font-family: W95FA;
+            cursor: pointer
+        }
+
+        slash {
+            border-image: linear-gradient(to right, #FFFFFF00 0%, #FFFFFF 50%, #FFFFFF00 100%) 1;
+            width: 100%;
+            display: flex;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-width: 1px;
+            border-style: solid;
+        }
+
+        cbutton {
+            border: #EF8988 2px solid;
+            background-image: linear-gradient(#FCC, #EF8988);
+            border-radius: 25%;
+            text-align: center;
+            align-content: center;
+            font-size: 2em;
+            font-family: 'Times New Roman', Times, serif;
+            position: absolute;
+            cursor: pointer
+        }
+
+        bbutton {
+            border: #FFFFFF 2px solid;
+            background: #922;
+            border-radius: 15px;
+            text-align: center;
+            align-content: center;
+            font-size: 2em;
+            cursor: pointer;
+            padding: 5px
+        }
+
+        @font-face {
+            font-family: W95FA;
+            src: url(theme_resources/W95FA.otf);
+        }
+
+        @keyframes fadein {
+            from {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+
+        /* testing and reference*/
+
+        @keyframes hey {
+            from {
+                transform: translate(2px, 5px)
+            }
+        }
+
+        heyo {
+            animation: hey ease-in-out backwards
+        }
+    </style>
+
+    <audio id="laugh" src="website_things/Bowser Laugh.mp3" type="audio/mpeg"></audio>
+
+</head>
+<body>
+    <div id="fake" style="position: absolute; background: #112335; width: 100vw; height: 125vh; margin: -8px">
+        <h1>D's Quick Clicker</h1>
+        <fbutton onclick="firstClick()">Click.</fbutton>
+    </div>
+
+    <div id="real" style="background-image: url(website_things/burning.gif); background-size: 100%; height: 100vh; width: 100vw; margin: -8px">
+        <div style="display: flex; justify-content: center; gap: 25%">
+            <h1 style="color: #F55;">D's Long and Annoying Clicker</h1>
+            <wbutton onclick="resetClick()">RESET CLICKS!!</wbutton>
+        </div>
+        <slash></slash>
+        <div id="box" style="border: solid 1px #FFF; width: 75vw; height: 50vh; position: fixed; display: none; left: 12.5vw; bottom: 1vh; padding: 5px; cursor: crosshair">
+            <cbutton onclick="normalClick(this)">click.</cbutton>
+        </div>
+        <h1 id="counter" style="color: #F55;">
+            Clicks: 0
+        </h1>
+        <div style="display: flex; width: 100%; justify-content: space-evenly;">
+            <div style="display:flex; flex-direction: column; text-align: center; gap: 25px">
+                <bbutton onclick="cpUpgrade(this)">
+                    +1 Click Power
+                </bbutton>
+                <h3 id="cpcost">
+                    Cost: 100
+                </h3>
+                <h3 id="cpamount">
+                    Current: 1
+                </h3>
+            </div>
+            <div style="display: flex; flex-direction: column; text-align: center; gap: 25px">
+                <bbutton onclick="cmUpgrade(this)">
+                    +1 Click Mult
+                </bbutton>
+                <h3 id="cmcost">
+                    Cost: 100
+                </h3>
+                <h3 id="cmamount">
+                    Current: 1
+                </h3>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+<script type="text/javascript">
+    var fakescreen = document.getElementById("fake")
+    var box = document.getElementById("box")
+    var counter = document.getElementById("counter")
+    var cpCost = localStorage.getItem("DClickercpCost")
+    var cmCost = localStorage.getItem("DClickercmCost")
+    var clickPower = localStorage.getItem("DClickerclickPower")
+    var clickMult = localStorage.getItem("DClickerclickMult")
+    var laughter = document.getElementById("laugh").cloneNode()
+
+
+    counter.innerHTML = "Clicks: " + localStorage.getItem("DClickerclicks")
+    document.getElementById("cpcost").innerHTML = "Cost: " + cpCost
+    document.getElementById("cpamount").innerHTML = "Current: " + clickPower
+    document.getElementById("cmcost").innerHTML = "Cost: " + cmCost
+    document.getElementById("cmamount").innerHTML = "Current: " + clickMult
+
+    if (parseInt(localStorage.getItem("DClickerclicks")) != -1) {
+        fakescreen.style.display = "none"
+        box.style.display = "block";
+    } else {
+        fakescreen.style.display = "block"
+    }
+
+    function resetClick() {
+        localStorage.setItem("DClickerclicks", -1)
+        window.location.reload()
+    }
+
+    function firstClick() {
+        fakescreen.style.transition = "transform 2s ease-in";
+        fakescreen.style.transform = "translateY(125vh)";
+        localStorage.setItem("DClickercpCost", 100)
+        localStorage.setItem("DClickercmCost", 250)
+        localStorage.setItem("DClickerclickPower", 10)
+        localStorage.setItem("DClickerclickMult", 1)
+        localStorage.setItem("DClickerclicks", 0)
+        counter.innerHTML = "Clicks: " + localStorage.getItem("DClickerclicks")
+        document.getElementById("cpcost").innerHTML = "Cost: " + localStorage.getItem("DClickercpCost")
+        document.getElementById("cpamount").innerHTML = "Current: " + localStorage.getItem("DClickerclickPower")
+        document.getElementById("cmcost").innerHTML = "Cost: " + localStorage.getItem("DClickercmCost")
+        document.getElementById("cmamount").innerHTML = "Current: " + localStorage.getItem("DClickerclickMult")
+        laughter.load()
+        setTimeout(() => {
+            laughter.play()
+        }, 1)
+        
+
+        setTimeout(() => {
+            fakescreen.style.display = "none";
+            box.style.display = "block";
+            box.style.animation = "fadein 1s"
+        }, 2000);
+    }
+
+    function cpUpgrade(elmnt) {
+        cpCost = localStorage.getItem("DClickercpCost")
+        if (parseInt(localStorage.getItem("DClickerclicks")) >= cpCost) {
+            localStorage.DClickerclicks -= cpCost
+            counter.innerHTML = "Clicks: " + localStorage.getItem("DClickerclicks")
+            localStorage.DClickercpCost *= 1.125
+            cpCost = localStorage.getItem("DClickercpCost")
+            document.getElementById("cpcost").innerHTML = "Cost: " + cpCost
+            localStorage.DClickerclickPower++
+            clickPower = localStorage.getItem("DClickerclickPower")
+            document.getElementById("cpamount").innerHTML = "Current: " + clickPower
+            elmnt.style.transition = "transform 1.5s cubic-bezier(0.22, 1, 0.36, 1)";
+            elmnt.style.transform = "rotate(-360deg)";
+
+            setTimeout(() => {
+                elmnt.style.transition = "transform 0s"
+                elmnt.style.transform = "rotate(0deg)";
+            }, 1500);
+        }
+    }
+
+    function cmUpgrade(elmnt) {
+        cmCost = localStorage.getItem("DClickercmCost")
+        if (parseInt(localStorage.getItem("DClickerclicks")) >= cmCost) {
+            localStorage.DClickerclicks -= cmCost
+            counter.innerHTML = "Clicks: " + localStorage.getItem("DClickerclicks")
+            localStorage.DClickercmCost *= (localStorage.DClickercmCost/100)
+            cmCost = localStorage.getItem("DClickercmCost")
+            document.getElementById("cmcost").innerHTML = "Cost: " + cmCost
+            localStorage.DClickerclickMult++
+            clickMult = localStorage.getItem("DClickerclickMult")
+            document.getElementById("cmamount").innerHTML = "Current: " + clickMult
+            elmnt.style.transition = "transform 1.5s cubic-bezier(0.22, 1, 0.36, 1)";
+            elmnt.style.transform = "rotate(360deg)";
+
+            setTimeout(() => {
+                elmnt.style.transition = "transform 0s"
+                elmnt.style.transform = "rotate(0deg)";
+            }, 1500);
+        }
+    }
+
+    function normalClick(elmnt) {
+        clickPower = localStorage.getItem("DClickerclickPower")
+        clickMult = localStorage.getItem("DClickerclickMult")
+        let Clicks = parseInt(localStorage.getItem("DClickerclicks"));
+        let moveleft = Math.ceil(Math.min(((Math.random() * (Math.random() * 5)) * box.offsetLeft), box.offsetWidth - elmnt.offsetWidth)) + "px"
+        let moveup = Math.ceil(Math.min(((Math.random() * (Math.random() * 2)) * box.offsetTop), box.offsetHeight - elmnt.offsetHeight)) + "px"
+
+        Clicks += (clickPower * clickMult);
+        localStorage.setItem("DClickerclicks", Clicks)
+
+        isAnimating = true;
+
+        elmnt.style.transition = "transform 0.1s";
+        elmnt.style.transform = "scale(0.95, 0.95)";
+
+        elmnt.style.left = moveleft
+        elmnt.style.top = moveup
+
+        counter.innerHTML = "Clicks: " + localStorage.getItem("DClickerclicks")
+
+        setTimeout(() => {
+            elmnt.style.transform = "scale(1, 1)";
+            isAnimating = false;
+        }, 100);
+    }
+</script>
