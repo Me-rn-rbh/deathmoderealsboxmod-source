@@ -238,20 +238,20 @@ export class PatternEditor {
 
         if (this._mouseX < 0 || this._mouseX > this._editorWidth || this._mouseY < 0 || this._mouseY > this._editorHeight || this._pitchHeight <= 0) return;
 
+        const partsPerPattern: number = this._doc.song.beatsPerBar * Config.partsPerBeat;
         const minDivision: number = this._getMinDivision();
         this._cursor.exactPart = this._mouseX / this._partWidth;
         this._cursor.part =
             Math.floor(
-                Math.max(0,
-                    Math.min(this._doc.song.beatsPerBar * Config.partsPerBeat - minDivision, this._cursor.exactPart)
-                )
-                / minDivision) * minDivision;
+                Math.max(0, Math.min(partsPerPattern - minDivision, this._cursor.exactPart))
+            / minDivision) * minDivision;
 
         let foundNote: boolean = false;
 
         if (this._pattern != null) {
+            const cursorPartForMatching: number = Math.max(0, Math.min(partsPerPattern - 1, this._cursor.exactPart));
             for (const note of this._pattern.notes) {
-                if (note.end <= this._cursor.exactPart) {
+                if (note.end <= cursorPartForMatching) {
                     if (this._doc.song.getChannelIsMod(this._doc.channel)) {
                         if (note.pitches[0] == Math.floor(this._findMousePitch(this._mouseY))) {
                             this._cursor.prevNote = note;
@@ -263,7 +263,7 @@ export class PatternEditor {
                         this._cursor.prevNote = note;
                         this._cursor.curIndex++;
                     }
-                } else if (note.start <= this._cursor.exactPart && note.end > this._cursor.exactPart) {
+                } else if (note.start <= cursorPartForMatching && note.end > cursorPartForMatching) {
                     if (this._doc.song.getChannelIsMod(this._doc.channel)) {
                         if (note.pitches[0] == Math.floor(this._findMousePitch(this._mouseY))) {
                             this._cursor.curNote = note;
@@ -276,7 +276,7 @@ export class PatternEditor {
                     else {
                         this._cursor.curNote = note;
                     }
-                } else if (note.start > this._cursor.exactPart) {
+                } else if (note.start > cursorPartForMatching) {
                     if (this._doc.song.getChannelIsMod(this._doc.channel)) {
                         if (note.pitches[0] == Math.floor(this._findMousePitch(this._mouseY))) {
                             this._cursor.nextNote = note;
@@ -435,7 +435,7 @@ export class PatternEditor {
             }
             this._cursor.end = this._cursor.start + defaultLength;
             let forceStart: number = 0;
-            let forceEnd: number = this._doc.song.beatsPerBar * Config.partsPerBeat;
+            let forceEnd: number = partsPerPattern;
             if (this._cursor.prevNote != null) {
                 forceStart = this._cursor.prevNote.end;
             }
@@ -455,7 +455,10 @@ export class PatternEditor {
                     this._cursor.start = forceStart;
                 }
             }
-
+            if (this._cursor.start >= this._cursor.end) {
+                // Not a valid duration.
+                return;
+            }
             if (this._cursor.end - this._cursor.start == defaultLength) {
                 if (this._copiedPinChannels.length > this._doc.channel) {
                     this._copiedPins = this._copiedPinChannels[this._doc.channel];

@@ -11,7 +11,8 @@ import { Selection } from "./Selection";
 import { Preferences } from "./Preferences";
 import { Change } from "./Change";
 import { ChangeNotifier } from "./ChangeNotifier";
-import { ChangeSong, setDefaultInstruments, discardInvalidPatternInstruments, ChangeHoldingModRecording} from "./changes";
+import { ChangeSong, setDefaultInstruments, discardInvalidPatternInstruments, ChangeHoldingModRecording } from "./changes";
+import { MidiInputHandler } from "./MidiInput.js";
 
 interface HistoryState {
 	canUndo: boolean;
@@ -21,7 +22,7 @@ interface HistoryState {
 	instrument: number;
 	recoveryUid: string;
 	prompt: string | null;
-		selection: {x0: number, x1: number, y0: number, y1: number, start: number, end: number};
+	selection: {x0: number, x1: number, y0: number, y1: number, start: number, end: number};
 }
 
 export class SongDocument {
@@ -29,6 +30,7 @@ export class SongDocument {
 	public song: Song;
 	public synth: Synth;
 	public performance: SongPerformance;
+	public midiInputHandler: MidiInputHandler;
 	public readonly notifier: ChangeNotifier = new ChangeNotifier();
 	public readonly selection: Selection = new Selection(this);
 	public readonly prefs: Preferences = new Preferences();
@@ -125,6 +127,7 @@ export class SongDocument {
 		
 		this._validateDocState();
 		this.performance = new SongPerformance(this);
+		this.midiInputHandler = new MidiInputHandler(this);
 	}
 		
 	public toggleDisplayBrowserUrl() {

@@ -11,7 +11,7 @@ import { CustomChipPrompt } from "./CustomChipPrompt";
 import { CustomFilterPrompt } from "./CustomFilterPrompt";
 import { InstrumentExportPrompt } from "./InstrumentExportPrompt";
 import { InstrumentImportPrompt } from "./InstrumentImportPrompt";
-import { EditorConfig, isMobile, prettyNumber, Preset, PresetCategory } from "./EditorConfig";
+import { EditorConfig, isMobile, prettyNumber, Preset, PresetCategory, isOnMac, ctrlSymbol } from "./EditorConfig";
 import { EuclideanRhythmPrompt } from "./EuclidgenRhythmPrompt";
 import { ExportPrompt } from "./ExportPrompt";
 import "./Layout"; // Imported here for the sake of ensuring this code is transpiled early.
@@ -32,7 +32,6 @@ import { LoopEditor } from "./LoopEditor";
 import { MoveNotesSidewaysPrompt } from "./MoveNotesSidewaysPrompt";
 import { MuteEditor } from "./MuteEditor";
 import { OctaveScrollBar } from "./OctaveScrollBar";
-import { MidiInputHandler } from "./MidiInput";
 import { KeyboardLayout } from "./KeyboardLayout";
 import { PatternEditor } from "./PatternEditor";
 import { Piano } from "./Piano";
@@ -728,6 +727,7 @@ class CustomAlgorythmCanvas {
 
 }
 
+const hideSelectMenuTitlesInOptions: boolean = !isOnMac;
 export class SongEditor {
     public prompt: Prompt | null = null;
 
@@ -765,10 +765,10 @@ export class SongEditor {
         this._volumeBarContainer,
     );
     private readonly _fileMenu: HTMLSelectElement = select({ style: "width: 100%;" },
-        option({ selected: true, disabled: true, hidden: false }, "File"), // todo: "hidden" should be true but looks wrong on mac chrome, adds checkmark next to first visible option even though it's not selected. :(
+        option({ selected: true, disabled: true, hidden: hideSelectMenuTitlesInOptions }, "File"),
         option({ value: "new" }, "+ New Blank Song (⇧`)"),
-        option({ value: "import" }, "↑ Import Song... (" + EditorConfig.ctrlSymbol + "O)"),
-        option({ value: "export" }, "↓ Export Song... (" + EditorConfig.ctrlSymbol + "S)"),
+        option({ value: "import" }, "↑ Import Song... (" + ctrlSymbol + "O)"),
+        option({ value: "export" }, "↓ Export Song... (" + ctrlSymbol + "S)"),
         option({ value: "copyUrl" }, "⎘ Copy Song URL"),
         option({ value: "shareUrl" }, "⤳ Share Song URL"),
         option({ value: "configureShortener" }, "🛠 Customize Url Shortener..."),
@@ -778,16 +778,16 @@ export class SongEditor {
         option({ value: "songRecovery" }, "⚠ Recover Recent Song... (`)"),
     );
     private readonly _editMenu: HTMLSelectElement = select({ style: "width: 100%;" },
-        option({ selected: true, disabled: true, hidden: false }, "Edit"), // todo: "hidden" should be true but looks wrong on mac chrome, adds checkmark next to first visible option even though it's not selected. :(
+        option({ selected: true, disabled: true, hidden: hideSelectMenuTitlesInOptions }, "Edit"),
         option({ value: "undo" }, "Undo (Z)"),
         option({ value: "redo" }, "Redo (Y)"),
         option({ value: "copy" }, "Copy Pattern (C)"),
         option({ value: "pasteNotes" }, "Paste Pattern Notes (V)"),
-        option({ value: "pasteNumbers" }, "Paste Pattern Numbers (" + EditorConfig.ctrlSymbol + "⇧V)"),
+        option({ value: "pasteNumbers" }, "Paste Pattern Numbers (" + ctrlSymbol + "⇧V)"),
         option({ value: "insertBars" }, "Insert Bar (⏎)"),
         option({ value: "deleteBars" }, "Delete Selected Bars (⌫)"),
-        option({ value: "insertChannel" }, "Insert Channel (" + EditorConfig.ctrlSymbol + "⏎)"),
-        option({ value: "deleteChannel" }, "Delete Selected Channels (" + EditorConfig.ctrlSymbol + "⌫)"),
+        option({ value: "insertChannel" }, "Insert Channel (" + ctrlSymbol + "⏎)"),
+        option({ value: "deleteChannel" }, "Delete Selected Channels (" + ctrlSymbol + "⌫)"),
         option({ value: "selectChannel" }, "Select Channel (⇧A)"),
         option({ value: "selectAll" }, "Select All (A)"),
         option({ value: "duplicatePatterns" }, "Duplicate Reused Patterns (D)"),
@@ -804,7 +804,7 @@ export class SongEditor {
         option({ value: "toolbox" }, "Toolbox... "),
     );
     private readonly _optionsMenu: HTMLSelectElement = select({ style: "width: 100%;" },
-        option({ selected: true, disabled: true, hidden: false }, "Preferences"), // todo: "hidden" should be true but looks wrong on mac chrome, adds checkmark next to first visible option even though it's not selected. :(
+        option({ selected: true, disabled: true, hidden: hideSelectMenuTitlesInOptions }, "Preferences"),
         optgroup({ label: "Technical" },
             option({ value: "autoPlay" }, "Auto Play on Load"),
             option({ value: "autoFollow" }, "Auto Follow Playhead"),
@@ -828,7 +828,7 @@ export class SongEditor {
             option({ value: "reshade"}, "Frosted Glass Backdrop Outside Prompts (Refresh!)"),
             option({ value: "showChannels" }, "Show All Channels"),
             option({ value: "realShowChannels"}, "REAL Show All Channels (requires Show All Chanels)"),
-            option({ value: "showScrollBar" }, "Show Octave Scroll Bar"),
+            option({ value: "showScrollBar" }, "Show Octave Scrollbar"),
             option({ value: "showInstrumentScrollbars" }, "Show Intsrument Scrollbars"),
             option({ value: "showLetters" }, "Show Piano Keys"),
             option({ value: "displayVolumeBar" }, "Show Playback Volume"),
@@ -844,7 +844,7 @@ export class SongEditor {
         ),
     );
     private readonly _loopControls: HTMLSelectElement = select({  style: `margin: 4px; border: thin, inset; max-width: 200px; height: auto`,  class: `menu loopControls` },
-        option({ selected: true, disabled: true, hidden: false }, "Loop Controls"),
+        option({ selected: true, disabled: true, hidden: hideSelectMenuTitlesInOptions }, "Loop Controls"),
         option({ value: "removeLoop" }, "Remove Loop"),
         option({ value: "barLoop" }, "One Bar Loop"),
         option({ value: "songLoop" }, "Song Wide Loop"),
@@ -920,7 +920,7 @@ export class SongEditor {
     private readonly _clicklessTransitionRow: HTMLElement = div({ class: "selectRow dropFader" }, span({ class: "tip", style: "margin-left:4px;", onclick: () => this._openPrompt("clicklessTransition") }, "‣ Clickless:"), this._clicklessTransitionBox);
     private readonly _transitionDropdownGroup: HTMLElement = div({ class: "editor-controls", style: "display: none;" }, this._clicklessTransitionRow);
 
-    private readonly _effectsSelect: HTMLSelectElement = select(option({ selected: true, disabled: true, hidden: false })); // todo: "hidden" should be true but looks wrong on mac chrome, adds checkmark next to first visible option even though it's not selected. :(
+    private readonly _effectsSelect: HTMLSelectElement = select(option({ selected: true, disabled: true, hidden: hideSelectMenuTitlesInOptions }));
     private readonly _eqFilterSimpleButton: HTMLButtonElement = button({ style: "font-size: x-small; width: 50%; height: 40%", class: "no-underline", onclick: () => this._switchEQFilterType(true) }, "simple");
     private readonly _eqFilterAdvancedButton: HTMLButtonElement = button({ style: "font-size: x-small; width: 50%; height: 40%", class: "last-button no-underline", onclick: () => this._switchEQFilterType(false) }, "advanced");
     private readonly _eqFilterTypeRow: HTMLElement = div({ class: "selectRow", style: "padding-top: 4px; margin-bottom: 0px;" }, span({ style: "font-size: x-small;", class: "tip", onclick: () => this._openPrompt("filterType") }, "EQ Filt.Type:"), div({ class: "instrument-bar" }, this._eqFilterSimpleButton, this._eqFilterAdvancedButton));
@@ -1361,7 +1361,7 @@ export class SongEditor {
                     EditorConfig.version,
                 ),
             ),
-            div({ style: `text-align: center; margin: 3px 0; color: ${ColorConfig.secondaryText};` },
+            div({ style: `text-align: center; margin: 3px; color: ${ColorConfig.secondaryText};` },
                 this._songTitleInputBox.input,
             ),
         ),
@@ -1439,8 +1439,7 @@ export class SongEditor {
 
         this._doc.notifier.watch(this.whenUpdated);
         this._doc.modRecordingHandler = () => { this.handleModRecording() };
-        new MidiInputHandler(this._doc);
-        window.addEventListener("resize", this.whenUpdated);
+        window.addEventListener("resize", this._whenResized);
         window.requestAnimationFrame(this.updatePlayButton);
         window.requestAnimationFrame(this._animate);
         this._reshade();
@@ -1741,10 +1740,22 @@ export class SongEditor {
         }
 
         // Beepbox uses availHeight too, but I have a display that fails the check even when one of the other layouts would look better on it. -jummbus
-        if (window.screen.availWidth < 710 /*|| window.screen.availHeight < 710*/) {
-            const layoutOption: HTMLOptionElement = <HTMLOptionElement>this._optionsMenu.querySelector("[value=layout]");
+        this._updateLayoutOption();
+    }
+
+    private _whenResized = (): void => {
+        this._updateLayoutOption();
+        this.whenUpdated();
+    }
+
+    private _updateLayoutOption(): void {
+        const layoutOption: HTMLOptionElement = <HTMLOptionElement>this._optionsMenu.querySelector("[value=layout]");
+        if (window.screen.availWidth < 710 || window.screen.availHeight < 710) {
             layoutOption.disabled = true;
             layoutOption.setAttribute("hidden", "");
+        } else {
+            layoutOption.disabled = false;
+            layoutOption.removeAttribute("hidden");
         }
     }
 
@@ -2309,7 +2320,7 @@ export class SongEditor {
             (prefs.reshade ? textOnIcon : textOffIcon) + "Frosted Glass Backdrop Outside Prompts (Refresh!)",
             (prefs.showChannels ? textOnIcon : textOffIcon) + "Show All Channels",
             (prefs.realshowchannels ? textOnIcon : textOffIcon) + "REAL Show All Channels (requires Show All Chanels)",
-            (prefs.showScrollBar ? textOnIcon : textOffIcon) + "Show Octave Scroll Bar",
+            (prefs.showScrollBar ? textOnIcon : textOffIcon) + "Show Octave Scrollbar",
             (prefs.showInstrumentScrollbars ? textOnIcon : textOffIcon) + "Show Instrument Scrollbars",
             (prefs.showLetters ? textOnIcon : textOffIcon) + "Show Piano Keys",
             (prefs.displayVolumeBar ? textOnIcon : textOffIcon) + "Show Playback Volume",

@@ -34,10 +34,11 @@ export class SongPerformance {
 	}
 	
 	public play(): void {
-		this._doc.synth.play();
 		this._doc.synth.enableMetronome = false;
-		this._doc.synth.countInMetronome = false
+		this._doc.synth.countInMetronome = false;
+		this._doc.synth.resetEffects();
 		this._doc.synth.maintainLiveInput();
+		this._doc.synth.play();
 	}
 	
 	public pause(): void {
@@ -81,6 +82,7 @@ export class SongPerformance {
 		}
 		this._doc.synth.enableMetronome = this._doc.prefs.metronomeWhileRecording;
 		this._doc.synth.countInMetronome = this._doc.prefs.metronomeCountIn;
+		this._doc.synth.resetEffects();
 		this._doc.synth.startRecording();
 		this._doc.synth.maintainLiveInput();
 		this._songLengthWhenRecordingStarted = this._doc.song.barCount;

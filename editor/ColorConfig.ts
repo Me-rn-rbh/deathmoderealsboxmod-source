@@ -7290,7 +7290,126 @@ export class ColorConfig {
 		height: 100%;
 		content: url("theme_resources/animals.png");
 		}
-			`,
+		`,
+		"roaring": `
+			:root {
+				-webkit-text-stroke-width: 0.5px;
+				--page-margin: #000;
+				--editor-background: #000;
+				--hover-preview: black;
+				--playhead: red;
+				--primary-text: #fff;
+				--secondary-text: #614e6b;
+				--inverted-text: #000;
+				--text-selection: #0B0;
+				--box-selection-fill: #FFFFFFAA;
+				--loop-accent: #fbfbfb;
+				--link-accent: #fbfbfb;
+				--ui-widget-background: #000;
+				--ui-widget-focus: #000;
+				--pitch-background: #000;
+				--tonic: #000;
+				--fifth-note: #000;
+				--white-piano-key: #fff;
+				--black-piano-key: #000;
+				--white-piano-key-text: #fff0;
+				--black-piano-key-text: #0000;
+				--track-editor-bg-pitch: #ececec;
+				--track-editor-bg-pitch-dim: #fdfdfd;
+				--track-editor-bg-noise: #ececec;
+				--track-editor-bg-noise-dim: #fdfdfd;
+				--track-editor-bg-mod: #dbecfd;
+				--track-editor-bg-mod-dim: #ecfdff;
+				--multiplicative-mod-slider: #789;
+				--overwriting-mod-slider: #987;
+				--indicator-primary: #98f;
+				--indicator-secondary: #cde;
+				--select2-opt-group: #cecece;
+				--input-box-outline: #ddd;
+				--mute-button-normal: #c0b47f;
+				--mute-button-mod: #bd7fc0;
+				--pitch1-secondary-channel: #0c96f3;
+				--pitch1-primary-channel:   #02e5fc;
+				--pitch1-secondary-note:    #0c96f3;
+				--pitch1-primary-note:      #02e5fc;
+				--noise1-secondary-channel: #f18bc3;
+				--noise1-primary-channel:   #fe29fd;
+				--noise1-secondary-note:    #f18bc3;
+				--noise1-primary-note:      #fe29fd;
+				--mod1-secondary-channel:   #b6cd26;
+				--mod1-primary-channel:     #05d404;
+				--mod1-secondary-note:      #b6cd26;
+				--mod1-primary-note:        #05d404;
+				--pitch-channel-limit:      1;
+				--noise-channel-limit:      1;
+				--mod-channel-limit:        1;
+				--track-editor-bg-pitch:	#02e5fc;
+				--track-editor-bg-pitch-dim: #0c96f3;
+				--track-editor-bg-noise:	#fe29fd;
+				--track-editor-bg-noise-dim: #f18bc3;
+				--track-editor-bg-mod:		#05d404;
+				--track-editor-bg-mod-dim:  #b6cd26;
+				--mod-label-primary:        #dddddd;
+				--mod-label-secondary-text: #777;
+				--disabled-note-primary:    #666;
+				--disabled-note-secondary:  #aaa;
+			}
+			
+			html {
+				font-family: DeterMono
+			}
+
+			@font-face {
+				font-family: "DeterMono";
+				src: url("theme_resources/abysstype.otf") format("opentype") tech(color-COLRv1),
+			}
+
+			.patternarea {
+				border: 5px #0F0 solid
+			}
+
+			.menu {
+				border: 2px #fd8328 solid;
+				color: #fd8328;
+				border-radius: 5px;
+			}
+
+			.menu ::selection {
+				color: #f0f818;
+			}
+
+			.selectContainer:not(.menu) {
+				border: 2px #614e6b solid;
+				color: #614e6b;
+				border-radius: 5px;
+			}
+
+			.selectContainer:not(.menu) ::selection {
+				color: #ffc90e;
+			}
+
+			.pattern-area::backdrop {
+				content: url("theme_resources/darkfountain.gif") !important;
+				position: absolute;
+				bottom: -300px;
+				left: 15px;
+			}
+
+			.pattern-area::before {
+				content: url("theme_resources/standing.gif") !important;
+				position: absolute;
+				left: -190px;
+				bottom: 100px;
+			}
+
+			.pattern-area::after {
+				content: url("theme_resources/roaring.gif") !important;
+				position: absolute;
+				left: 480px;
+				bottom: 100px;
+			}
+
+		`,
 
 	"custom": `${localStorage.getItem("customColors") || `:root {  }`}`,
     };

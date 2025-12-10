@@ -113,6 +113,10 @@ export class LayoutPrompt implements Prompt {
 				`),
 				div("Monstrosity (D's)"),
 			),
+			/*label({ class: "layout-option" },
+				input({ type: "radio", name: "layout", value: "deltarune" }),
+				div("Deltarune (D's)"),
+			)*/
 		);
 	
 	public readonly container: HTMLDivElement = div({class: "prompt noSelection", style: "width: 300px;"},

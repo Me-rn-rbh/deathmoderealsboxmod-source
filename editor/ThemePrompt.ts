@@ -81,6 +81,7 @@ export class ThemePrompt implements Prompt {
 			option({ value: "lemonlime" }, "LemonLime"),
 			option({ value: "hacker" }, "Hacker Stock Images"),
 			option({ value: "minecraft" }, "Minecraft"),
+			//option({ value: "roaring"}, "The Roaring Fraud Fight"),
 			option({ value: "custom" }, "Custom")
 		),
 	);

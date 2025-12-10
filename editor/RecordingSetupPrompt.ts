@@ -1,20 +1,20 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 import {Config} from "../synth/SynthConfig";
-import {EditorConfig} from "./EditorConfig";
 import {SongDocument} from "./SongDocument";
 import {Prompt} from "./Prompt";
 import {HTML} from "imperative-html/dist/esm/elements-strict";
 import {ColorConfig} from "./ColorConfig";
 import {KeyboardLayout} from "./KeyboardLayout";
 import {Piano} from "./Piano";
+import {ctrlSymbol, ctrlName} from "./EditorConfig.js";
 
 const {button, label, div, p, a, h2, input, select, option} = HTML;
 
 export class RecordingSetupPrompt implements Prompt {
 	private readonly _keyboardMode: HTMLSelectElement = select({style: "width: 100%;"},
 		option({value: "useCapsLockForNotes"}, "simple shortcuts, use caps lock to play notes"),
-		option({value: "pressControlForShortcuts"}, "simple notes, press " + EditorConfig.ctrlName + " for shortcuts"),
+		option({ value: "pressControlForShortcuts" }, "simple notes, press " + ctrlName + " for shortcuts"),
 	);
 	private readonly _keyboardLayout: HTMLSelectElement = select({style: "width: 100%;"},
 		option({value: "wickiHayden"}, "Wicki-Hayden"),
@@ -42,7 +42,7 @@ export class RecordingSetupPrompt implements Prompt {
 	public readonly container: HTMLDivElement = div({class: "prompt noSelection recordingSetupPrompt", style: "width: 600px; text-align: right; max-height: 90%;"},
 		h2({style: "align-self: center;"}, "Note Recording Setup"),
 		div({style: "display: grid; overflow-y: auto; overflow-x: hidden; flex-shrink: 1;"},
-			p("UltraBox can record notes as you perform them. You can start recording by pressing Ctrl+Space (or " + EditorConfig.ctrlSymbol + "P)."),
+			p("UltraBox (Which by extension includes D's Quick Box Mod) can record notes as you perform them. You can start recording by pressing Ctrl+Space (or " + ctrlSymbol + "P)."),
 			label({style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: center;"},
 				"Add ● record button next to ▶ play button:",
 				this._showRecordButton,
@@ -74,7 +74,7 @@ export class RecordingSetupPrompt implements Prompt {
 				"Count-in 1 bar of metronome before recording:",
 				this._metronomeCountIn,
 			),
-			p("If you have a ", a({href: "https://caniuse.com/midi", target: "_blank"}, "compatible browser"), " on a device connected to a MIDI keyboard, you can use it to perform notes in UltraBox! (Or you could buy ", a({href: "https://imitone.com/", target: "_blank"}, "Imitone"), " or ", a({href: "https://vochlea.com/", target: "_blank"}, "Dubler"), " to hum notes into a microphone while wearing headphones!)"),
+			p("If you have a ", a({href: "https://caniuse.com/midi", target: "_blank"}, "compatible browser"), " on a device connected to a MIDI keyboard, enable this option to use it to perform notes in UltraBox! (Or you could buy ", a({href: "https://imitone.com/", target: "_blank"}, "Imitone"), " or ", a({href: "https://vochlea.com/", target: "_blank"}, "Dubler"), " to hum notes into a microphone while wearing headphones!)"),
 			label({style: "display: flex; flex-direction: row; align-items: center; margin-top: 0.5em; height: 2em; justify-content: center;"},
 				"Enable MIDI performance:",
 				this._enableMidi,
@@ -144,6 +144,7 @@ export class RecordingSetupPrompt implements Prompt {
 		this._doc.prefs.metronomeCountIn = this._metronomeCountIn.checked;
 		this._doc.prefs.metronomeWhileRecording = this._metronomeWhileRecording.checked;
 		this._doc.prefs.save();
+		this._doc.midiInputHandler.tryRegisteringMidiAccessHandler();
 		this._close();
 	}
 	

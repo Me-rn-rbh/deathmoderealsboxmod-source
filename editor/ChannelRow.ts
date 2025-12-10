@@ -31,7 +31,7 @@ export class Box {
 	public setIndex(index: number, selected: boolean, dim: boolean, color: string, isNoise: boolean, isMod: boolean): void {
 		if (this._renderedIndex != index) {			
 			if (index >= 100) {
-				this._label.setAttribute("font-size", "16");
+				this._label.setAttribute("font-size", "18");
 				this._label.style.setProperty("transform", "translate(0px, -1.5px)");
 			}
 			else {
@@ -228,6 +228,20 @@ export class ChannelRow {
 					}
 					if (pattern.notes.length > 15) {
 						box.setColor("#000000");
+					}
+				}
+			}
+			if (window.localStorage.getItem("colorTheme") == "roaring") {
+				if (pattern == null) {
+					box.container.textContent = "-1";
+					box.setColor("#FF0000")
+				}
+				if (pattern != null && box.container.textContent != null) {
+					box.container.textContent = `${pattern.notes.length}`
+					if (pattern.notes.length <= 10) {
+						box.setColor("#FFFF00")
+					} else {
+						box.setColor("#FFFFFF")
 					}
 				}
 			}

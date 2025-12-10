@@ -615,6 +615,72 @@ export class Layout {
 				}
 			}
 		`,
+		"deltarune": `
+			.beepboxEditor {
+				display: grid;
+				grid-template-columns: 200px 711px 200px;
+				grid-template-rows: 595px 260px max-content;
+				grid-template-areas: "a pattern-area b" "a track-area b" "a settings-area b";
+				grid-row-gap: 0px;
+				max-width: 1111px;
+				max-height: 3000px;
+				align-content: center;
+			}
+
+			.beepboxEditor .pattern-area {
+				grid-area: pattern-area;
+				height: 450px;
+				width: 450px;
+				top: 100px;
+				left: 130.5px;
+				position: relative;
+				border: 4px #0F0 solid
+			}
+
+			.beepboxEditor .track-area {
+				position: relative;
+				grid-area: track-area;
+				max-width: 711px;
+				max-height: 260px;
+			}
+
+			.beepboxEditor .settings-area {
+				grid-area: settings-area;
+				display: grid;
+				grid-template-columns: 240px 240px 240px;
+				grid-template-rows: 150px 200px;
+				grid-template-areas: "version-area play-pause-area instrument-settings-area" "menu-area song-settings-area instrument-settings-area";
+				grid-column-gap: 6px;
+				width: 732px;
+				max-height: 350px;
+				position: relative;
+				margin: 2px;
+				padding: 1px;
+				border: #fd8328 2px solid;
+			}
+
+			.beepboxEditor .instrument-settings-area {
+				display: flex;
+				flex-direction: column;
+				overflow-y: auto;
+			}
+
+			.beepboxEditor .song-settings-area {
+				display: flex;
+				flex-direction: column;
+				overflow-y: auto;
+			}
+
+			.beepboxEditor .menu-area {
+				display: block;
+				align-content: center;
+				align-items: center;
+			}
+
+			.trackAndMuteContainer {
+				max-height: 200px;
+			}
+		`,
 
 	}
 		
